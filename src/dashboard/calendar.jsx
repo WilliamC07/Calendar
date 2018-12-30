@@ -15,7 +15,9 @@ class Calendar extends Component{
 
     render() {
         return(
-            <div style={this.getWrapperStyle()} onMouseEnter={this.showActive} onMouseLeave={this.showInactive}>
+            <div style={this.getWrapperStyle()}
+                 onMouseEnter={this.showActive}
+                 onMouseLeave={this.showInactive}>
                 {this.state.active ? this.getActiveView() : this.getInactiveView()}
             </div>
         );
@@ -69,7 +71,7 @@ class Calendar extends Component{
         let parts = [];
         // Month display
         parts.push(
-            <div style={{gridColumn: "1 / -1", fontSize: "25px"}}>
+            <div key={"monthDisplay"} style={{gridColumn: "1 / -1", fontSize: "25px"}}>
                 {new Date().toLocaleString('en-us', {month: "long"})}
             </div>
         );
