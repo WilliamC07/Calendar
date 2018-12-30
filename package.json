@@ -1,6 +1,7 @@
 {
   "name": "planner",
   "version": "0.1.0",
+  "author": "William Cao",
   "private": true,
   "main": "src/electronStart.js",
   "dependencies": {
