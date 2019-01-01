@@ -22,7 +22,6 @@ class Weather extends Component{
         return{
             width: '448px',
             height: '182px',
-            border: 'solid'
         }
     }
 

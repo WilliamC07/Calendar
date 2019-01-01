@@ -3,6 +3,9 @@ import Calendar from './calendar.jsx';
 import Mail from './mail.jsx';
 import Exit from './exit.jsx';
 import Weather from './weather.jsx';
+import ToDo from './todo.jsx';
+import Money from './money.jsx';
+import Notes from './notes.jsx';
 
 class Dashboard extends Component{
     render() {
@@ -17,8 +20,12 @@ class Dashboard extends Component{
                         <Weather/>
                     </span>
                 </span>
-
-                <Exit/>
+                <span style={this.getBottomStyle()}>
+                    <Exit/>
+                    <ToDo/>
+                    <Money/>
+                    <Notes/>
+                </span>
             </span>
         )
     }
@@ -28,7 +35,14 @@ class Dashboard extends Component{
             display: 'flex',
             flexDirection: 'row'
         }
-    }
+    };
+
+    getBottomStyle = () => {
+        return{
+            display: 'flex',
+            flexDirection: 'row'
+        };
+    };
 }
 
 export default Dashboard;

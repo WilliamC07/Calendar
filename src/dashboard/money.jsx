@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 
-class Exit extends Component{
+class Money extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            title: 'EXIT'
+            title: 'MONEY'
         }
     }
 
@@ -22,9 +22,9 @@ class Exit extends Component{
             flexDirection: 'column',
             justifyContent: 'center',
             height: '62px',
-            width: '163px',
+            width: '185px',
         }
     }
 }
 
-export default Exit;
+export default Money;

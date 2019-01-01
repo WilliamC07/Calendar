@@ -56,7 +56,6 @@ class Mail extends Component{
             justifyContent: 'center',
             width: '240px',
             height: '62px',
-            borderStyle: 'solid'
         }
     }
 

@@ -112,7 +112,6 @@ class Calendar extends Component{
             justifyContent: 'space-around',
             width: '240px',
             height: '240px',
-            borderStyle: 'solid'
         }
     }
 
