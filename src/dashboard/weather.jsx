@@ -28,6 +28,7 @@ class Weather extends Component{
 
     getHeaderStyle = () => {
         return{
+            fontSize: '35px',
             margin: '5px 0 0 5px'
         }
     }

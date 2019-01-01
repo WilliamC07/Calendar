@@ -36,7 +36,7 @@ class Calendar extends Component{
     getInactiveView(){
         return(
             <React.Fragment>
-                <h1 style={this.getHeaderStyle(35)}>
+                <h1 style={{fontSize: '35px', margin: '5px auto auto auto'}}>
                     {this.state.title}
                 </h1>
                 <h1 style={this.getHeaderStyle(110)}>
