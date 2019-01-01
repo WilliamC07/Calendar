@@ -16,28 +16,20 @@ class Calendar extends Component{
     render() {
         return(
             <div style={this.getWrapperStyle()}
-                 onMouseEnter={this.showActive}
-                 onMouseLeave={this.showInactive}>
+                 onMouseEnter={() => this.setActive(true)}
+                 onMouseLeave={() => this.setActive(false)}>
                 {this.state.active ? this.getActiveView() : this.getInactiveView()}
             </div>
         );
     }
 
     /**
-     * Updates the state so the inactive view will be shown. The inactive view contains minimal information.
+     * Updates the state so the inactive/active view will be shown. The inactive view contains minimal information.
+     * The active view contains more information for the user.
      */
-    showInactive = () => {
+    setActive = (isActive) => {
         this.setState({
-            active: false
-        });
-    };
-
-    /**
-     * Updates the state so the active view will be shown. The active view contains more information for the user.
-     */
-    showActive = () => {
-        this.setState({
-            active: true
+            active: isActive
         });
     };
 
@@ -57,6 +49,10 @@ class Calendar extends Component{
         );
     }
 
+    /**
+     * When the user is hovering over this component, the calendar for the month will show (replacing the inactive view)
+     * @returns {*} Return the component part for the active view
+     */
     getActiveView(){
         return(
             <React.Fragment>
@@ -67,8 +63,16 @@ class Calendar extends Component{
         );
     }
 
+    /**
+     * Generates the calendar month to be shown in the active view. The month and days of week goes on top. The first
+     * box (top left) is the first Sunday in a 6 week representation of the week. The first Sunday might be the previous
+     * month, but the first day of the current month is guaranteed to be in the first week (first row).
+     * @returns {Array} Elements to be added to the active view (requires a wrapper)
+     */
     createCalendarView = () => {
+        // Contains all the elements to be added to the active view
         let parts = [];
+
         // Month display
         parts.push(
             <div key={"monthDisplay"} style={{gridColumn: "1 / -1", fontSize: "25px"}}>
@@ -97,6 +101,7 @@ class Calendar extends Component{
                 daysPastFirstSunday++;
             }
         }
+
         return parts;
     };
 
