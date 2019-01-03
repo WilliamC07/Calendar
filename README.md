@@ -1,5 +1,8 @@
 # Arch
 
+## Project status
+Not completed, currently working on it.
+
 ## Description
 ### Why was this created:
 This is a personal project, not a school assignment.
