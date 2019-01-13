@@ -4,7 +4,10 @@
   "author": "William Cao",
   "private": true,
   "main": "src/electronStart.js",
+  "homepage": "./",
   "dependencies": {
+    "i": "^0.3.6",
+    "npm": "^6.5.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.2"
@@ -26,6 +29,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "electron": "^4.0.0"
+    "electron": "^4.0.0",
+    "electron-builder": "^20.38.4"
   }
 }
