@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "William Cao",
   "private": true,
-  "main": "src/electronStart.js",
+  "main": "public/electron.js",
   "homepage": "./",
   "dependencies": {
     "i": "^0.3.6",
@@ -17,7 +17,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "electron ."
+    "electron": "electron .",
+    "preelectron-pack": "npm run build",
+    "electron-pack": "build -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,5 +33,12 @@
   "devDependencies": {
     "electron": "^4.0.0",
     "electron-builder": "^20.38.4"
+  },
+  "build": {
+    "appId": "WilliamArch",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ]
   }
 }

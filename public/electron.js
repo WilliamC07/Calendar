@@ -1,6 +1,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const path = require('path');
 
 let mainWindow;
 
@@ -10,7 +11,8 @@ function createWindow(){
     });
 
     // Connect to react
-    mainWindow.loadURL('http://localhost:3000');
+    //mainWindow.loadURL('http://localhost:3000');
+    mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
 
     // Close view
     mainWindow.on('closed', () => mainWindow = null);
