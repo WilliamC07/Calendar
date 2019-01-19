@@ -1,3 +1,4 @@
+
 # Arch
 
 ## Project status
@@ -26,11 +27,21 @@ Works on:
 I don't have a Windows machine and I removed my linux partition on my laptop, so I 
 can't say it works on them. I have screenshots below of the program (TODO).
 
-### Instructions
-Prereq: Need npm and yarn
+### How to run
+Prereq: npm, nodeJS (tested on 11.6)
+
+To develop:
 1. Clone repository and change directory into it
-2. Run `npm start` to start React
-3. Run `npm run electron` to start electron
+2. Run `npm install`
+3. Run `npm start` to start React
+4. Run `npm run electron` to start electron
+
+To run as as an executable (.dmg for mac):
+1. Clone repository and change directory into it
+2. Run `npm install`
+3. Run `npm run electron-pack`
+4. Type in `cd dist/mac`
+5. Run the .dmg file
 
 ## Tools used in this project
 * Git (obviously)
