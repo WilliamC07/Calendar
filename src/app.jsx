@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
+import Calendar from './calendar/calendar.jsx';
 import './index.css';
 
 class App extends Component{
@@ -22,13 +23,19 @@ class App extends Component{
     getView = () => {
         switch(this.state.view){
             case 'dashboard':
-                return <Dashboard/>;
+                return <Dashboard changeView={this.changeView}/>;
+            case 'calendar':
+                return <Calendar changeView={{this.changeView}}/>;
             default:
                 return (
-                    <h1>Don't know what view -- bug</h1>
+                    <h1>Don't know what view -- bug {this.state.view}</h1>
                 );
         }
-    }
+    };
+
+    changeView = (newView) => {
+        this.setState({view: newView});
+    };
 }
 
 export default App;
