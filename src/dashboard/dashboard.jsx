@@ -13,18 +13,18 @@ class Dashboard extends Component{
             <span>
                 <span style={this.getTopStyle()}>
                     <span>
-                        <Calendar/>
-                        <Mail/>
+                        <Calendar changeView={this.props.changeView}/>
+                        <Mail changeView={this.props.changeView}/>
                     </span>
                     <span>
-                        <Weather/>
+                        <Weather changeView={this.props.changeView}/>
                     </span>
                 </span>
                 <span style={this.getBottomStyle()}>
                     <Exit/>
-                    <ToDo/>
-                    <Money/>
-                    <Notes/>
+                    <ToDo changeView={this.props.changeView}/>
+                    <Money changeView={this.props.changeView}/>
+                    <Notes changeView={this.props.changeView}/>
                 </span>
             </span>
         )

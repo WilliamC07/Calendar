@@ -17,7 +17,8 @@ class Calendar extends Component{
         return(
             <div style={this.getWrapperStyle()}
                  onMouseEnter={() => this.setActive(true)}
-                 onMouseLeave={() => this.setActive(false)}>
+                 onMouseLeave={() => this.setActive(false)}
+                 onClick={() => this.props.changeView('calendar')}>
                 {this.state.active ? this.getActiveView() : this.getInactiveView()}
             </div>
         );
