@@ -10,7 +10,7 @@ class TopBar extends Component{
 
         return (
             <div>
-                <h1>{information.name}</h1>
+                <h1 style={{background: "red", marginTop: "0", marginBottom: "0"}}>{information.name}</h1>
             </div>
         );
     }

@@ -8,7 +8,7 @@ class App extends Component{
         super(props);
         this.state = {
             // Possible views are: dashboard calendar money notes mail todos weather
-            view: 'dashboard',
+            view: 'calendar',
         }
     }
 
@@ -25,7 +25,7 @@ class App extends Component{
             case 'dashboard':
                 return <Dashboard changeView={this.changeView}/>;
             case 'calendar':
-                return <Calendar changeView={{this.changeView}}/>;
+                return <Calendar changeView={this.changeView}/>;
             default:
                 return (
                     <h1>Don't know what view -- bug {this.state.view}</h1>
