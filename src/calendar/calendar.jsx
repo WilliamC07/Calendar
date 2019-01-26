@@ -10,9 +10,8 @@ class Calendar extends Component {
         let currentDate = new Date();
         this.state = {
             date: currentDate,
-            anyDateSelected: false,
-            dateSelected: {date: undefined, row: 0, column: 0},
-        }
+        };
+        this.state.calendarDays = this.createDaysArray();
     }
 
     render() {
@@ -33,11 +32,18 @@ class Calendar extends Component {
                     flexGrow: "1",
                     position: "relative"
                 }}>
-                    {this.createDays()}
-                    {this.state.anyDateSelected ? this.createExpandDay(this.state.dateSelected) : ""}
+                    {this.state.calendarDays.map((value, index) => <CalendarDay information={value}
+                                                                                showPop={this.showPop} key={index}/>)}
                 </div>
             </div>
         );
+    };
+
+    showPop = (indexOfPop) => {
+        console.log(indexOfPop);
+        this.setState({
+            calendarDays: this.createDaysArray(indexOfPop)
+        });
     };
 
     /**
@@ -80,49 +86,29 @@ class Calendar extends Component {
     };
 
     /**
-     * Creates the calendar days
-     * @returns {Array}
+     * Representation of the calendar in a 1D array.
+     * @param indexOfSelected Whether or not a PopEvent should be created for the given calendar index. If no value is given, then no day will have a PopEvent.
+     * @returns {Array} Array to represent the 6 weeks in a month in a 1D array
      */
-    createDays = () => {
-        const parts = [];
+    createDaysArray = (indexOfSelected = -1) => {
+        const calendarDays = [];
+
         for (let i = 0; i < 42; i++) {
             // where the day is on the calendar
             let position = {column: i % 7, row: parseInt(i / 7)};
-            let firstSunday = util.getFirstSunday(this.state.date);
             // Add the amount of days difference from the first sunday of the month
-            firstSunday.setDate(firstSunday.getDate() + i);
-            parts.push(<CalendarDay date={firstSunday} selectDay={this.selectDay} position={position} key={i}/>)
+            let date = util.getFirstSunday(this.state.date);
+            date.setDate(date.getDate() + i);
+
+            calendarDays.push(Calendar.createDayObject(date, position, i, i === indexOfSelected));
         }
-        return parts;
+
+        return calendarDays;
     };
 
-    selectDay = (date, {row, column}) => {
-        this.setState({
-            dateSelected: {date, row, column},
-            anyDateSelected: true,
-        });
-    };
-
-    createExpandDay = ({date, column, row}) => {
-        const rowPos = row > 3 ? row - 3 : 0;
-        const columnPos = column < 2 ? 1 + column : column - 2;
-
-        const style = {
-            position: "absolute",
-            zIndex: "1",
-            top: `${rowPos / 6 * 100}%`,
-            left: `${columnPos /7 * 100}%`,
-            height: `${2/3 * 100}%`,
-            width: `${2/7 * 100}%`,
-            background: "#3F3F3FE6",
-        };
-
-        return (
-            <div style={style}>
-                <h1>close</h1>
-            </div>
-        );
-    };
+    static createDayObject(date, position, index, isSelected) {
+        return {date: date, position: position, index: index, isSelected: isSelected}
+    }
 
 }
 

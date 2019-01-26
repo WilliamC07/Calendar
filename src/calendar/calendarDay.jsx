@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PopEvent from './popEvent.jsx';
 
 const util = require("./util.js");
 
@@ -6,19 +7,14 @@ const util = require("./util.js");
  * Stateless
  */
 class CalendarDay extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isSelected: false
-        };
-    };
-
     render() {
         return (
-            <div onClick={() => this.props.selectDay(this.props.date, this.props.position)} style={{height: "100px"}}>
+            <div /*onClick={() => this.props.selectDay(this.props.date, this.props.position)}*/
+                onClick={() => this.props.showPop(this.props.information.index)} style={{height: "100px", position: "relative"}}>
+                {this.props.information.isSelected ? this.createPopEvent() : ""}
                 <div style={{position: "absolute"}}>
-                    <h3 style={{margin: "0", position: "relative"}}>
-                        {this.getContext(this.props.date)}
+                    <h3 style={{margin: "0"}}>
+                        {this.getContext(this.props.information.date)}
                     </h3>
                 </div>
             </div>
@@ -45,6 +41,19 @@ class CalendarDay extends Component {
         return text;
     };
 
+    /**
+     * TODO: clear all other pop events
+     */
+    createPopEvent = () => {
+        const information = {};
+        const position = this.props.information.position;
+
+        information.position = position;
+        // Column index 2 because the space of a PopEvent is around 2 CalendarDays
+        information.isLeftSide = position.column >= 2;
+
+        return <PopEvent information={information}/>;
+    };
 }
 
 export default CalendarDay;
