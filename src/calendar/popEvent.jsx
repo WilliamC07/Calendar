@@ -11,8 +11,10 @@ class PopEvent extends Component {
     render() {
         return (
             <div style={this.getStyle()}>
-                <FontAwesomeIcon icon={faWindowClose}/>
+                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose}/>
                 {this.titleComponent()}
+                {this.eventChooserComponent()}
+                {this.eventBodyComponent()}
             </div>
         );
     }
@@ -31,6 +33,41 @@ class PopEvent extends Component {
                 <FontAwesomeIcon style={arrowStyle} icon={this.props.information.isLeftSide ? faArrowRight : faArrowLeft}/>
             </div>
         );
+    };
+
+    eventChooserComponent = () => {
+        const parentStyle = {
+            position: "relative",
+            display: "flex",
+            justifyContent: "center"
+        };
+
+        return (
+            <div style={parentStyle}>
+                <FontAwesomeIcon style={{position: "absolute", top: 0, height: "100%", left: "5px"}} icon={faArrowLeft}/>
+                <h3 style={{display: "inline", margin: "0"}}>Stuff to do title</h3>
+                <FontAwesomeIcon style={{position: "absolute", top: 0, height: "100%", right: "5px"}} icon={faArrowRight}/>
+            </div>
+        );
+    }
+
+    eventBodyComponent = () => {
+        const parentStyle = {
+            padding: "5px"
+        };
+
+        const divStyle = {
+            margin: 0,
+            marginTop: "5px",
+        };
+
+        return (
+            <div style={parentStyle}>
+                <h3 style={divStyle}>Title:</h3>
+                <h3 style={divStyle}>Time:</h3>
+                <h3 style={divStyle}>Description:</h3>
+            </div>
+        )
     }
 
     getStyle = () => {
