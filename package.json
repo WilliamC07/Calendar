@@ -6,6 +6,9 @@
   "main": "public/electron.js",
   "homepage": "./",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.14",
+    "@fortawesome/free-solid-svg-icons": "^5.7.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "i": "^0.3.6",
     "npm": "^6.7.0",
     "react": "^16.8.1",
@@ -32,7 +35,7 @@
   ],
   "devDependencies": {
     "electron": "^4.0.4",
-    "electron-builder": "^20.38.4"
+    "electron-builder": "^20.38.5"
   },
   "build": {
     "appId": "WilliamArch",

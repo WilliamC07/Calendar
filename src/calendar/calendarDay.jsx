@@ -10,7 +10,8 @@ class CalendarDay extends Component {
     render() {
         return (
             <div /*onClick={() => this.props.selectDay(this.props.date, this.props.position)}*/
-                onClick={() => this.props.showPop(this.props.information.index)} style={{height: "100px", position: "relative"}}>
+                onClick={() => this.props.showPop(this.props.information.index)}
+                style={{height: "100px", position: "relative"}}>
                 {this.props.information.isSelected ? this.createPopEvent() : ""}
                 <div style={{position: "absolute"}}>
                     <h3 style={{margin: "0"}}>
@@ -51,6 +52,7 @@ class CalendarDay extends Component {
         information.position = position;
         // Column index 2 because the space of a PopEvent is around 2 CalendarDays
         information.isLeftSide = position.column >= 2;
+        information.date = this.props.information.date;
 
         return <PopEvent information={information}/>;
     };

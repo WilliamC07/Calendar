@@ -1,7 +1,11 @@
 let currentDate = new Date();
 
+function getMonthString(date){
+    return date.toLocaleString('en-us', {month: "long"});
+}
+
 module.exports = {
-    getMonthString: (date) => date.toLocaleString('en-us', {month: "long"}),
+    getMonthString: (date) => getMonthString(date),
     getFirstSunday: (date) => {
         // Copy with first day of the year
         let clone = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -26,7 +30,8 @@ module.exports = {
             date1.getDate() === date2.getDate()
         );
     },
-    daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    stringRepresentation: (date) => `${getMonthString(date)} ${date.getDate()}, ${date.getFullYear()}`
 };
 
 

@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWindowClose, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import {stringRepresentation} from './util.js';
 
 class PopEvent extends Component {
     constructor(props) {
@@ -8,11 +11,27 @@ class PopEvent extends Component {
     render() {
         return (
             <div style={this.getStyle()}>
-                <h1>Apples are great</h1>
+                <FontAwesomeIcon icon={faWindowClose}/>
+                {this.titleComponent()}
             </div>
         );
     }
 
+    titleComponent = () => {
+        const arrowStyle = {position: "absolute", top: "0", height: "100%"};
+        if(this.props.information.isLeftSide){
+            arrowStyle.right = "5";
+        }else{
+            arrowStyle.left = "5";
+        }
+
+        return(
+            <div style={{display: "flex", position: "relative", justifyContent: "center"}}>
+                <h3 style={{display: "inline", margin: "0"}}>{stringRepresentation(this.props.information.date)}</h3>
+                <FontAwesomeIcon style={arrowStyle} icon={this.props.information.isLeftSide ? faArrowRight : faArrowLeft}/>
+            </div>
+        );
+    }
 
     getStyle = () => {
         const information = this.props.information;
