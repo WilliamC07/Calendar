@@ -9,7 +9,7 @@ const util = require("./util.js");
 class CalendarDay extends Component {
     render() {
         return (
-            <div /*onClick={() => this.props.selectDay(this.props.date, this.props.position)}*/
+            <div
                 onClick={() => this.props.showPop(this.props.information.index)}
                 style={{height: "100px", position: "relative"}}>
                 {this.props.information.isSelected ? this.createPopEvent() : ""}
@@ -54,8 +54,15 @@ class CalendarDay extends Component {
         information.isLeftSide = position.column >= 2;
         information.date = this.props.information.date;
 
-        return <PopEvent information={information}/>;
+        return <PopEvent information={information} onPopEventClose={this.closePopEvent}/>;
     };
+
+    closePopEvent = (e) => {
+        // Prevent the click from bubbling up to the parent and reopening the PopEvent
+        e.stopPropagation();
+        // Index of -1 means no pop events are present
+        this.props.showPop(-1);
+    }
 }
 
 export default CalendarDay;

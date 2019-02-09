@@ -40,7 +40,7 @@ class Calendar extends Component {
     };
 
     showPop = (indexOfPop) => {
-        console.log(indexOfPop);
+        console.log(indexOfPop, "popindex");
         this.setState({
             calendarDays: this.createDaysArray(indexOfPop)
         });

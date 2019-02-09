@@ -11,7 +11,7 @@ class PopEvent extends Component {
     render() {
         return (
             <div style={this.getStyle()}>
-                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose}/>
+                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose} onClick={(e) => this.props.onPopEventClose(e)}/>
                 {this.titleComponent()}
                 {this.eventChooserComponent()}
                 {this.eventBodyComponent()}
