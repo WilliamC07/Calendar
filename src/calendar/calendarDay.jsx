@@ -10,7 +10,7 @@ class CalendarDay extends Component {
     render() {
         return (
             <div
-                onClick={() => this.props.showPop(this.props.information.index)}
+                onDoubleClick={() => this.props.showPop(this.props.information.index)}
                 style={{height: "100px", position: "relative"}}>
                 {this.props.information.isSelected ? this.createPopEvent() : ""}
                 <div style={{position: "absolute"}}>
