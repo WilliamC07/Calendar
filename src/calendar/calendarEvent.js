@@ -14,6 +14,7 @@ class Event{
 
     /**
      * Creates an instance of this class.
+     * @param position Position on the calendar
      * @param title Title of the event.
      * @param dateStart Date the event starts (only need month, day, and year)
      * @param dateEnd Date the event ends (only need month, day, and year). If undefined, it is assumed to be the starting date.
@@ -21,7 +22,8 @@ class Event{
      * @param timeEnd Time the event ends (date object). Optional.
      * @param description Description of the event. Optional.
      */
-    constructor(title, dateStart, dateEnd = undefined, timeStart = undefined, timeEnd = undefined, description = undefined) {
+    constructor(position, title, dateStart, dateEnd = undefined, timeStart = undefined, timeEnd = undefined, description = undefined) {
+        this.#position = position;
         this._title = title;
         this.processDate(dateStart);
         this._dateStart = dateStart;
