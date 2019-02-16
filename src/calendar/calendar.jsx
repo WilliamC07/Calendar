@@ -4,12 +4,25 @@ import CalendarDay from "./calendarDay";
 
 const util = require('./util.js');
 
+/**
+ * Single source of truth
+ */
 class Calendar extends Component {
+    /**
+     * What month is being shown on the screen.
+     * We need this because setting a value in the state is not guaranteed to update immediately after calling. However,
+     * the user NEEDS to see what happens after the user changes month.
+     * @type {Date}
+     */
+    #firstDateOfMonth;
+
     constructor(props) {
         super(props);
-        let currentDate = new Date();
+        this.#firstDateOfMonth = new Date();
+        this.#firstDateOfMonth.setDate(1); // For clarity: this is the month being shown
+
         this.state = {
-            date: currentDate,
+            allEvents: {},
         };
         this.state.calendarDays = this.createDaysArray();
     }
@@ -40,7 +53,6 @@ class Calendar extends Component {
     };
 
     showPop = (indexOfPop) => {
-        console.log(indexOfPop, "popindex");
         this.setState({
             calendarDays: this.createDaysArray(indexOfPop)
         });
@@ -53,7 +65,7 @@ class Calendar extends Component {
         return (
             <div style={{display: "flex", alignItems: "center", alignSelf: "center"}}>
                 <button onClick={() => this.changeMonth(-1)}>{"<"}</button>
-                <h1 style={{display: "inline", margin: "0"}}>{util.getMonthString(this.state.date)}</h1>
+                <h1 style={{display: "inline", margin: "0"}}>{util.getMonthString(this.#firstDateOfMonth)}</h1>
                 <button onClick={() => this.changeMonth(1)}>{">"}</button>
             </div>
         )
@@ -64,11 +76,12 @@ class Calendar extends Component {
      * @param amount
      */
     changeMonth = (amount) => {
-        let old = this.state.date;
-        let copy = new Date(old.getFullYear(), old.getMonth() + amount, old.getDate());
+        let old = this.#firstDateOfMonth;
+        this.#firstDateOfMonth = new Date(old.getFullYear(), old.getMonth() + amount);
+        // This needs to wait for the previous state to be set first
         this.setState({
-            date: copy
-        });
+            calendarDays: this.createDaysArray()
+        })
     };
 
     /**
@@ -97,7 +110,7 @@ class Calendar extends Component {
             // where the day is on the calendar
             let position = {column: i % 7, row: parseInt(i / 7)};
             // Add the amount of days difference from the first sunday of the month
-            let date = util.getFirstSunday(this.state.date);
+            let date = util.getFirstSunday(this.#firstDateOfMonth);
             date.setDate(date.getDate() + i);
 
             calendarDays.push(Calendar.createDayObject(date, position, i, i === indexOfSelected));
