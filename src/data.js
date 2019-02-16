@@ -7,11 +7,11 @@ const fs = require('fs');
 /*
     Check if there is data on where to write data for this program
   */
-const fileInformationPath = "./file.json";
+const fileInformationPath = path.join("/Users/williamcao/Library", "Application Support", "ArchJS");
 // sync because we need the data to continue
 let fileInformation = {};
-fs.readFileSync(fileInformationPath, (error, data) => {
-    fileInformation = JSON.parse(data)
+fs.readFileSync(path.join(fileInformationPath, "config.json"), (error, data) => {
+    fileInformation = JSON.parse(data);
 });
 // Update the file system to have the latest information
 if (fileInformation.programDirectory === undefined) {
@@ -35,5 +35,5 @@ for (let directory of directories) {
 }
 
 module.exports = {
-    file: fileInformationPath
+    programDirectory: fileInformationPath
 };

@@ -1,17 +1,31 @@
-'use strict';
+const programDirectory = require("../data.js").programDirectory;
+const fs = require('fs');
+const path = require('path');
 
 /*
     Stores all the events for the previous year, current year, and next year.
  */
-const events = [];
 const yearsToRead = () => {
     let currentYear = new Date().getFullYear();
     return [currentYear - 1, currentYear, currentYear + 1];
 };
 
-class Event{
-    #position;
+const pathToCalendarDirectory = path.join(programDirectory, "Calendar");
+function readDataFromDisk(year){
+    let eventsForYear;
+    // need to be sync because we need data to continue
+    fs.readFileSync(path.join(pathToCalendarDirectory, year + ".json"), (error, data) => eventsForYear = JSON.parse(data));
+    return eventsForYear;
+}
+function saveData(year, data){
+    // need to be sync because we need data to be saved before continuing. Make sure it will be written
+    fs.writeFileSync(path.join(pathToCalendarDirectory, year + ".json"), JSON.stringify(data));
+}
 
+const events = {};
+yearsToRead().forEach((current) => events[current] = readDataFromDisk(current.toString()));
+
+class Event{
     /**
      * Creates an instance of this class.
      * @param position Position on the calendar
@@ -21,9 +35,11 @@ class Event{
      * @param timeStart Time the event starts (date object). Optional.
      * @param timeEnd Time the event ends (date object). Optional.
      * @param description Description of the event. Optional.
+     * @param tags
+     * @param color
      */
-    constructor(position, title, dateStart, dateEnd = undefined, timeStart = undefined, timeEnd = undefined, description = undefined) {
-        this.#position = position;
+    constructor(position, title, dateStart, dateEnd = undefined, timeStart = undefined, timeEnd = undefined, description = undefined, tags = undefined, color = undefined) {
+        this._position = position;
         this._title = title;
         this.processDate(dateStart);
         this._dateStart = dateStart;
@@ -38,6 +54,8 @@ class Event{
         this._description = description === undefined ? "" : description;
         this._dateEnd = dateEnd;
         this._description = description;
+        this._tags = tags;
+        this._color = color;
     };
 
     /**
