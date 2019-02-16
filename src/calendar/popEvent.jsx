@@ -4,8 +4,18 @@ import { faWindowClose, faArrowLeft, faArrowRight } from '@fortawesome/free-soli
 import {stringRepresentation} from './util.js';
 
 class PopEvent extends Component {
+    /**
+     * For when the user edits the event detail
+     */
+    #title = "";
+    #time = {};
+    #description = "";
+
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            currentEventIndex: 0,
+        };
     }
 
     render() {
@@ -49,7 +59,7 @@ class PopEvent extends Component {
                 <FontAwesomeIcon style={{position: "absolute", top: 0, height: "100%", right: "5px"}} icon={faArrowRight}/>
             </div>
         );
-    }
+    };
 
     eventBodyComponent = () => {
         const parentStyle = {
@@ -59,16 +69,25 @@ class PopEvent extends Component {
         const divStyle = {
             margin: 0,
             marginTop: "5px",
+            display: "inline"
         };
 
         return (
             <div style={parentStyle}>
-                <h3 style={divStyle}>Title:</h3>
-                <h3 style={divStyle}>Time:</h3>
-                <h3 style={divStyle}>Description:</h3>
+                <div>
+                    <h3 style={divStyle}>Title:</h3>
+                    <input type={"text"} onChange={(event) => this.onUserTextEnter(event, "title")} ref={"title"}/>
+                </div>
+                <div>
+                    <h3 style={divStyle}>Time:</h3>
+                </div>
+                <div>
+                    <h3 style={divStyle}>Description:</h3>
+                    <input type={"text"} onChange={(event) => this.onUserTextEnter(event, 'description')} ref={"description"}/>
+                </div>
             </div>
         )
-    }
+    };
 
     getStyle = () => {
         const information = this.props.information;
@@ -93,6 +112,19 @@ class PopEvent extends Component {
         }
 
         return style;
+    };
+
+    onUserTextEnter = (event, type) => {
+        switch(type){
+            case 'title':
+                this.#title = this.refs.title.value;
+                break;
+            case 'description':
+                this.#description = this.refs.description.value;
+                break;
+            default:
+                console.log("don't know what to update -- popEvent.jsx")
+        }
     }
 }
 
