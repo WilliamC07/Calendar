@@ -4,36 +4,6 @@
 const path = require('path');
 const fs = require('fs');
 
-/*
-    Check if there is data on where to write data for this program
-  */
-
-// sync because we need the data to continue
-let fileInformation = {};
-fs.readFileSync(path.join(fileInformationPath, "config.json"), (error, data) => {
-    fileInformation = JSON.parse(data);
-});
-// Update the file system to have the latest information
-if (fileInformation.programDirectory === undefined) {
-    // Get a path to store this program data. This is for MacOS.
-    const pathToProgramDirectory = path.join(require('os').homedir(), "Library", "Application Support", "ArchJS");
-    fileInformation.programDirectory = pathToProgramDirectory;
-    fs.mkdir(pathToProgramDirectory, (error) => {/* Do nothing */
-    });
-    // Update the json file to have the latest information. Async because no other file depends on it.
-    fs.writeFile(fileInformationPath, JSON.stringify(fileInformation), (error) => {/* Do nothing */
-    });
-}
-
-/*
-    Make directories to store information about the program.
- */
-const directories = ['Calendar'];
-for (let directory of directories) {
-    const subDirectory = path.join(fileInformation.programDirectory, directory);
-    fs.mkdir(subDirectory, (error) => {/* Do nothing */});
-}
-
 function getProgramDirectory(){
     const programDirectoryPath = path.join("/Users/williamcao/Library", "Application Support", "ArchJS");
     createDirectoryIfMissing(programDirectoryPath);
@@ -57,14 +27,18 @@ function createDirectoryIfMissing(directoryPath){
     }
 }
 
-function readFile(filePath){
-    if(!fs.existsSync(filePath)){
+function readFile(filePath, parser) {
+    if (!fs.existsSync(filePath)) {
         // create the file if one doesn't exists
-        fs.writeFileSync(filePath, "", 'w');
+        fs.writeFileSync(filePath, "[]");
         return null;
-    }else{
-        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } else {
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'), parser);
     }
+}
+
+function writeFile(filePath, jsonString){
+    fs.writeFileSync(filePath, jsonString);
 }
 
 function readConfig(){
@@ -75,15 +49,34 @@ function readConfig(){
 }
 
 class Data{
-    #calendarPath;
-
     constructor(){
         const programDirectory = getProgramDirectory();
-        this.#calendarPath = getCalendarDirectory(programDirectory);
+        this._calendarPath = getCalendarDirectory(programDirectory);
     }
 
     getCalendarData(fileName){
-        return readFile(path.join(this.#calendarPath, fileName));
+        // credit: https://weblog.west-wind.com/posts/2014/Jan/06/JavaScript-JSON-Date-Parsing-and-real-Dates
+        const reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
+        const reMsAjax = /^\/Date\((d|-|.*)\)[\/|\\]$/;
+
+        // the parser will convert the json representation of a date object to a date object
+        return readFile(path.join(this._calendarPath, fileName), (key, value) => {
+            if (typeof value === 'string') {
+                let a = reISO.exec(value);
+                if (a)
+                    return new Date(value);
+                a = reMsAjax.exec(value);
+                if (a) {
+                    const b = a[1].split(/[-+,.]/);
+                    return new Date(b[0] ? +b[0] : 0 - +b[1]);
+                }
+            }
+            return value;
+        });
+    }
+
+    setCalendarData(fileName, jsonString){
+        writeFile(path.join(this._calendarPath, fileName), jsonString);
     }
 }
 
@@ -92,4 +85,4 @@ const data = new Data();
 // Make sure it is a singleton
 Object.freeze(data);
 
-export default data;
+module.exports = data;
