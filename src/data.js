@@ -7,7 +7,7 @@ const fs = require('fs');
 /*
     Check if there is data on where to write data for this program
   */
-const fileInformationPath = path.join("/Users/williamcao/Library", "Application Support", "ArchJS");
+
 // sync because we need the data to continue
 let fileInformation = {};
 fs.readFileSync(path.join(fileInformationPath, "config.json"), (error, data) => {
@@ -34,6 +34,62 @@ for (let directory of directories) {
     fs.mkdir(subDirectory, (error) => {/* Do nothing */});
 }
 
-module.exports = {
-    programDirectory: fileInformationPath
-};
+function getProgramDirectory(){
+    const programDirectoryPath = path.join("/Users/williamcao/Library", "Application Support", "ArchJS");
+    createDirectoryIfMissing(programDirectoryPath);
+    return programDirectoryPath;
+}
+
+function getCalendarDirectory(programDirectory){
+    const calendarPath = path.join(programDirectory, 'Calendar');
+    createDirectoryIfMissing(calendarPath);
+    return calendarPath;
+}
+
+/**
+ * Makes a directory for the given path if one does not exist. If one does exist, nothing will happen.
+ * @param directoryPath Path to the directory that may or may not exist
+ */
+function createDirectoryIfMissing(directoryPath){
+    // Sync because we need a place to store data
+    if(!fs.existsSync(directoryPath)){
+        fs.mkdirSync(directoryPath);
+    }
+}
+
+function readFile(filePath){
+    if(!fs.existsSync(filePath)){
+        // create the file if one doesn't exists
+        fs.writeFileSync(filePath, "", 'w');
+        return null;
+    }else{
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+}
+
+function readConfig(){
+    const information = {};
+
+
+    return information;
+}
+
+class Data{
+    #calendarPath;
+
+    constructor(){
+        const programDirectory = getProgramDirectory();
+        this.#calendarPath = getCalendarDirectory(programDirectory);
+    }
+
+    getCalendarData(fileName){
+        return readFile(path.join(this.#calendarPath, fileName));
+    }
+}
+
+// Create a single instance
+const data = new Data();
+// Make sure it is a singleton
+Object.freeze(data);
+
+export default data;
