@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import PopEvent from './popEvent.jsx';
+import calendarEvents from './calendarEvent.js';
 
 const util = require("./util.js");
 
-/**
- * Stateless
- */
 class CalendarDay extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            eventsForDate: calendarEvents.readEvents(this.props.information.date)
+        };
+    }
+
     render() {
         return (
             <div
@@ -54,6 +59,9 @@ class CalendarDay extends Component {
         information.isLeftSide = position.column >= 2;
         information.date = this.props.information.date;
 
+        // all the events on this day
+        information.events = [];
+
         return <PopEvent information={information} onPopEventClose={this.closePopEvent}/>;
     };
 
@@ -62,7 +70,7 @@ class CalendarDay extends Component {
         e.stopPropagation();
         // Index of -1 means no pop events are present
         this.props.showPop(-1);
-    }
+    };
 }
 
 export default CalendarDay;

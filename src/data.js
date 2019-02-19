@@ -2,7 +2,7 @@
  * This file should be used to gain data that was stored on disk.
  */
 const path = require('path');
-const fs = require('fs');
+const fs = window.require('fs');
 
 function getProgramDirectory(){
     const programDirectoryPath = path.join("/Users/williamcao/Library", "Application Support", "ArchJS");
@@ -33,6 +33,7 @@ function readFile(filePath, parser) {
         fs.writeFileSync(filePath, "[]");
         return null;
     } else {
+        console.log(fs.readFileSync(filePath, 'utf8'));
         return JSON.parse(fs.readFileSync(filePath, 'utf8'), parser);
     }
 }
@@ -82,7 +83,5 @@ class Data{
 
 // Create a single instance
 const data = new Data();
-// Make sure it is a singleton
-Object.freeze(data);
 
-module.exports = data;
+export default data;

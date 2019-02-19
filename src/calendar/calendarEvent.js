@@ -1,15 +1,12 @@
-const programData = require("../data.js");
-const Event = require('./event.js');
-const fs = require('fs');
-const path = require('path');
+import programData from '../data';
+import {betweenDates} from './util.js'
 
-/*
-    Stores all the events for the previous year, current year, and next year.
- */
-const yearsToRead = () => {
-    let currentYear = new Date().getFullYear();
-    return [currentYear - 1, currentYear, currentYear + 1];
-};
+const events = {};
+// read the previous, current, and next year events
+const currentYear = new Date().getFullYear();
+events[currentYear-1] = readDataFromDisk(currentYear - 1);
+events[currentYear] = readDataFromDisk(currentYear);
+events[currentYear+1] = readDataFromDisk(currentYear + 1);
 
 /**
  * Get
@@ -29,3 +26,26 @@ function saveData(year, data){
     jsonRepresentation += "]";
     programData.setCalendarData(`${year}.json`, jsonRepresentation);
 }
+
+export default {
+    readEvents: (date) => {
+        const year = date.getFullYear();
+        const eventsForDate = [];
+        if(events[year] === undefined){
+            events[year] = readDataFromDisk(year);
+        }
+
+        events[year].filter((event) => betweenDates(date, event._dateStart, event._dateEnd)).forEach((event) => eventsForDate.push(event));
+        return eventsForDate;
+    },
+
+    addEvent: (event) => {
+        events[event._dateStart.getFullYear()].append(event);
+    },
+
+    saveAll: () => {
+        for(let year in events){
+            saveData(year, events[year]);
+        }
+    }
+};

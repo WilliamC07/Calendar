@@ -30,6 +30,9 @@ module.exports = {
             date1.getDate() === date2.getDate()
         );
     },
+    betweenDates: (dateBetween, dateStart, dateEnd) => {
+        return dateStart.getTime() < dateBetween.getTime() < dateEnd.getTime();
+    },
     daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     stringRepresentation: (date) => `${getMonthString(date)} ${date.getDate()}, ${date.getFullYear()}`
 };

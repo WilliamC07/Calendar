@@ -54,11 +54,26 @@ class PopEvent extends Component {
 
         return (
             <div style={parentStyle}>
-                <FontAwesomeIcon style={{position: "absolute", top: 0, height: "100%", left: "5px"}} icon={faArrowLeft}/>
+                <button style={{position: "absolute", top: 0, height: "100%", left: "5px"}}>
+                    <FontAwesomeIcon icon={faArrowLeft}/>
+                </button>
                 <h3 style={{display: "inline", margin: "0"}}>Stuff to do title</h3>
-                <FontAwesomeIcon style={{position: "absolute", top: 0, height: "100%", right: "5px"}} icon={faArrowRight}/>
+                <button style={{position: "absolute", top: 0, height: "100%", right: "5px"}}
+                        onClick={() => this.changeEventBody(1)}>
+                    <FontAwesomeIcon icon={faArrowRight}/>
+                </button>
             </div>
         );
+    };
+
+    changeEventBody = (change) => {
+        let newEventCurrentIndex = this.state.currentEventIndex + change;
+        if(newEventCurrentIndex < 0){
+
+        }
+        this.setState({
+            currentEventIndex: newEventCurrentIndex
+        });
     };
 
     eventBodyComponent = () => {
@@ -126,6 +141,18 @@ class PopEvent extends Component {
                 console.log("don't know what to update -- popEvent.jsx")
         }
     }
+
+    /**
+     * If the popevent is being removed from the view, the information done, if any, on the event the user is looking
+     * at will be updated.
+     */
+    componentWillUnmount() {
+        this.saveEvent();
+    }
+
+    saveEvent = () => {
+
+    };
 }
 
 export default PopEvent;
