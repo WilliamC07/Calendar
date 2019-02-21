@@ -4,91 +4,64 @@ import CalendarDay from "./calendarDay";
 
 const util = require('./util.js');
 
+class MonthYearChooser extends Component {
+    render() {
+        return (
+            <div>Header</div>
+        );
+    }
+}
+
 /**
  * Single source of truth
  */
-class Calendar extends Component {
-    /**
-     * What month is being shown on the screen.
-     * We need this because setting a value in the state is not guaranteed to update immediately after calling. However,
-     * the user NEEDS to see what happens after the user changes month.
-     * @type {Date}
-     */
-    #firstDateOfMonth;
-
+export default class Calendar extends Component {
     constructor(props) {
         super(props);
-        this.#firstDateOfMonth = new Date();
-        this.#firstDateOfMonth.setDate(1); // For clarity: this is the month being shown
-
+        // The date representation of what the month is showing
+        const date = new Date();
+        // The date must be the first day of the month
+        date.setDate(1);
+        console.log(date);
         this.state = {
-            allEvents: {},
+            // The date being shown on the screen. The day of the month should be 1.
+            firstDayOfMonth: date,
+            // The index (imagine the calendar is a 1D array) of the calendar day that has the pop shown
+            indexOfDayWithPop: -1
         };
-        this.state.calendarDays = this.createDaysArray();
     }
 
     render() {
-        // NavBar
-        const information = {name: "Calendar"};
+        const wrapperStyle = {
+            display: "flex",
+            flexDirection: "column",
+            height: 'auto'
+        };
+        const calendarGridStyle = {
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gridTemplateRows: "repeat(6, 1fr)",
+            flexGrow: "1",
+            position: "relative"
+        };
 
         return (
-            <div style={{display: "flex", flexDirection: "column", height: 'auto'}}>
-                <TopBar information={information}/>
-                {this.createMonthChoose()}
-                <div style={{display: "grid", gridTemplateColumns: "repeat(7, 1fr)"}}>
-                    {this.createDaysOfWeek()}
+            <div style={wrapperStyle}>
+                <TopBar information={'Calendar'}/>
+                <MonthYearChooser/>
+                <div style={calendarGridStyle}>
+                    {this.createDaysOfWeekComponent()}
+                    {this.createDaysOfMonthComponent()}
                 </div>
-                <div style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(7, 1fr)",
-                    gridTemplateRows: "repeat(6, 1fr)",
-                    flexGrow: "1",
-                    position: "relative"
-                }}>
-                    {this.state.calendarDays.map((value, index) => <CalendarDay information={value}
-                                                                                showPop={this.showPop} key={index}/>)}
-                </div>
-            </div>
-        );
-    };
-
-    showPop = (indexOfPop) => {
-        this.setState({
-            calendarDays: this.createDaysArray(indexOfPop)
-        });
-    };
-
-    /**
-     * Creates the top section of the calendar to view what month and to change the month.
-     */
-    createMonthChoose = () => {
-        return (
-            <div style={{display: "flex", alignItems: "center", alignSelf: "center"}}>
-                <button onClick={() => this.changeMonth(-1)}>{"<"}</button>
-                <h1 style={{display: "inline", margin: "0"}}>{util.getMonthString(this.#firstDateOfMonth)}</h1>
-                <button onClick={() => this.changeMonth(1)}>{">"}</button>
             </div>
         )
-    };
+    }
 
     /**
-     * Change the month being displayed on the screen
-     * @param amount
+     * Creates an array of elements each containing the day of the week in the order from Sunday to Saturday.
+     * @returns {Array} Array containing all the names of the days of the week
      */
-    changeMonth = (amount) => {
-        let old = this.#firstDateOfMonth;
-        this.#firstDateOfMonth = new Date(old.getFullYear(), old.getMonth() + amount);
-        // This needs to wait for the previous state to be set first
-        this.setState({
-            calendarDays: this.createDaysArray()
-        })
-    };
-
-    /**
-     * Gets the day of the week
-     * @returns {Array} Elements to be added
-     */
-    createDaysOfWeek = () => {
+    createDaysOfWeekComponent = () => {
         const parts = [];
         for (let i = 0; i < 7; i++) {
             parts[i] = (
@@ -99,30 +72,38 @@ class Calendar extends Component {
     };
 
     /**
-     * Representation of the calendar in a 1D array.
-     * @param indexOfSelected Whether or not a PopEvent should be created for the given calendar index. If no value is given, then no day will have a PopEvent.
-     * @returns {Array} Array to represent the 6 weeks in a month in a 1D array
+     * Creates an list of all the days of the month. The first day is the first Sunday (this may be the last Sunday
+     * of the previous month. This creates the next six weeks from the first Sunday.
+     * @returns {Array} A 1D array representation of the calendar month
      */
-    createDaysArray = (indexOfSelected = -1) => {
-        const calendarDays = [];
-
-        for (let i = 0; i < 42; i++) {
-            // where the day is on the calendar
-            let position = {column: i % 7, row: parseInt(i / 7)};
-            // Add the amount of days difference from the first sunday of the month
-            let date = util.getFirstSunday(this.#firstDateOfMonth);
-            date.setDate(date.getDate() + i);
-
-            calendarDays.push(Calendar.createDayObject(date, position, i, i === indexOfSelected));
+    createDaysOfMonthComponent = () => {
+        // 1D representation of the calendar
+        const daysOfCalendar = [];
+        const firstSunday = util.getFirstSunday(this.state.firstDayOfMonth);
+        // 7 * 6 represents the 7 days of the week and the 6 represents the amount of weeks to be shown
+        for (let index = 0; index < 7 * 6; index++) {
+            let needsPop = index === this.state.indexOfDayWithPop;
+            // The pop can only render to the left if there is space
+            // The 2 represents Tuesday. The pop takes up two column spaces so it cannot fit if the date is Sunday or Monday
+            let renderPopToLeft = index % 7 < 2;
+            // Get the date to be shown on the current index
+            let datePart = new Date(firstSunday);
+            datePart.setDate(datePart.getDate() + index);
+            daysOfCalendar.push(
+                <CalendarDay date={datePart} renderPopToLeft={renderPopToLeft} needsPop={needsPop} key={index}
+                             index={index}
+                             showPop={this.showPop}/>
+            );
         }
-
-        return calendarDays;
+        return daysOfCalendar;
     };
 
-    static createDayObject(date, position, index, isSelected) {
-        return {date: date, position: position, index: index, isSelected: isSelected}
-    }
-
+    /**
+     * Shows the pop for the given day. Any negative number means that no calendar day should have a pop shown. Only
+     * one pop can be shown at once
+     * @param indexOfCalendarDay Index of the calendar day to have a pop.
+     */
+    showPop = (indexOfCalendarDay) => {
+        this.setState({indexOfDayWithPop: indexOfCalendarDay})
+    };
 }
-
-export default Calendar;
