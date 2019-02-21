@@ -1,5 +1,5 @@
 
-# Arch
+# Calendar
 
 ## Project status
 Not completed, currently working on it.
