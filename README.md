@@ -44,7 +44,7 @@ To run as as an executable (.dmg for mac):
 5. Run the .dmg file
 
 ## Tools used in this project
-* Git (obviously)
+* Git
 * WebStorm
 * React
 * Electron
