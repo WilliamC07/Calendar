@@ -91,8 +91,7 @@ export default class Calendar extends Component {
             datePart.setDate(datePart.getDate() + index);
             daysOfCalendar.push(
                 <CalendarDay date={datePart} renderPopToLeft={renderPopToLeft} needsPop={needsPop} key={index}
-                             index={index}
-                             showPop={this.showPop}/>
+                             index={index} showPop={this.showPop} eventsForDay={{}}/>
             );
         }
         return daysOfCalendar;

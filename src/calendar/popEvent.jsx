@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import {stringRepresentation} from './util.js';
+import Event from './event.js';
 
 class PopEvent extends Component {
     /**
@@ -21,29 +21,12 @@ class PopEvent extends Component {
     render() {
         return (
             <div style={this.getStyle()}>
-                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose} onClick={(e) => this.props.onPopEventClose(e)}/>
-                {this.titleComponent()}
+                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose} onClick={(e) => this.props.onClose(e)}/>
                 {this.eventChooserComponent()}
                 {this.eventBodyComponent()}
             </div>
         );
     }
-
-    titleComponent = () => {
-        const arrowStyle = {position: "absolute", top: "0", height: "100%"};
-        if(this.props.information.isLeftSide){
-            arrowStyle.right = "5";
-        }else{
-            arrowStyle.left = "5";
-        }
-
-        return(
-            <div style={{display: "flex", position: "relative", justifyContent: "center"}}>
-                <h3 style={{display: "inline", margin: "0"}}>{stringRepresentation(this.props.information.date)}</h3>
-                <FontAwesomeIcon style={arrowStyle} icon={this.props.information.isLeftSide ? faArrowRight : faArrowLeft}/>
-            </div>
-        );
-    };
 
     eventChooserComponent = () => {
         const parentStyle = {
@@ -105,7 +88,6 @@ class PopEvent extends Component {
     };
 
     getStyle = () => {
-        const information = this.props.information;
         const spaceAmount = "100%";
 
         // Start with some default stuff that is shared between all
@@ -120,7 +102,7 @@ class PopEvent extends Component {
         };
 
         // Note: Spacing to the left means it will be shifted to the right
-        if(information.isLeftSide){
+        if(this.props.renderOnLeft){
             style.right = spaceAmount;
         }else{
             style.left = spaceAmount;
@@ -151,7 +133,7 @@ class PopEvent extends Component {
     }
 
     saveEvent = () => {
-
+        this.props.saveContent(new Event());
     };
 }
 
