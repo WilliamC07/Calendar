@@ -1,4 +1,4 @@
-module.exports = class Event{
+class Event{
     /**
      * Creates an instance of this class.
      * @param position Position on the calendar
@@ -11,7 +11,8 @@ module.exports = class Event{
      * @param tags
      * @param color
      */
-    constructor(position, title, dateStart, dateEnd = undefined, timeStart = undefined, timeEnd = undefined, description = undefined, tags = undefined, color = undefined) {
+    constructor(position, title, dateStart, dateEnd, timeStart, timeEnd, description, tags, color) {
+
         this._position = position;
         this._title = title;
         this.processDate(dateStart);
@@ -111,3 +112,4 @@ module.exports = class Event{
         })
     }
 }
+export default Event;

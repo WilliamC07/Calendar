@@ -1,12 +1,46 @@
 import programData from '../data';
-import {betweenDates} from './util.js'
+const betweenDates = require('./util.js').betweenDates;
 
-const events = {};
+/*
+    Format of data
+    {
+        events: []; -- array of all the events
+        eventIDTotal: -- the next available eventID for the next event. We are not replacing
+    }
+ */
+const events = programData.getCalendarData('events.json') || {};
+
+/*
+    Format of data
+    {
+        2019: {
+                __date__: [1, 2, 3, 4]
+              }
+    }
+ */
+const yearDateMatch = {};
+
 // read the previous, current, and next year events
 const currentYear = new Date().getFullYear();
-events[currentYear-1] = readDataFromDisk(currentYear - 1);
-events[currentYear] = readDataFromDisk(currentYear);
-events[currentYear+1] = readDataFromDisk(currentYear + 1);
+yearDateMatch[currentYear-1] = readDataFromDisk(currentYear - 1);
+yearDateMatch[currentYear] = readDataFromDisk(currentYear);
+yearDateMatch[currentYear+1] = readDataFromDisk(currentYear + 1);
+
+function addEvent(event, dateToAddTo){
+    // Create the object attributes since the file containing events does not exist
+    if(events.eventIDTotal === undefined){
+        events.eventIDTotal = 0;
+        events.events = [];
+    }
+    event.eventID = events.eventIDTotal++;
+    events.events.push(event);
+
+
+    if(yearDateMatch[dateToAddTo.getFullYear()][dateToAddTo] === undefined){
+        yearDateMatch[dateToAddTo.getFullYear()][dateToAddTo] = [];
+    }
+    yearDateMatch[dateToAddTo].push(event.eventID);
+}
 
 /**
  * Get
@@ -31,16 +65,23 @@ export default {
     readEvents: (date) => {
         const year = date.getFullYear();
         const eventsForDate = [];
-        if(events[year] === undefined){
-            events[year] = readDataFromDisk(year);
-        }
+        const eventsID = yearDateMatch[year][date] || [];
 
-        events[year].filter((event) => betweenDates(date, event._dateStart, event._dateEnd)).forEach((event) => eventsForDate.push(event));
-        return eventsForDate;
+        if(eventsID.length === 0){
+            return [];
+        }else{
+            // gather all the event objects
+            for(let eventID of eventsID){
+                eventsForDate.push(events.events[eventID]);
+            }
+            return eventsForDate;
+        }
     },
 
-    addEvent: (event) => {
-        events[event._dateStart.getFullYear()].append(event);
+    addEvent: addEvent,
+
+    removeEvent: (eventID) => {
+        delete events.events[eventID]
     },
 
     saveAll: () => {

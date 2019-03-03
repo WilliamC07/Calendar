@@ -33,6 +33,10 @@ module.exports = {
     betweenDates: (dateBetween, dateStart, dateEnd) => {
         return dateStart.getTime() < dateBetween.getTime() < dateEnd.getTime();
     },
+    onlyDateAspect: (date) => {
+        // only want to compare the date, month, and year aspect of the Date object
+        date.setHours(0, 0,0, 0);
+    },
     daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     stringRepresentation: (date) => `${getMonthString(date)} ${date.getDate()}, ${date.getFullYear()}`
 };

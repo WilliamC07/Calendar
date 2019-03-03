@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import calendarData from './calendarEvent';
 import Event from './event.js';
 
 class PopEvent extends Component {
     /**
      * For when the user edits the event detail
      */
-    #title = "";
+    #title = "New Event";
     #time = {};
     #description = "";
 
@@ -103,9 +104,9 @@ class PopEvent extends Component {
 
         // Note: Spacing to the left means it will be shifted to the right
         if(this.props.renderOnLeft){
-            style.right = spaceAmount;
-        }else{
             style.left = spaceAmount;
+        }else{
+            style.right = spaceAmount;
         }
 
         return style;
@@ -133,7 +134,13 @@ class PopEvent extends Component {
     }
 
     saveEvent = () => {
-        this.props.saveContent(new Event());
+        // If this is a new event
+        if(this.state.currentEventIndex === this.props.details.length){
+            calendarData.addEvent(new Event(-1, this.#title, this.props.date, this.props.date));
+        }else{
+            // remove old event
+            calendarData.removeEvent(this.props.details[this.state.currentEventIndex].eventID)
+        }
     };
 }
 

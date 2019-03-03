@@ -12,7 +12,7 @@ class CalendarDay extends Component {
                 onDoubleClick={() => this.props.showPop(this.props.index)}
                 style={headerStyle}>
                 {this.props.needsPop ? <PopEvent renderOnLeft={this.props.renderPopToLeft} onClose={this.closePopEvent}
-                details={this.props.eventsForDay}/> : ""}
+                details={this.props.eventsForDay} date={this.props.date}/> : ""}
                 {this.getDateLabel()}
             </div>
         );

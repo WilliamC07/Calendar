@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
-import Calendar from './calendar/calendar.jsx';
+import Calendar from './calendar/calendarComponent.jsx';
 import './index.css';
 
 class App extends Component{

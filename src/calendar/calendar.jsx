@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import TopBar from '../components/topBar.jsx';
 import CalendarDay from "./calendarDay";
+import calendarData from './calendarEvent';
 
 const util = require('./util.js');
 
@@ -22,12 +23,13 @@ export default class Calendar extends Component {
         const date = new Date();
         // The date must be the first day of the month
         date.setDate(1);
-        console.log(date);
+        util.onlyDateAspect(date);
+
         this.state = {
             // The date being shown on the screen. The day of the month should be 1.
             firstDayOfMonth: date,
             // The index (imagine the calendar is a 1D array) of the calendar day that has the pop shown
-            indexOfDayWithPop: -1
+            indexOfDayWithPop: -1,
         };
     }
 
@@ -91,7 +93,7 @@ export default class Calendar extends Component {
             datePart.setDate(datePart.getDate() + index);
             daysOfCalendar.push(
                 <CalendarDay date={datePart} renderPopToLeft={renderPopToLeft} needsPop={needsPop} key={index}
-                             index={index} showPop={this.showPop} eventsForDay={{}}/>
+                             index={index} showPop={this.showPop} eventsForDay={calendarData.readEvents(datePart)}/>
             );
         }
         return daysOfCalendar;
@@ -105,4 +107,12 @@ export default class Calendar extends Component {
     showPop = (indexOfCalendarDay) => {
         this.setState({indexOfDayWithPop: indexOfCalendarDay})
     };
+
+    /**
+     * Since this component and the child components depend on external data (not props nor state), we need to call a
+     * force update when that changes.
+     */
+    updateEventDisplay = () => {
+        this.forceUpdate();
+    }
 }

@@ -5,7 +5,7 @@ const path = require('path');
 const fs = window.require('fs');
 
 function getProgramDirectory(){
-    const programDirectoryPath = path.join("/Users/williamcao/Library", "Application Support", "ArchJS");
+    const programDirectoryPath = path.join("/Users/williamcao/Library", "Application Support", "CalendarJS");
     createDirectoryIfMissing(programDirectoryPath);
     return programDirectoryPath;
 }
@@ -30,7 +30,7 @@ function createDirectoryIfMissing(directoryPath){
 function readFile(filePath, parser) {
     if (!fs.existsSync(filePath)) {
         // create the file if one doesn't exists
-        fs.writeFileSync(filePath, "[]");
+        fs.writeFileSync(filePath, "{}");
         return null;
     } else {
         console.log(fs.readFileSync(filePath, 'utf8'));
