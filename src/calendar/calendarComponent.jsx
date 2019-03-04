@@ -1,12 +1,31 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
+import {getFirstSunday} from './util';
 import {connect} from 'react-redux';
+import CalendarDay from './calendarDateComponent'
 
 class Calendar extends Component{
     render() {
+        const wrapperStyle = {
+            display: "flex",
+            flexDirection: "column",
+            height: 'auto'
+        };
+        const calendarGridStyle = {
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gridTemplateRows: "repeat(6, 1fr)",
+            flexGrow: "1",
+            position: "relative"
+        };
+
+        console.log(this.props.calendar.dateDisplaying);
+
         return(
-            <div>
-                {this.daysOfWeekComponents()}
+            <div style={wrapperStyle}>
+                <div style={calendarGridStyle}>
+                    {this.daysOfWeekComponents()}
+                    {this.daysOfMonthComponents()}
+                </div>
             </div>
         )
     }
@@ -17,6 +36,20 @@ class Calendar extends Component{
                 <h1 style={{textAlign: "center"}} key={index}>{name}</h1>
            )
         });
+    };
+
+    daysOfMonthComponents(){
+        const parts = [];
+        const baseDate = getFirstSunday(this.props.calendar.dateDisplaying);
+        for(let dateComponentIndex = 0; dateComponentIndex < 7 * 6; dateComponentIndex++){
+            const dateComponentDate = new Date(baseDate);
+            dateComponentDate.setDate(dateComponentDate.getDate() + dateComponentIndex);
+
+            parts.push(
+                <CalendarDay date={dateComponentDate} key={dateComponentIndex}/>
+            )
+        }
+        return parts;
     }
 }
 
@@ -27,4 +60,4 @@ function mapStateToProps(state){
     };
 }
 
-export default Calendar;
+export default connect(mapStateToProps)(Calendar);
