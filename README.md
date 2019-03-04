@@ -2,7 +2,7 @@
 # Calendar
 
 ## Project status
-<s>Not completed, currently working on it.<s>
+~~Not completed, currently working on it.~~
 On pause until I have more time. Going back to JavaFX and Java since I am most familiar with that.
 
 ## Description
