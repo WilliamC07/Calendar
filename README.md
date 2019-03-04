@@ -2,7 +2,8 @@
 # Calendar
 
 ## Project status
-Not completed, currently working on it.
+~~Not completed, currently working on it.~~
+On pause until I have more time. Going back to JavaFX and Java since I am most familiar with that.
 
 ## Description
 ### Why was this created:
