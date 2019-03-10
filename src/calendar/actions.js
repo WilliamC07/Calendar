@@ -1,11 +1,14 @@
-import actionTypes from './actionTypes';
+import ActionTypes from './actionTypes';
 
 export default {
-    addEvent: (date, event) => {
+    highlightIndex: (index) => {
         return {
-            type: actionTypes.addEvent,
-            event: event,
-            date: date
+            type: ActionTypes.HIGHLIGHT_INDEX,
+            index: index
         }
+    },
+
+    setDateDisplaying: (date) => {
+
     }
-}
+};

@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {equalDates, getMonthString} from './util';
+import PopComponent from './calendarPopComponent';
+import actions from './actions';
+
 
 class CalendarDay extends Component{
-    constructor(props){
-        super(props);
-
-    }
-
     render(){
+        const wrapperStyle = {height: "100px", position: "relative"};
+
         return (
-            <div>
+            <div style={wrapperStyle}
+                 onDoubleClick={() => this.props.highlightIndex(this.props.index)}>
                 {this.getLabelComponent()}
+                {this.props.calendar.dateHighlight === this.props.index ? this.getPopComponent() : ""}
             </div>
         )
     };
@@ -31,14 +33,24 @@ class CalendarDay extends Component{
         return (
             <h3 style={style}>{dateLabel}</h3>
         );
+    };
+
+    getPopComponent = () => {
+        return <PopComponent renderLeft={(this.props.index % 7) < 2}/>;
     }
 }
 
 // Container part of redux
 function mapStateToProps(state){
     return {
-        calendar: state.calendar
+        calendar: state.calendar,
     };
 }
 
-export default connect(mapStateToProps)(CalendarDay);
+function matchDispatchToProps(dispatch){
+    return {
+        highlightIndex: (index) => dispatch(actions.highlightIndex(index))
+    }
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(CalendarDay);

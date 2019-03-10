@@ -46,7 +46,7 @@ class Calendar extends Component{
             dateComponentDate.setDate(dateComponentDate.getDate() + dateComponentIndex);
 
             parts.push(
-                <CalendarDay date={dateComponentDate} key={dateComponentIndex}/>
+                <CalendarDay date={dateComponentDate} key={dateComponentIndex} index={dateComponentIndex}/>
             )
         }
         return parts;

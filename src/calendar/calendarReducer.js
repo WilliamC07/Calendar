@@ -23,7 +23,12 @@ const initialState = {
 };
 
 function reducer(oldState = initialState, action){
-    return oldState;
+    switch(action.type){
+        case actionType.highlightIndex:
+            return Object.assign({}, oldState, {dateHighlight: action.index});
+        default:
+            return oldState;
+    }
 }
 
 export default reducer;

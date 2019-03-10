@@ -1,3 +1,3 @@
 export default {
-    addEvent: "ADD_EVENT"
-}
+    HIGHLIGHT_INDEX: "HIGHLIGHT_INDEX"
+};
