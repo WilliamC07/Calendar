@@ -18,13 +18,12 @@ const initialState = {
     /**
      * Index of the calendar day current being modified.
      */
-    dateHighlight: undefined,
-
+    dateHighlight: -1,
 };
 
 function reducer(oldState = initialState, action){
     switch(action.type){
-        case actionType.highlightIndex:
+        case actionType.HIGHLIGHT_INDEX:
             return Object.assign({}, oldState, {dateHighlight: action.index});
         default:
             return oldState;

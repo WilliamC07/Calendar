@@ -18,8 +18,6 @@ class Calendar extends Component{
             position: "relative"
         };
 
-        console.log(this.props.calendar.dateDisplaying);
-
         return(
             <div style={wrapperStyle}>
                 <div style={calendarGridStyle}>
