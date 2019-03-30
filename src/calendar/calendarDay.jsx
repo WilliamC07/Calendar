@@ -1,43 +1,81 @@
 import React, {Component} from 'react';
 import PopEvent from './popEvent.jsx';
+import calendarEvents from './calendarEvent.js';
 
 const util = require("./util.js");
 
 class CalendarDay extends Component {
-    render() {
-        const headerStyle = {height: "100px", position: "relative"};
+    constructor(props){
+        super(props);
+        this.state = {
+            eventsForDate: calendarEvents.readEvents(this.props.information.date)
+        };
+    }
 
+    render() {
         return (
             <div
+<<<<<<< HEAD
                 onDoubleClick={() => this.props.showPop(this.props.index)}
                 style={headerStyle}>
                 {this.props.needsPop ? <PopEvent renderOnLeft={this.props.renderPopToLeft} onClose={this.closePopEvent}
                 details={this.props.eventsForDay} date={this.props.date}/> : ""}
                 {this.getDateLabel()}
+=======
+                onDoubleClick={() => this.props.showPop(this.props.information.index)}
+                style={{height: "100px", position: "relative"}}>
+                {this.props.information.isSelected ? this.createPopEvent() : ""}
+                <div style={{position: "absolute"}}>
+                    <h3 style={{margin: "0"}}>
+                        {this.getContext(this.props.information.date)}
+                    </h3>
+                </div>
+>>>>>>> parent of 6ae90de... can make a pop event
             </div>
         );
     };
 
-    getDateLabel = () => {
-        const style = {margin: "0"};
-        const date = this.props.date;
-        let dateLabel = date.getDate();
+    /**
+     * Get the first line of this class
+     * @param date Date that this instance represents
+     * @returns {string} Line to show the user
+     */
+    getContext = (date) => {
+        let text = date.getDate();
 
-        // Special markings
+        // If the day is today
         if (util.equalDates(date, new Date())) {
-            dateLabel += " - Today";
-        } else if (date.getDate() === 1) {
-            dateLabel += ` - ${util.getMonthString(date)}`;
+            text += " - Today";
         }
 
-        return (
-            <h3 style={style}>{dateLabel}</h3>
-        );
+        if (date.getDate() === 1) {
+            text += ` - ${util.getMonthString(date)}`;
+        }
+
+        return text;
     };
 
-    closePopEvent = (event) => {
+    /**
+     * TODO: clear all other pop events
+     */
+    createPopEvent = () => {
+        const information = {};
+        const position = this.props.information.position;
+
+        information.position = position;
+        // Column index 2 because the space of a PopEvent is around 2 CalendarDays
+        information.isLeftSide = position.column >= 2;
+        information.date = this.props.information.date;
+
+        // all the events on this day
+        information.events = [];
+
+        return <PopEvent information={information} onPopEventClose={this.closePopEvent}/>;
+    };
+
+    closePopEvent = (e) => {
         // Prevent the click from bubbling up to the parent and reopening the PopEvent
-        event.stopPropagation();
+        e.stopPropagation();
         // Index of -1 means no pop events are present
         this.props.showPop(-1);
     };

@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+<<<<<<< HEAD
 import calendarData from './calendarEvent';
 import Event from './event.js';
+=======
+import {stringRepresentation} from './util.js';
+>>>>>>> parent of 6ae90de... can make a pop event
 
 class PopEvent extends Component {
     /**
@@ -22,12 +26,29 @@ class PopEvent extends Component {
     render() {
         return (
             <div style={this.getStyle()}>
-                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose} onClick={(e) => this.props.onClose(e)}/>
+                <FontAwesomeIcon style={{marginLeft: "5px"}} icon={faWindowClose} onClick={(e) => this.props.onPopEventClose(e)}/>
+                {this.titleComponent()}
                 {this.eventChooserComponent()}
                 {this.eventBodyComponent()}
             </div>
         );
     }
+
+    titleComponent = () => {
+        const arrowStyle = {position: "absolute", top: "0", height: "100%"};
+        if(this.props.information.isLeftSide){
+            arrowStyle.right = "5";
+        }else{
+            arrowStyle.left = "5";
+        }
+
+        return(
+            <div style={{display: "flex", position: "relative", justifyContent: "center"}}>
+                <h3 style={{display: "inline", margin: "0"}}>{stringRepresentation(this.props.information.date)}</h3>
+                <FontAwesomeIcon style={arrowStyle} icon={this.props.information.isLeftSide ? faArrowRight : faArrowLeft}/>
+            </div>
+        );
+    };
 
     eventChooserComponent = () => {
         const parentStyle = {
@@ -89,6 +110,7 @@ class PopEvent extends Component {
     };
 
     getStyle = () => {
+        const information = this.props.information;
         const spaceAmount = "100%";
 
         // Start with some default stuff that is shared between all
@@ -103,7 +125,13 @@ class PopEvent extends Component {
         };
 
         // Note: Spacing to the left means it will be shifted to the right
+<<<<<<< HEAD
         if(this.props.renderOnLeft){
+=======
+        if(information.isLeftSide){
+            style.right = spaceAmount;
+        }else{
+>>>>>>> parent of 6ae90de... can make a pop event
             style.left = spaceAmount;
         }else{
             style.right = spaceAmount;
@@ -134,6 +162,7 @@ class PopEvent extends Component {
     }
 
     saveEvent = () => {
+<<<<<<< HEAD
         // If this is a new event
         if(this.state.currentEventIndex === this.props.details.length){
             calendarData.addEvent(new Event(-1, this.#title, this.props.date, this.props.date));
@@ -141,6 +170,9 @@ class PopEvent extends Component {
             // remove old event
             calendarData.removeEvent(this.props.details[this.state.currentEventIndex].eventID)
         }
+=======
+
+>>>>>>> parent of 6ae90de... can make a pop event
     };
 }
 
