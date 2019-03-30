@@ -38,6 +38,7 @@ module.exports = {
         date.setHours(0, 0,0, 0);
     },
     daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     stringRepresentation: (date) => `${getMonthString(date)} ${date.getDate()}, ${date.getFullYear()}`
 };
 
