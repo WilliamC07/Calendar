@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getFirstSunday} from "./util";
+import {getFirstSunday, getSunday} from "./util";
 import YearMonthChooserComponent from "./yearMonthChooserComponent";
 
 export default class CalendarComponent extends Component{
@@ -16,18 +16,20 @@ export default class CalendarComponent extends Component{
     render() {
         return(
             <div className="wrapper">
-                <YearMonthChooserComponent updateDisplayingDateMonth={this.updateDisplayingDateMonth} displayingDate={this.state.displayingDate}/>
+                {this.renderYearMonthChooserComponent()}
             </div>
         )
     }
 
-    /**
-     * Update the displaying date to be the one in the parameter
-     * @param date Date object with DayOfWeek equal to Sunday
-     */
-    updateDisplayingDate = (date) => {
-        this.setState({displayingDate: date});
-    };
+    renderYearMonthChooserComponent(){
+        return(
+            <YearMonthChooserComponent
+                updateDisplayingDateMonth={this.updateDisplayingDateMonth}
+                updateDisplayingDateYear={this.updateDisplayingDateYear}
+                updateDisplayingDateToToday={this.updateDisplayingDateToToday}
+                displayingDate={this.state.displayingDate}/>
+        )
+    }
 
     /**
      * Updates the calendar to show the given month.
@@ -39,6 +41,30 @@ export default class CalendarComponent extends Component{
         newDate.setDate(1);
         newDate.setMonth(monthNumber);
         newDate = getFirstSunday(newDate);
+        newDate.setDate(newDate.getDate() + 7);
+        this.setState({displayingDate: newDate});
+    };
+
+    /**
+     * Updates the calendar to show the given year with the same year
+     * @param year Year to show
+     */
+    updateDisplayingDateYear = (year) => {
+        // do mutate the state directly -- clone it
+        let newDate = new Date(year, this.state.displayingDate.getMonth(), this.state.displayingDate.getDate());
+        newDate = getSunday(newDate);
+        // bring back to date in case of going back to forward a week
+        if(newDate.getMonth() !== this.state.displayingDate.getMonth()){
+            newDate.setDate(newDate.getDate() + 7 * (this.state.displayingDate.getMonth() - newDate.getMonth()));
+        }
+        this.setState({displayingDate: newDate});
+    };
+
+    /**
+     * Updates the calendar to show the current date again (the day the user is living in)
+     */
+    updateDisplayingDateToToday = () => {
+        let newDate = getFirstSunday(new Date());
         newDate.setDate(newDate.getDate() + 7);
         this.setState({displayingDate: newDate});
     }

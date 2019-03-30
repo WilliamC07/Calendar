@@ -4,19 +4,23 @@ function getMonthString(date){
     return date.toLocaleString('en-us', {month: "long"});
 }
 
+function getSunday(date){
+    let clone = new Date(date);
+    // Get the Sunday of the week (Sunday is the number 0)
+    while(clone.getDay() !== 0){
+        clone.setDate(clone.getDate() - 1);
+    }
+    return clone;
+}
+
 module.exports = {
     getMonthString: (date) => getMonthString(date),
     getFirstSunday: (date) => {
         // Copy with first day of the year
         let clone = new Date(date.getFullYear(), date.getMonth(), 1);
-
-        // Get the Sunday of the week (Sunday is the number 0)
-        while(clone.getDay() !== 0){
-            clone.setDate(clone.getDate() - 1);
-        }
-
-        return clone;
+        return getSunday(clone);
     },
+    getSunday: getSunday,
     /**
      * Checks if the two dates are equal in terms of year, month, and date.
      * @param date1 First date to compare.

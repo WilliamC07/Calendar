@@ -15,21 +15,26 @@ export default class YearMonthChooserComponent extends Component{
             <div>
                 {this.state.isFocusedMonth ?
                     this.renderMonthChooser() :
-                    <Button type="button" className="btn btn-primary" onClick={() => this.setState({isFocusedMonth: true})}>Primary</Button>}
-
+                    <Button type="button" className="btn btn-primary" onClick={() => this.setState({isFocusedMonth: true})}>{months[this.props.displayingDate.getMonth()]}</Button>}
+                <Button type="button" className="btn btn-primary" onClick={() => this.updateDateDisplayingByYear(-1)}>&lt;</Button>
+                <Button type="button" className="btn btn-primary" onClick={this.props.updateDisplayingDateToToday}>{this.props.displayingDate.getFullYear()}</Button>
+                <Button type="button" className="btn btn-primary" onClick={() => this.updateDateDisplayingByYear(1)}>&gt;</Button>
             </div>
         );
     }
 
     renderMonthChooser = () => {
         return(
-            <ul className="pagination">
+            <span>
                 {months.map(((value, index) =>
-                        <li className="page-item" key={value}>
-                            <div className="page-link" onClick={() => this.updateDateDisplayingByMonth(index)}>{value}</div>
-                        </li>
+                    <Button type="button"
+                            className="btn btn-primary"
+                            onClick={() => this.updateDateDisplayingByMonth(index)}
+                            key={index}>
+                        {value.substr(0, 3)}
+                    </Button>
                 ))}
-            </ul>
+            </span>
         )
     };
 
@@ -38,5 +43,12 @@ export default class YearMonthChooserComponent extends Component{
         this.setState({isFocusedMonth: false});
         // update the calendar
         this.props.updateDisplayingDateMonth(monthNumber);
-    }
+    };
+
+    updateDateDisplayingByYear = (yearChange) => {
+        // go back to original view
+        this.setState({isFocusedMonth: false});
+        // update the calendar
+        this.props.updateDisplayingDateYear(this.props.displayingDate.getFullYear() + yearChange);
+    };
 }
