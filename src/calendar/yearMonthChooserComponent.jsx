@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Button from 'react-bootstrap/Button'
 import {months} from "./util.js";
+import PropTypes from 'prop-types';
 
 export default class YearMonthChooserComponent extends Component{
     constructor(props){
@@ -52,3 +53,10 @@ export default class YearMonthChooserComponent extends Component{
         this.props.updateDisplayingDateYear(this.props.displayingDate.getFullYear() + yearChange);
     };
 }
+
+YearMonthChooserComponent.propTypes = {
+    updateDisplayingDateMonth: PropTypes.func,
+    updateDisplayingDateYear: PropTypes.func,
+    updateDisplayingDateToToday: PropTypes.func,
+    displayingDate: PropTypes.instanceOf(Date),
+};

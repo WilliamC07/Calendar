@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {getFirstSunday, getSunday} from "./util";
 import YearMonthChooserComponent from "./yearMonthChooserComponent";
 import DateComponent from "./dateComponent";
+import EventViewerComponent from "./eventViewerComponent.jsx";
 import "./calendar.css";
 
 export default class CalendarComponent extends Component{
@@ -13,15 +14,22 @@ export default class CalendarComponent extends Component{
         let displayingDate = getFirstSunday(new Date());
         displayingDate.setDate(displayingDate.getDate() + 7);
         this.state.displayingDate = displayingDate;
+
+        // User selecting days
+        this.state.firstSelectedDate = undefined;
+        this.state.secondSelectedDate = undefined;
     }
 
     render() {
         return(
-            <div className="wrapper">
-                {this.renderYearMonthChooserComponent()}
-                <div className="grid">
-                    {this.renderDateComponents()}
+            <div id="whole-wrapper">
+                <div id="left-wrapper">
+                    {this.renderYearMonthChooserComponent()}
+                    <div id="calendar-grid">
+                        {this.renderDateComponents()}
+                    </div>
                 </div>
+                {this.state.firstSelectedDate !== undefined ? <EventViewerComponent id="right-wrapper"/> : ""}
             </div>
         )
     }
@@ -48,13 +56,15 @@ export default class CalendarComponent extends Component{
             parts.push(
                 <DateComponent key={i + "calendar"}
                                index={i}
-                               date={componentDate}/>
+                               date={componentDate}
+                               selectFirstDate={this.selectFirstDate}/>
             );
         }
 
         return parts;
-    }
+    };
 
+    /* Mutators for displayingDate state */
     /**
      * Updates the calendar to show the given month.
      * @param monthNumber Index 0, so March is 2
@@ -68,7 +78,6 @@ export default class CalendarComponent extends Component{
         newDate.setDate(newDate.getDate() + 7);
         this.setState({displayingDate: newDate});
     };
-
     /**
      * Updates the calendar to show the given year with the same year
      * @param year Year to show
@@ -83,7 +92,6 @@ export default class CalendarComponent extends Component{
         }
         this.setState({displayingDate: newDate});
     };
-
     /**
      * Updates the calendar to show the current date again (the day the user is living in)
      */
@@ -91,5 +99,14 @@ export default class CalendarComponent extends Component{
         let newDate = getFirstSunday(new Date());
         newDate.setDate(newDate.getDate() + 7);
         this.setState({displayingDate: newDate});
+    }
+
+    /* Mutators for selected dates */
+    /**
+     * Selects the first date. Also shows the component to manipulate events indirectly.
+     * @param date Date to be selected
+     */
+    selectFirstDate = (date) => {
+        this.setState({firstSelectedDate: date});
     }
 }
