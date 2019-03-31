@@ -30,7 +30,7 @@ export default class YearMonthChooserComponent extends Component{
                     <Button type="button"
                             className="btn btn-primary"
                             onClick={() => this.updateDateDisplayingByMonth(index)}
-                            key={index}>
+                            key={index + "_" + value}>
                         {value.substr(0, 3)}
                     </Button>
                 ))}

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {getFirstSunday, getSunday} from "./util";
 import YearMonthChooserComponent from "./yearMonthChooserComponent";
+import DateComponent from "./dateComponent";
+import "./calendar.css";
 
 export default class CalendarComponent extends Component{
     constructor(props){
@@ -17,6 +19,9 @@ export default class CalendarComponent extends Component{
         return(
             <div className="wrapper">
                 {this.renderYearMonthChooserComponent()}
+                <div className="grid">
+                    {this.renderDateComponents()}
+                </div>
             </div>
         )
     }
@@ -29,6 +34,25 @@ export default class CalendarComponent extends Component{
                 updateDisplayingDateToToday={this.updateDisplayingDateToToday}
                 displayingDate={this.state.displayingDate}/>
         )
+    }
+
+    renderDateComponents = () => {
+        const parts = new Array(7 * 6);
+        const firstSunday = new Date(this.state.displayingDate);
+        firstSunday.setDate(firstSunday.getDate() - 7);
+
+        for(let i = 0; i < 7 * 6; i++){
+            const componentDate = new Date(firstSunday);
+            componentDate.setDate(componentDate.getDate() + i);
+
+            parts.push(
+                <DateComponent key={i + "calendar"}
+                               index={i}
+                               date={componentDate}/>
+            );
+        }
+
+        return parts;
     }
 
     /**

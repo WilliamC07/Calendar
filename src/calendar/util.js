@@ -13,6 +13,14 @@ function getSunday(date){
     return clone;
 }
 
+function equalDates(date1, date2){
+    return (
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
+    );
+}
+
 module.exports = {
     getMonthString: (date) => getMonthString(date),
     getFirstSunday: (date) => {
@@ -27,12 +35,13 @@ module.exports = {
      * @param date2 Second date to compare.
      * @returns {boolean} True if two dates are equal, false otherwise
      */
-    equalDates: (date1, date2) => {
-        return (
-            date1.getFullYear() === date2.getFullYear() &&
-            date1.getMonth() === date2.getMonth() &&
-            date1.getDate() === date2.getDate()
-        );
+    equalDates: equalDates,
+    /**
+     * Checks if the date given is equal to the user's current date. Compares the year, month, and day of the month only.
+     * @param date Date to be checked
+     */
+    isCurrentDate: (date) => {
+        return equalDates(currentDate, date);
     },
     betweenDates: (dateBetween, dateStart, dateEnd) => {
         return dateStart.getTime() < dateBetween.getTime() < dateEnd.getTime();

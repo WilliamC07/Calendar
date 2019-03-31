@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {getFirstSunday} from './util';
-import {connect} from 'react-redux';
 import CalendarDay from './calendarDateComponent'
 
 class Calendar extends Component{
