@@ -5,16 +5,18 @@
 }
 
 #left-wrapper{
+    display: flex;
+    flex-direction: column;
     flex-grow: 2;
 }
 
 #right-wrapper{
-
+    width: 30%;
 }
 
 #calendar-grid{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    height: 100%;
+    flex-grow: 2;
 }

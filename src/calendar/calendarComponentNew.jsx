@@ -29,7 +29,9 @@ export default class CalendarComponent extends Component{
                         {this.renderDateComponents()}
                     </div>
                 </div>
-                {this.state.firstSelectedDate !== undefined ? <EventViewerComponent id="right-wrapper"/> : ""}
+                {this.state.firstSelectedDate !== undefined ?
+                    <EventViewerComponent close={this.closeSelectedDay}/> :
+                    ""}
             </div>
         )
     }
@@ -104,9 +106,15 @@ export default class CalendarComponent extends Component{
     /* Mutators for selected dates */
     /**
      * Selects the first date. Also shows the component to manipulate events indirectly.
-     * @param date Date to be selected
+     * @param date Date to be selected. Undefined for nothing to be shown
      */
     selectFirstDate = (date) => {
         this.setState({firstSelectedDate: date});
+    };
+    /**
+     * Closes the selected day.
+     */
+    closeSelectedDay = () => {
+        this.setState({firstSelectedDate: undefined});
     }
 }
