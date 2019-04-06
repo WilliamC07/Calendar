@@ -24,7 +24,8 @@ export default class DateComponent extends Component{
     }
 
     /**
-     * Creates a header for the heading text of this component.
+     * Creates a header for the heading text of this component. When the user highlights this field, they can choose
+     * to add an event.
      * Format of:
      * - If it is the user current day: __ - Today
      * - If it is the first day of the month: month/date
@@ -45,7 +46,9 @@ export default class DateComponent extends Component{
         }
 
         return(
-            <h5 className={this.state.styleClasses.join(" ")}>{label}</h5>
+            <div>
+                <h5 className={this.state.styleClasses.join(" ")}>{label}</h5>
+            </div>
         );
     };
 
