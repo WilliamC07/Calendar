@@ -1,12 +1,15 @@
 import React, {Component} from "react";
 import {isCurrentDate} from "./util.js";
+import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
+import "./dateComponent.css";
 
 export default class DateComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
             styleClasses: [],
+            showAddEventButton: false
         };
 
         // standard styling
@@ -17,7 +20,8 @@ export default class DateComponent extends Component{
 
     render() {
         return(
-            <div onClick={this.selectDay}>
+            <div onMouseEnter={() => this.setState({showAddEventButton: true})}
+                 onMouseLeave={() => this.setState({showAddEventButton: false})}>
                 {this.headingLabel()}
             </div>
         )
@@ -45,16 +49,22 @@ export default class DateComponent extends Component{
             label += " - Today";
         }
 
+        const addEventButton = (
+            <Button variant="primary"
+                    onClick={() => this.props.selectFirstDate(this.props.date)}
+                    size="sm"
+                    className="add-event-button">
+                +
+            </Button>
+        );
+
         return(
-            <div>
+            <div className="header-wrapper">
                 <h5 className={this.state.styleClasses.join(" ")}>{label}</h5>
+                {this.state.showAddEventButton && addEventButton}
             </div>
         );
     };
-
-    selectDay = () => {
-        this.props.selectFirstDate(this.props.date);
-    }
 }
 
 DateComponent.propTypes = {
