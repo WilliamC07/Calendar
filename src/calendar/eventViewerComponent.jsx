@@ -21,12 +21,13 @@ export default class EventViewerComponent extends Component{
     }
 
     topLevelParts = () => {
+        const headerDateOptions = {weekday: "long", month: "short", year: "numeric", day: "numeric"};
         return (
             <div id="top-level">
                 <CloseButton action={this.props.close}/>
-                <Button type="button" className="btn btn-primary">&lt;</Button>
-
-                <Button type="button" className="btn btn-primary">&gt;</Button>
+                <h5 className="top-header-label text-success">
+                    {this.props.firstSelectedDate.toLocaleString('en-us', headerDateOptions)}
+                </h5>
             </div>
         );
     }
@@ -34,4 +35,6 @@ export default class EventViewerComponent extends Component{
 
 EventViewerComponent.propTypes = {
     close: PropTypes.func,
+    firstSelectedDate: PropTypes.instanceOf(Date),
+    secondSelectedDate: PropTypes.instanceOf(Date),
 };

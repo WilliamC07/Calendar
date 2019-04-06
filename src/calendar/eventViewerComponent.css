@@ -1,4 +1,12 @@
 #top-level{
     display: flex;
     flex-direction: row;
+    align-items: baseline;
+}
+
+.top-header-label{
+    align-self: center;
+    margin: 0;
+    flex-grow: 2;
+    text-align: center;
 }

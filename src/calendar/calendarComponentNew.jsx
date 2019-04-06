@@ -30,7 +30,10 @@ export default class CalendarComponent extends Component{
                     </div>
                 </div>
                 {this.state.firstSelectedDate !== undefined ?
-                    <EventViewerComponent close={this.closeSelectedDay}/> :
+                    <EventViewerComponent
+                        close={this.closeSelectedDay}
+                        firstSelectedDate={this.state.firstSelectedDate}
+                        secondSelectedDate={this.state.secondSelectedDate}/> :
                     ""}
             </div>
         )
