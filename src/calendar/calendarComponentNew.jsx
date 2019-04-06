@@ -59,6 +59,8 @@ export default class CalendarComponent extends Component{
                 <DateComponent key={i + "calendar"}
                                index={i}
                                date={componentDate}
+                               firstSelectedDate={this.state.firstSelectedDate}
+                               secondSelectedDate={this.state.firstSelectedDate}
                                selectFirstDate={this.selectFirstDate}/>
             );
         }
@@ -101,7 +103,7 @@ export default class CalendarComponent extends Component{
         let newDate = getFirstSunday(new Date());
         newDate.setDate(newDate.getDate() + 7);
         this.setState({displayingDate: newDate});
-    }
+    };
 
     /* Mutators for selected dates */
     /**

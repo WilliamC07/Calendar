@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {isCurrentDate} from "./util.js";
+import {isCurrentDate, equalDates} from "./util.js";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import "./dateComponent.css";
@@ -8,14 +8,8 @@ export default class DateComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
-            styleClasses: [],
             showAddEventButton: false
         };
-
-        // standard styling
-        if(isCurrentDate(this.props.date)){
-            this.state.styleClasses.push("text-warning");
-        }
     }
 
     render() {
@@ -58,9 +52,16 @@ export default class DateComponent extends Component{
             </Button>
         );
 
+        let headerTextStyleClasses = "";
+        if(isCurrentDate(this.props.date)){
+            headerTextStyleClasses = "text-warning";
+        }else if(equalDates(this.props.firstSelectedDate, this.props.date)){
+            headerTextStyleClasses = "text-success";
+        }
+
         return(
             <div className="header-wrapper">
-                <h5 className={this.state.styleClasses.join(" ")}>{label}</h5>
+                <h5 className={headerTextStyleClasses}>{label}</h5>
                 {this.state.showAddEventButton && addEventButton}
             </div>
         );
@@ -70,5 +71,7 @@ export default class DateComponent extends Component{
 DateComponent.propTypes = {
     index: PropTypes.number,
     date: PropTypes.instanceOf(Date),
+    firstSelectedDate: PropTypes.instanceOf(Date),
+    secondSelectedDate: PropTypes.instanceOf(Date),
     selectFirstDate: PropTypes.func,
 };
