@@ -64,7 +64,8 @@ export default class CalendarComponent extends Component{
                                date={componentDate}
                                firstSelectedDate={this.state.firstSelectedDate}
                                secondSelectedDate={this.state.firstSelectedDate}
-                               selectFirstDate={this.selectFirstDate}/>
+                               selectFirstDate={this.selectFirstDate}
+                               selectSecondDate={this.selectSecondDate}/>
             );
         }
 
@@ -115,6 +116,9 @@ export default class CalendarComponent extends Component{
      */
     selectFirstDate = (date) => {
         this.setState({firstSelectedDate: date});
+    };
+    selectSecondDate = (date) => {
+        this.setState({secondSelectedDate: date})
     };
     /**
      * Closes the selected day.

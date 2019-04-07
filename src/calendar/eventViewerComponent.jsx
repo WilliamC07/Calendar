@@ -18,7 +18,10 @@ export default class EventViewerComponent extends Component{
         return(
             <div id="right-wrapper" onKeyDown={this.test} >
                 {this.topLevelParts()}
-                {this.userInputTitle()}
+                <div id="user-input-container">
+                    {this.userInputTitle()}
+                    {this.userInputDates()}
+                </div>
             </div>
         );
     }
@@ -33,22 +36,32 @@ export default class EventViewerComponent extends Component{
                 </h5>
             </div>
         );
-    }
+    };
     userInputTitle = () => {
         const updateTitle = (event) => this.setState({title: event.target.value});
-        return(
-            <div className="input-container">
-                <h5 className="input-label">Title:</h5>
-                <input type="text" onChange={updateTitle} value={this.state.title}/>
-            </div>
-        )
+        return [
+            <h5 className="input-label">Title:</h5>,
+            <input type="text" onChange={updateTitle} value={this.state.title} id="title-input"/>,
+        ];
     };
+    /**
+     * The first date is selected by clicking on the plus sign next when the user hovers over the date. The second date
+     * is done by regular clicking on the calendar.
+     * @returns {*}
+     */
     userInputDates = () => {
-        return(
-            <div>
+        let date = new Date();
+        const formatDate = (date) => `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+        const firstSelectedDate = this.props.firstSelectedDate;
+        const secondSelectedDate = this.props.secondSelectedDate;
 
-            </div>
-        )
+        return[
+            <h5 className="input-label">Date</h5>,
+            <h5 className="input-label"> start:</h5>,
+            <h5 className="input-label">{formatDate(this.props.firstSelectedDate)}</h5>,
+            <h5 className="input-label" id="date-end-label">end:</h5>,
+            <h5 className="input-label" id="second-selected-date-label">{formatDate(secondSelectedDate === undefined ? firstSelectedDate : secondSelectedDate)}</h5>,
+        ]
     }
 }
 

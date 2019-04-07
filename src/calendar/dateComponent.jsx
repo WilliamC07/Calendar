@@ -15,7 +15,8 @@ export default class DateComponent extends Component{
     render() {
         return(
             <div onMouseEnter={() => this.setState({showAddEventButton: true})}
-                 onMouseLeave={() => this.setState({showAddEventButton: false})}>
+                 onMouseLeave={() => this.setState({showAddEventButton: false})}
+                 onClick={() => this.props.selectSecondDate(this.props.date)}>
                 {this.headingLabel()}
             </div>
         )
@@ -75,4 +76,5 @@ DateComponent.propTypes = {
     firstSelectedDate: PropTypes.instanceOf(Date),
     secondSelectedDate: PropTypes.instanceOf(Date),
     selectFirstDate: PropTypes.func,
+    selectSecondDate: PropTypes.func,
 };
