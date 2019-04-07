@@ -53,11 +53,12 @@ export default class DateComponent extends Component{
         );
 
         let headerTextStyleClasses = "";
-        if(isCurrentDate(this.props.date)){
-            headerTextStyleClasses = "text-warning";
-        }else if(equalDates(this.props.firstSelectedDate, this.props.date)){
+        if(equalDates(this.props.firstSelectedDate, this.props.date)){
             headerTextStyleClasses = "text-success";
+        }else if(isCurrentDate(this.props.date)){
+            headerTextStyleClasses = "text-warning";
         }
+
 
         return(
             <div className="header-wrapper">
