@@ -2,20 +2,23 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import CloseButton from '../components/closeButton.jsx';
+import Event, {isValidTitle} from "./event";
 
 import "./eventViewerComponent.css";
 
 export default class EventViewerComponent extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            title: ""
+        }
     }
 
     render() {
         return(
             <div id="right-wrapper" onKeyDown={this.test} >
-                <div>
-                    {this.topLevelParts()}
-                </div>
+                {this.topLevelParts()}
+                {this.userInputTitle()}
             </div>
         );
     }
@@ -30,6 +33,22 @@ export default class EventViewerComponent extends Component{
                 </h5>
             </div>
         );
+    }
+    userInputTitle = () => {
+        const updateTitle = (event) => this.setState({title: event.target.value});
+        return(
+            <div className="input-container">
+                <h5 className="input-label">Title:</h5>
+                <input type="text" onChange={updateTitle} value={this.state.title}/>
+            </div>
+        )
+    };
+    userInputDates = () => {
+        return(
+            <div>
+
+            </div>
+        )
     }
 }
 

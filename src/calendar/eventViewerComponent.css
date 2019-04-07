@@ -10,3 +10,12 @@
     flex-grow: 2;
     text-align: center;
 }
+
+.input-container{
+    margin: 1em;
+}
+
+.input-label{
+    display: inline;
+    margin-right: 1em;
+}
