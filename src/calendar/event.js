@@ -8,10 +8,7 @@ export default class Event{
         this._timeStart = timeStart;
         this._timeEnd = timeEnd;
         this._description = description;
-    }
-
-    length = () => {
-        return daysUntil(this._dateStart, this._dateEnd)
+        this._length = daysUntil(this._dateStart, this._dateEnd);
     }
 };
 
