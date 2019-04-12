@@ -64,7 +64,18 @@ export default class EventViewerComponent extends Component{
             <h5 className="input-label" id="second-selected-date-label" key={"date-end-input"}>{formatDate(secondSelectedDate === undefined ? firstSelectedDate : secondSelectedDate)}</h5>,
         ]
     };
+    userCreateEvent = () => {
+        const createEvent = () => {
+            console.log(new Event(this.state.title, this.props.firstSelectedDate, this.props.secondSelectedDate));
+        };
 
+        return(
+            <div className="create-event-container">
+                <Button className="btn btn-primary"
+                        onClick={createEvent}>Create Event</Button>
+            </div>
+        )
+    }
 }
 
 EventViewerComponent.propTypes = {
