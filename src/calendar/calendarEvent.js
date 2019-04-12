@@ -17,6 +17,16 @@ let availableID = 0;
  */
 const dateEventIDs = {};
 
+/* Helper functions for accessing events */
+function getEventByID(id){
+    // TODO: optimize to binary search. It is currently O(N)
+    for(let event of events){
+        if(event.eventID === id){
+            return event;
+        }
+    }
+}
+
 /* Functions to use */
 /**
  * Add the event.
@@ -37,6 +47,15 @@ function addEvent(event){
     }
 
     events.push(event);
+}
+
+function getEvents(date){
+    // Return empty array if there are no events for the day
+    if(dateEventIDs[date] === undefined){
+        return [];
+    }else{
+        return dateEventIDs[date].map(id => getEventByID(id));
+    }
 }
 
 export {}
