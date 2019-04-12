@@ -1,3 +1,5 @@
+import {daysUntil} from "./util";
+
 export default class Event{
     constructor(title, dateStart, dateEnd, timeStart, timeEnd, description) {
         this._title = title;
@@ -6,6 +8,10 @@ export default class Event{
         this._timeStart = timeStart;
         this._timeEnd = timeEnd;
         this._description = description;
+    }
+
+    length = () => {
+        return daysUntil(this._dateStart, this._dateEnd)
     }
 };
 

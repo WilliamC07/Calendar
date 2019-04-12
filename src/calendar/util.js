@@ -23,6 +23,13 @@ function equalDates(date1, date2){
     );
 }
 
+function getDateMonthYearAspect(date){
+    // only want to compare the date, month, and year aspect of the Date object
+    let copy = new Date(date);
+    copy.setHours(0, 0,0, 0);
+    return copy;
+};
+
 module.exports = {
     getMonthString: (date) => getMonthString(date),
     getFirstSunday: (date) => {
@@ -48,11 +55,19 @@ module.exports = {
     betweenDates: (dateBetween, dateStart, dateEnd) => {
         return dateStart.getTime() < dateBetween.getTime() < dateEnd.getTime();
     },
-    getDateMonthYearAspect: (date) => {
-        // only want to compare the date, month, and year aspect of the Date object
-        let copy = new Date(date);
-        copy.setHours(0, 0,0, 0);
-        return copy;
+    getDateMonthYearAspect: getDateMonthYearAspect,
+    daysUntil: (start, end) => {
+        let copyStart = getDateMonthYearAspect(new Date(start));
+        let copyEnd = getDateMonthYearAspect(new Date(end));
+        if(copyStart.getTime() > copyEnd){
+            throw new Error("start cannot be after the end");
+        }
+        let length = 0;
+        while(!equalDates(copyStart, copyEnd)){
+            length++;
+            copyStart.setDate(copyStart.getDate() + 1);
+        }
+        return length;
     },
     daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
