@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getFirstSunday, getSunday} from "./util";
+import {getFirstSunday, getSunday, getDateMonthYearAspect} from "./util";
 import YearMonthChooserComponent from "./yearMonthChooserComponent";
 import DateComponent from "./dateComponent";
 import EventViewerComponent from "./eventViewerComponent.jsx";
@@ -84,7 +84,7 @@ export default class CalendarComponent extends Component{
         newDate.setMonth(monthNumber);
         newDate = getFirstSunday(newDate);
         newDate.setDate(newDate.getDate() + 7);
-        this.setState({displayingDate: newDate});
+        this.setState({displayingDate: getDateMonthYearAspect(newDate)});
     };
     /**
      * Updates the calendar to show the given year with the same year
@@ -98,7 +98,7 @@ export default class CalendarComponent extends Component{
         if(newDate.getMonth() !== this.state.displayingDate.getMonth()){
             newDate.setDate(newDate.getDate() + 7 * (this.state.displayingDate.getMonth() - newDate.getMonth()));
         }
-        this.setState({displayingDate: newDate});
+        this.setState({displayingDate: getDateMonthYearAspect(newDate)});
     };
     /**
      * Updates the calendar to show the current date again (the day the user is living in)
@@ -106,7 +106,7 @@ export default class CalendarComponent extends Component{
     updateDisplayingDateToToday = () => {
         let newDate = getFirstSunday(new Date());
         newDate.setDate(newDate.getDate() + 7);
-        this.setState({displayingDate: newDate});
+        this.setState({displayingDate: getDateMonthYearAspect(newDate)});
     };
 
     /* Mutators for selected dates */
@@ -115,10 +115,10 @@ export default class CalendarComponent extends Component{
      * @param date Date to be selected. Undefined for nothing to be shown
      */
     selectFirstDate = (date) => {
-        this.setState({firstSelectedDate: date});
+        this.setState({firstSelectedDate: getDateMonthYearAspect(date)});
     };
     selectSecondDate = (date) => {
-        this.setState({secondSelectedDate: date})
+        this.setState({secondSelectedDate: getDateMonthYearAspect(date)})
     };
     /**
      * Closes the selected day.
