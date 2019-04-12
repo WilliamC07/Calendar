@@ -48,9 +48,11 @@ module.exports = {
     betweenDates: (dateBetween, dateStart, dateEnd) => {
         return dateStart.getTime() < dateBetween.getTime() < dateEnd.getTime();
     },
-    onlyDateAspect: (date) => {
+    getDateMonthYearAspect: (date) => {
         // only want to compare the date, month, and year aspect of the Date object
-        date.setHours(0, 0,0, 0);
+        let copy = new Date(date);
+        copy.setHours(0, 0,0, 0);
+        return copy;
     },
     daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
