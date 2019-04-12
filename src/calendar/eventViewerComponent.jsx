@@ -22,6 +22,7 @@ export default class EventViewerComponent extends Component{
                     {this.userInputTitle()}
                     {this.userInputDates()}
                 </div>
+                {this.userCreateEvent()}
             </div>
         );
     }
@@ -40,8 +41,8 @@ export default class EventViewerComponent extends Component{
     userInputTitle = () => {
         const updateTitle = (event) => this.setState({title: event.target.value});
         return [
-            <h5 className="input-label">Title:</h5>,
-            <input type="text" onChange={updateTitle} value={this.state.title} id="title-input"/>,
+            <h5 className="input-label" key={"title"}>Title:</h5>,
+            <input type="text" onChange={updateTitle} value={this.state.title} id="title-input" key={"title-input"}/>,
         ];
     };
     /**
@@ -56,13 +57,14 @@ export default class EventViewerComponent extends Component{
         const secondSelectedDate = this.props.secondSelectedDate;
 
         return[
-            <h5 className="input-label">Date</h5>,
-            <h5 className="input-label"> start:</h5>,
-            <h5 className="input-label">{formatDate(this.props.firstSelectedDate)}</h5>,
-            <h5 className="input-label" id="date-end-label">end:</h5>,
-            <h5 className="input-label" id="second-selected-date-label">{formatDate(secondSelectedDate === undefined ? firstSelectedDate : secondSelectedDate)}</h5>,
+            <h5 className="input-label" key={"date"}>Date</h5>,
+            <h5 className="input-label" key={"date-start"}> start:</h5>,
+            <h5 className="input-label" key={"date-start-input"}>{formatDate(this.props.firstSelectedDate)}</h5>,
+            <h5 className="input-label" id="date-end-label" key={"date-end"}>end:</h5>,
+            <h5 className="input-label" id="second-selected-date-label" key={"date-end-input"}>{formatDate(secondSelectedDate === undefined ? firstSelectedDate : secondSelectedDate)}</h5>,
         ]
-    }
+    };
+
 }
 
 EventViewerComponent.propTypes = {
