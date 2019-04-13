@@ -76,48 +76,68 @@ export default class DateComponent extends Component{
     };
 
     addEventComponents = () => {
-        const events = getEvents(this.props.date);  // already sorted from longest to shortest event
-        const order = [];  // list of event
         const date = this.props.date;
+        const allEvents = getEvents(this.props.date);  // already sorted from longest to shortest event
+        const longEvents = allEvents.filter(event => event._length > 1);
+        const shortEvents = allEvents.filter(event => event._length === 1);
+        const order = [];  // list of event to be added in that specific order.
 
-        for(let i = 0; i < events.length; i++){
-            if(i >= 2 && events.length > 3){
-                order.push(<h5 className="event-display-title-text">{`${events.length-i} more`}</h5>);
-                break;
-            }
-
-            const event = events[i];
-            // sunday or first day of the event means we set the own position
-            if(date.getDay() === 0 || equalDates(date, event._dateStart)){
-                event.position = i;  // the index the event will go
-                order[i] = event;
-            }else{
-                // have the follow the old position
-                order[event.position] = event;
-                console.log(`ordered at ${date} to ${event.position}`);
-                console.log(order);
-            }
+        // clear positioning for sundays or if it is the start of the event
+        if(date.getDay() === 0){
+            allEvents.forEach(event => event.position = -1);
         }
+        allEvents.filter(event => equalDates(event._dateStart, date)).forEach(event => event.position = -1);
 
-        // populate the empty spots (undefined). Starting at index 3 because the last three elements have already been
-        // added if they exit
+        // add long events with positions first
+        longEvents.filter(event => event.position !== -1)
+            .forEach((event) =>
+                order[event.position] = event
+            );
+
+        // add the other long events
         let orderIndex = 0;
-        for(let i = 3; i < events.length; i++, orderIndex++){
-            if(order[orderIndex] === undefined){
-                order[i] = events[i];
+        longEvents.filter(event => event.position === -1)
+            .forEach(event => {
+                // find an empty position
+                while(order[orderIndex] !== undefined){
+                    orderIndex++;
+                }
+                order[orderIndex] = event;
+                // do not save position for sunday
+                if(date.getDay() !== 6){
+                    event.position = orderIndex;
+                }
+                // clear positioning for when user deletes event and needs to create the view
+                if(equalDates(event._dateEnd, date)){
+                    event.position = -1;
+                }
+            });
+
+        // add the short events
+        orderIndex = 0;
+        shortEvents.forEach(event => {
+            while(order[orderIndex] !== undefined){
+                orderIndex++;
             }
-        }
+            order[orderIndex] = event;
+            event.position = orderIndex;
+        });
 
         // map the event to components
         const convertedComponents = [];
-        for(let i = 0; i < order.length; i++){
-            const event = order[i];
-            if(event === undefined){
-                convertedComponents.push(<h5 className="event-display-title-text" key={"empty"+i}></h5>);
+        orderIndex = 0;
+        for(; orderIndex < order.length; orderIndex++){
+            if(orderIndex >= 2 && order.length > 3){
+                convertedComponents.push(<h5 className="event-display-title-text">{`${order.length-orderIndex} more`}</h5>);
+                break;
+            }else if(order[orderIndex] === undefined){
+                convertedComponents.push(<h5 className="event-display-title-text" key={"filler"+orderIndex}>fill</h5>);
             }else{
-                convertedComponents.push(<EventDisplayComponent event={event} key={event._title+i}/>);
+                let event = order[orderIndex];
+                convertedComponents.push(<EventDisplayComponent event={event} key={event._title+orderIndex}/>);
             }
         }
+
         return convertedComponents;
     }
 }
