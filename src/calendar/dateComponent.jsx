@@ -5,6 +5,7 @@ import EventDisplayComponent from './eventDisplayComponent';
 import {getEvents} from './calendarEvent';
 import PropTypes from "prop-types";
 import "./dateComponent.css";
+import "./eventDisplayComponent.css";
 
 export default class DateComponent extends Component{
     constructor(props){
@@ -76,7 +77,7 @@ export default class DateComponent extends Component{
         const events = getEvents(this.props.date);
         return events.map((event, index) => {
             if(index === 2 && events.length > 3){
-                return <h5>{`${events.length-index} more`}</h5>
+                return <h5 className="event-display-title-text">{`${events.length-index} more`}</h5>
             }else if(index <= 2 || events.length === 3){
                 return <EventDisplayComponent event={event} key={event._title+index}/>
             }else{
