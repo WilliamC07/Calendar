@@ -74,7 +74,16 @@ export default class DateComponent extends Component{
 
     addEventComponents = () => {
         const events = getEvents(this.props.date);
-        return events.map((event, index) => <EventDisplayComponent event={event} key={event._title+index}/>)
+        return events.map((event, index) => {
+            if(index === 2 && events.length > 3){
+                return <h5>{`${events.length-index} more`}</h5>
+            }else if(index <= 2 || events.length === 3){
+                return <EventDisplayComponent event={event} key={event._title+index}/>
+            }else{
+                // do not make any more children
+                return "";
+            }
+        })
     }
 }
 
