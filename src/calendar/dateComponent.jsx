@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {isCurrentDate, equalDates} from "./util.js";
 import Button from "react-bootstrap/Button";
+import EventDisplayComponent from './eventDisplayComponent';
+import {getEvents} from './calendarEvent';
 import PropTypes from "prop-types";
 import "./dateComponent.css";
 
@@ -18,6 +20,7 @@ export default class DateComponent extends Component{
                  onMouseLeave={() => this.setState({showAddEventButton: false})}
                  onClick={() => this.props.selectSecondDate(this.props.date)}>
                 {this.headingLabel()}
+                {this.addEventComponents()}
             </div>
         )
     }
@@ -68,6 +71,11 @@ export default class DateComponent extends Component{
             </div>
         );
     };
+
+    addEventComponents = () => {
+        const events = getEvents(this.props.date);
+        return events.map((event, index) => <EventDisplayComponent event={event} key={event._title+index}/>)
+    }
 }
 
 DateComponent.propTypes = {

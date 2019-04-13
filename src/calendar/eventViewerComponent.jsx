@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import CloseButton from '../components/closeButton.jsx';
 import Event, {isValidTitle} from "./event";
+import {addEvent} from './calendarEvent';
 
 import "./eventViewerComponent.css";
 
@@ -66,7 +67,9 @@ export default class EventViewerComponent extends Component{
     };
     userCreateEvent = () => {
         const createEvent = () => {
-            console.log(new Event(this.state.title, this.props.firstSelectedDate, this.props.secondSelectedDate));
+            addEvent(new Event(this.state.title, this.props.firstSelectedDate, this.props.secondSelectedDate));
+            // rerender everything
+            this.props.renderCalendar();
         };
 
         return(
@@ -82,4 +85,5 @@ EventViewerComponent.propTypes = {
     close: PropTypes.func,
     firstSelectedDate: PropTypes.instanceOf(Date),
     secondSelectedDate: PropTypes.instanceOf(Date),
+    renderCalendar: PropTypes.func
 };

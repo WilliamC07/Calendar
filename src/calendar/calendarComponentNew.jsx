@@ -33,7 +33,8 @@ export default class CalendarComponent extends Component{
                     <EventViewerComponent
                         close={this.closeSelectedDay}
                         firstSelectedDate={this.state.firstSelectedDate}
-                        secondSelectedDate={this.state.secondSelectedDate}/> :
+                        secondSelectedDate={this.state.secondSelectedDate}
+                        renderCalendar={() => this.forceUpdate(() => "")}/> :
                     ""}
             </div>
         )
