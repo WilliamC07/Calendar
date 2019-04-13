@@ -67,7 +67,7 @@ module.exports = {
             length++;
             copyStart.setDate(copyStart.getDate() + 1);
         }
-        return length;
+        return length + 1; // inclusive of end date
     },
     daysOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
