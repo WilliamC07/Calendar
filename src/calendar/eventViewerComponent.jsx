@@ -68,6 +68,8 @@ export default class EventViewerComponent extends Component{
     userCreateEvent = () => {
         const createEvent = () => {
             addEvent(new Event(this.state.title, this.props.firstSelectedDate, this.props.secondSelectedDate));
+            // clear inputs
+            this.setState({title: ""});
             // rerender everything
             this.props.renderCalendar();
         };
