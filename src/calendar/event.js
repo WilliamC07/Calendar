@@ -9,6 +9,8 @@ export default class Event{
         this._timeEnd = timeEnd;
         this._description = description;
         this._length = daysUntil(this._dateStart, this._dateEnd);
+        // used for setting position on the calendar grid
+        this.position = -1;
     }
 };
 
