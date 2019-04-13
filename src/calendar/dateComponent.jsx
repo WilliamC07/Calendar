@@ -19,7 +19,10 @@ export default class DateComponent extends Component{
         return(
             <div onMouseEnter={() => this.setState({showAddEventButton: true})}
                  onMouseLeave={() => this.setState({showAddEventButton: false})}
-                 onClick={() => this.props.selectSecondDate(this.props.date)}>
+                 onClick={() => {
+                     this.props.selectSecondDate(this.props.date);
+                     console.log(getEvents(this.props.date));
+                 }}>
                 {this.headingLabel()}
                 {this.addEventComponents()}
             </div>
@@ -64,7 +67,6 @@ export default class DateComponent extends Component{
             headerTextStyleClasses = "text-warning";
         }
 
-
         return(
             <div className="header-wrapper">
                 <h5 className={headerTextStyleClasses}>{label}</h5>
@@ -74,17 +76,49 @@ export default class DateComponent extends Component{
     };
 
     addEventComponents = () => {
-        const events = getEvents(this.props.date);
-        return events.map((event, index) => {
-            if(index === 2 && events.length > 3){
-                return <h5 className="event-display-title-text">{`${events.length-index} more`}</h5>
-            }else if(index <= 2 || events.length === 3){
-                return <EventDisplayComponent event={event} key={event._title+index}/>
-            }else{
-                // do not make any more children
-                return "";
+        const events = getEvents(this.props.date);  // already sorted from longest to shortest event
+        const order = [];  // list of event
+        const date = this.props.date;
+
+        for(let i = 0; i < events.length; i++){
+            if(i >= 2 && events.length > 3){
+                order.push(<h5 className="event-display-title-text">{`${events.length-i} more`}</h5>);
+                break;
             }
-        })
+
+            const event = events[i];
+            // sunday or first day of the event means we set the own position
+            if(date.getDay() === 0 || equalDates(date, event._dateStart)){
+                event.position = i;  // the index the event will go
+                order[i] = event;
+            }else{
+                // have the follow the old position
+                order[event.position] = event;
+                console.log(`ordered at ${date} to ${event.position}`);
+                console.log(order);
+            }
+        }
+
+        // populate the empty spots (undefined). Starting at index 3 because the last three elements have already been
+        // added if they exit
+        let orderIndex = 0;
+        for(let i = 3; i < events.length; i++, orderIndex++){
+            if(order[orderIndex] === undefined){
+                order[i] = events[i];
+            }
+        }
+
+        // map the event to components
+        const convertedComponents = [];
+        for(let i = 0; i < order.length; i++){
+            const event = order[i];
+            if(event === undefined){
+                convertedComponents.push(<h5 className="event-display-title-text" key={"empty"+i}></h5>);
+            }else{
+                convertedComponents.push(<EventDisplayComponent event={event} key={event._title+i}/>);
+            }
+        }
+        return convertedComponents;
     }
 }
 

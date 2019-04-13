@@ -37,7 +37,9 @@ function addEvent(event){
 
     // Add the dateEventIDs pair
     let startDate = new Date(event._dateStart);
-    while(equalDates(startDate, event._dateEnd)){
+    let endDate = new Date(event._dateEnd);
+    endDate.setDate(endDate.getDate() + 1);  // have to add one since we want endDate to be included
+    while(!equalDates(startDate, endDate)){
         if(dateEventIDs[startDate] === undefined){
             dateEventIDs[startDate] = [event.eventID];
         }else{
@@ -45,6 +47,9 @@ function addEvent(event){
         }
         startDate.setDate(startDate.getDate() + 1);
     }
+
+    console.log(dateEventIDs);
+    console.log(events);
 
     events.push(event);
 }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button';
 import CloseButton from '../components/closeButton.jsx';
 import Event, {isValidTitle} from "./event";
-import {addEvent} from './calendarEvent';
+import {addEvent, getEvents} from './calendarEvent';
 
 import "./eventViewerComponent.css";
 
