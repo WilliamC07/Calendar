@@ -5,6 +5,11 @@ export default class Event{
         this._title = title;
         this._dateStart = dateStart;
         this._dateEnd = dateEnd;
+        // swap if start is after the end
+        if(dateStart.getTime() > dateEnd.getTime()){
+            [this._dateStart, this._dateEnd] = [this._dateEnd, this._dateStart];
+        }
+
         this._timeStart = timeStart;
         this._timeEnd = timeEnd;
         this._description = description;
