@@ -19,10 +19,7 @@ export default class DateComponent extends Component{
         return(
             <div onMouseEnter={() => this.setState({showAddEventButton: true})}
                  onMouseLeave={() => this.setState({showAddEventButton: false})}
-                 onClick={() => {
-                     this.props.selectSecondDate(this.props.date);
-                     console.log(getEvents(this.props.date));
-                 }}>
+                 onClick={() => this.props.selectSecondDate(this.props.date)}>
                 {this.headingLabel()}
                 {this.addEventComponents()}
             </div>
@@ -75,6 +72,10 @@ export default class DateComponent extends Component{
         );
     };
 
+    /**
+     * Renders the event view (the boxes with the event name and color) on the screen.
+     * @returns {Array}
+     */
     addEventComponents = () => {
         const date = this.props.date;
         const allEvents = getEvents(this.props.date);  // already sorted from longest to shortest event
@@ -128,13 +129,13 @@ export default class DateComponent extends Component{
         orderIndex = 0;
         for(; orderIndex < order.length; orderIndex++){
             if(orderIndex >= 2 && order.length > 3){
-                convertedComponents.push(<h5 className="event-display-title-text">{`${order.length-orderIndex} more`}</h5>);
+                convertedComponents.push(<h5 className="event-display-title-text event-display-size">{`${order.length-orderIndex} more`}</h5>);
                 break;
             }else if(order[orderIndex] === undefined){
-                convertedComponents.push(<h5 className="event-display-title-text" key={"filler"+orderIndex}>fill</h5>);
+                convertedComponents.push(<div className="event-display-filler event-display-size" key={"filler"+orderIndex}/>);
             }else{
                 let event = order[orderIndex];
-                convertedComponents.push(<EventDisplayComponent event={event} key={event._title+orderIndex}/>);
+                convertedComponents.push(<EventDisplayComponent event={event} key={event._title+orderIndex} date={this.props.date}/>);
             }
         }
 
