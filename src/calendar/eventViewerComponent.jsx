@@ -22,6 +22,7 @@ export default class EventViewerComponent extends Component{
                 <div id="user-input-container">
                     {this.userInputTitle()}
                     {this.userInputDates()}
+                    {this.userInputTime()}
                 </div>
                 {this.userCreateEvent()}
             </div>
@@ -65,6 +66,13 @@ export default class EventViewerComponent extends Component{
             <h5 className="input-label" id="second-selected-date-label" key={"date-end-input"}>{formatDate(secondSelectedDate === undefined ? firstSelectedDate : secondSelectedDate)}</h5>,
         ]
     };
+    userInputTime = () => {
+        return[
+            <h5 className="input-label" key={"time"}>Time</h5>,
+            <h5 className="input-label" key={"time-start"}> start:</h5>,
+            <TimeComponent key={"user-type-start"}></TimeComponent>
+        ]
+    };
     userCreateEvent = () => {
         const createEvent = () => {
             addEvent(new Event(this.state.title, this.props.firstSelectedDate, this.props.secondSelectedDate));
@@ -89,3 +97,66 @@ EventViewerComponent.propTypes = {
     secondSelectedDate: PropTypes.instanceOf(Date),
     renderCalendar: PropTypes.func
 };
+
+class TimeComponent extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            time: [],
+            isAM: new Date().getHours() < 12 // am if the current time is am
+        };
+    }
+
+    render() {
+        return(
+            <div tabIndex="0" onKeyPress={this.userType} onKeyDown={this.userDelete} className="user-input-time">
+                {this.formatTime()}
+            </div>
+        );
+    };
+
+    userType = (event) => {
+        let key = event.key;
+        // number
+        if(event.key.charCodeAt(0) >= 48 && event.key.charCodeAt(0) <= 58){
+            let newTime = [...this.state.time];
+            // remove the first character pressed
+            if(newTime.length === 4){
+                newTime.splice(0, 1);
+            }
+            newTime.push(key);
+            this.setState({time: newTime});
+        }else if(event.key.charCodeAt(0) === 97 || event.key.charCodeAt(0) === 65){
+            // "a" or "A" pressed
+            this.setState({isAM: true});
+        }else if(event.key.charCodeAt(0) === 112 || event.key.charCodeAt(0) === 80){
+            // "p" or "P" pressed
+            this.setState({isAM: false});
+        }
+    };
+
+    userDelete = (event) => {
+        // backspace key pressed means delete last character pressed
+        if(event.keyCode === 8){
+            let newTime = [...this.state.time];
+            newTime.pop();
+            this.setState({time: newTime})
+        }
+    };
+
+    formatTime = () => {
+        let stringParts = [];
+        // add leading zeroes
+        for(let missingNumbers = this.state.time.length; missingNumbers < 4; missingNumbers++){
+            stringParts.push(0);
+        }
+        // add the numbers the user typed
+        stringParts.push(...this.state.time);
+        // add colon separator
+        stringParts.splice(2, 0, ":");
+        // add the am and pm
+        stringParts.push(this.state.isAM ? "A.M." : "P.M.");
+
+        return stringParts.join("");
+    }
+}
