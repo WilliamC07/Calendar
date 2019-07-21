@@ -1,9 +1,16 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
+import moment from "moment";
+import DatePicker from "./datePicker";
+import "./style.css";
 
-export default class Money extends Component{
-    constructor(props){
-        super(props);
+function Money(props){
+    const [startingDate, setStartingDate] = useState(moment().day(0));
 
-    }
-
+    return(
+        <div>
+            <DatePicker startingDate={startingDate} setStartingDate={setStartingDate}/>
+        </div>
+    )
 }
+
+export default Money;
