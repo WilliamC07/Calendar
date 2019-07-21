@@ -2,3 +2,13 @@
     display: flex;
     justify-content: space-between;
 }
+
+#dateViewContainer{
+    display: grid;
+    grid-template-columns: 1fr repeat(7, 2fr);
+    justify-items: center;
+}
+
+.dateSectionContainer{
+
+}
