@@ -35,7 +35,11 @@ function createDirectoryIfMissing(directoryPath){
 }
 
 function getFileContent(directoryName, fileName){
-    return JSON.parse(fs.readFileSync(path.join(subDirectories[directoryName + "Directory"], fileName)));
+    const pathToFile =  path.join(subDirectories[directoryName + "Directory"], fileName);
+    if(!fs.existsSync(pathToFile)){
+        return {};
+    }
+    return JSON.parse(fs.readFileSync(pathToFile));
 }
 
 function setFileContent(directoryName, fileName, object){
