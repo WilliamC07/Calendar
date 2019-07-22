@@ -1,11 +1,11 @@
-const path = require('path');
-const fs = require('fs');
+const path = window.require('path');
+const fs = window.require('fs');
 
 /**
  * Head directory of the program.
  * @type {string} path to the program directory
  */
-const programDirectory = path.join(require('os').homedir(), "Library", "Application Support", "CalendarJS");
+const programDirectory = path.join(window.require('os').homedir(), "Library", "Application Support", "CalendarJS");
 createDirectoryIfMissing(programDirectory);
 
 /**
@@ -40,7 +40,7 @@ function getFileContent(directoryName, fileName){
 
 function setFileContent(directoryName, fileName, object){
     const data = JSON.stringify(object, null, 2);
-    fs.writeFileSync(fs.readFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data));
+    fs.writeFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data);
 }
 
 module.exports = {
