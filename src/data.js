@@ -16,6 +16,7 @@ createDirectoryIfMissing(programDirectory);
  */
 const subDirectories = {
     calendarDirectory: path.join(programDirectory, "calendar"),
+    moneyDirectory: path.join(programDirectory, "money"),
 };
 
 /* create directories if missing */
@@ -33,7 +34,18 @@ function createDirectoryIfMissing(directoryPath){
     }
 }
 
+function getFileContent(directoryName, fileName){
+    return JSON.parse(fs.readFileSync(path.join(subDirectories[directoryName + "Directory"], fileName)));
+}
+
+function setFileContent(directoryName, fileName, object){
+    const data = JSON.stringify(object, null, 2);
+    fs.writeFileSync(fs.readFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data));
+}
+
 module.exports = {
-    calendarDirectory: () => subDirectories.calendarDirectory,
+    calendarDirectory: subDirectories.calendarDirectory,
+    getFileContent,
+    setFileContent,
     createFileIfMissing: (filePath) => fs.writeFile(filePath, "", (err) => {if(err) throw err}),
 };
