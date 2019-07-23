@@ -2,7 +2,8 @@ import {getFileContent, setFileContent} from "../data.js";
 
 const DIRECTORY_NAME = "money";
 const FILE_NAME = "money.json";
-let cache = {};
+let haveReadData = false;
+let data;
 
 function createFilesIfMissing(){
     if(Object.entries(getFileContent(DIRECTORY_NAME, FILE_NAME)).length === 0){
@@ -13,8 +14,9 @@ function createFilesIfMissing(){
 
 function load(){
     createFilesIfMissing();
-    if(Object.entries(cache).length === 0){
-        cache = getFileContent(DIRECTORY_NAME, FILE_NAME);
+    if(!haveReadData){
+        haveReadData = true;
+        data = getFileContent(DIRECTORY_NAME, FILE_NAME);
     }
 }
 
@@ -24,16 +26,21 @@ function save(object){
 
 function getCurrentBalance(){
     load();
-    return cache.currentBalance;
+    return data.currentBalance;
 }
 
-function getInformationForDate(moment){
+function listDataForMoment(moment){
     load();
-    return cache[moment.toISOString()];
+    const information = data[moment.toISOString()];
+    if(information == null){
+        return [];
+    }else{
+        return information;
+    }
 }
 
 export {
     save,
     getCurrentBalance,
-    getInformationForDate
+    listDataForMoment,
 }
