@@ -1,4 +1,6 @@
 import React from 'react'
+import {formatCurrency} from '../utility/money';
+import {listDataForMoment} from './data.js';
 
 function DateView({startingDate}){
 
@@ -13,7 +15,10 @@ function DateView({startingDate}){
     function earnedFields(){
         const parts = [];
         for(let day = 0; day < 7; day++){
-            parts.push(<h3 onClick={() => console.log("clicked!")}>$0</h3>)
+            parts.push(
+                <h3 onClick={() => console.log("clicked!")}>
+                    {formatCurrency(getEarning(listDataForMoment(startingDate.clone().day(day))))}
+                </h3>)
         }
         return parts;
     }
@@ -21,7 +26,9 @@ function DateView({startingDate}){
     function spentFields(){
         const parts = [];
         for(let day = 0; day < 7; day++){
-            parts.push(<h3 onClick={() => console.log("clicked!")}>$0</h3>)
+            parts.push(<h3 onClick={() => console.log("clicked!")}>
+                {formatCurrency(getSpendings(listDataForMoment(startingDate.clone().day(day))))}
+            </h3>)
         }
         return parts;
     }
@@ -36,6 +43,22 @@ function DateView({startingDate}){
             {spentFields()}
         </div>
     )
+}
+
+function getSpendings(list){
+    let spending = 0;
+    for(let {amount} of list){
+        amount += amount < 0 ? amount : 0;
+    }
+    return spending;
+}
+
+function getEarning(list){
+    let earning = 0;
+    for(let {amount} of list){
+        amount += amount < 0 ? 0 : amount;
+    }
+    return earning;
 }
 
 export default DateView;
