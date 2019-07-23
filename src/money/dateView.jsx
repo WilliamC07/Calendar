@@ -16,7 +16,7 @@ function DateView({startingDate}){
         const parts = [];
         for(let day = 0; day < 7; day++){
             parts.push(
-                <h3 onClick={() => console.log("clicked!")}>
+                <h3 onClick={() => console.log("clicked!")} key={"earningDay"+day}>
                     {formatCurrency(getEarning(listDataForMoment(startingDate.clone().day(day))))}
                 </h3>)
         }
@@ -26,9 +26,10 @@ function DateView({startingDate}){
     function spentFields(){
         const parts = [];
         for(let day = 0; day < 7; day++){
-            parts.push(<h3 onClick={() => console.log("clicked!")}>
-                {formatCurrency(getSpendings(listDataForMoment(startingDate.clone().day(day))))}
-            </h3>)
+            parts.push(
+                <h3 onClick={() => console.log("clicked!")} key={"spendingDay"+day}>
+                    {formatCurrency(getSpendings(listDataForMoment(startingDate.clone().day(day))))}
+                </h3>)
         }
         return parts;
     }
