@@ -1,4 +1,5 @@
 import {getFileContent, setFileContent} from "../data.js";
+import Category from "./category";
 
 const DIRECTORY_NAME = "money";
 const FILE_NAME = "money.json";
@@ -35,16 +36,20 @@ function listDataForMoment(moment){
     if(information == null){
         return [];
     }else{
-        return information;
+        const output = [];
+        for(const {description, cost} of information){
+            output.push(new Category(description, cost));
+        }
+        return output;
     }
 }
 
 function addCategoryForMoment(moment, category){
     const information = data[moment.toISOString()];
     if(information == null){
-        data[moment.toISOString()] = [category];
+        data[moment.toISOString()] = [JSON.stringify(category)];
     }else{
-        information.push(category);
+        information.push(JSON.stringify(category));
     }
 }
 
