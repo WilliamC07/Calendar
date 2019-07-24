@@ -39,8 +39,18 @@ function listDataForMoment(moment){
     }
 }
 
+function addCategoryForMoment(moment, category){
+    const information = data[moment.toISOString()];
+    if(information == null){
+        data[moment.toISOString()] = [category];
+    }else{
+        information.push(category);
+    }
+}
+
 export {
     save,
     getCurrentBalance,
     listDataForMoment,
+    addCategoryForMoment,
 }
