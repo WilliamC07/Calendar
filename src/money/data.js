@@ -32,12 +32,13 @@ function getCurrentBalance(){
 
 function listDataForMoment(moment){
     load();
-    const information = data[moment.toISOString()];
-    if(information == null){
+    const categories = data[moment.toISOString()];
+    if(categories == null){
         return [];
     }else{
         const output = [];
-        for(const {description, cost} of information){
+        for(const category of categories){
+            const {description, cost} = JSON.parse(category);
             output.push(new Category(description, cost));
         }
         return output;
