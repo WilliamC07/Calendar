@@ -2,7 +2,7 @@ import React from 'react'
 import {formatCurrency} from '../utility/money';
 import {listDataForMoment} from './data.js';
 
-function DateView({startingDate}){
+function DateView({startingDate, setSelectedMoment}){
 
     function daysOfWeekLabel(){
         const parts = new Array(7);
@@ -16,7 +16,7 @@ function DateView({startingDate}){
         const parts = [];
         for(let day = 0; day < 7; day++){
             parts.push(
-                <h3 onClick={() => console.log("clicked!")} key={"earningDay"+day}>
+                <h3 onClick={() => setSelectedMoment(startingDate.clone().day(day))} key={"earningDay"+day}>
                     {formatCurrency(getEarning(listDataForMoment(startingDate.clone().day(day))))}
                 </h3>)
         }
@@ -27,7 +27,7 @@ function DateView({startingDate}){
         const parts = [];
         for(let day = 0; day < 7; day++){
             parts.push(
-                <h3 onClick={() => console.log("clicked!")} key={"spendingDay"+day}>
+                <h3 onClick={() => setSelectedMoment(startingDate.clone().day(day))} key={"spendingDay"+day}>
                     {formatCurrency(getSpendings(listDataForMoment(startingDate.clone().day(day))))}
                 </h3>)
         }
