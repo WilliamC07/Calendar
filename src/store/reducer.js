@@ -4,7 +4,9 @@ import {
 } from '../money/actions';
 
 const initialState = {
-    currentBalance: 0,
+    money: {
+        currentBalance: 0,
+    }
 };
 
 function rootReducer(state = initialState, action){
@@ -12,7 +14,9 @@ function rootReducer(state = initialState, action){
         case UPDATE_CURRENT_BALANCE:
             return {
                 ...state,
-                currentBalance: action.amount
+                money: {
+                    currentBalance: action.amount
+                }
             };
     }
 
