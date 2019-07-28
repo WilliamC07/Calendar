@@ -30,21 +30,23 @@ function DateBreakdown({selectedMoment, setSelectedMoment}){
     }
 
     return (
-        <div>
-            <div className="category_container">
+        <div id="categoryWrapper">
+            <div id="categoryContainer">
                 {categories.map((value, index) =>
                     <CategoryDisplay category={value}
                                      key={selectedMoment.toISOString() + index}/>)}
             </div>
             <div>
-                <h3>{selectedMoment.toISOString()}</h3>
                 <form onSubmit={addCategory}>
                     <input type="text"
                            onChange={(e) => setNewCategoryDescription(e.target.value)}
                            value={newCategoryDescription}
-                           placeholder="Description"/>
+                           placeholder="Description"
+                           className="categoryDescription"/>
                     <input type="number"
-                           onChange={(e) => setNewCategoryCost(e.target.value)} value={newCategoryCost}/>
+                           onChange={(e) => setNewCategoryCost(e.target.value)}
+                           value={newCategoryCost}
+                           className="categoryCost"/>
                     <Button type="submit"><FontAwesomeIcon icon={faArrowRight}/></Button>
                 </form>
             </div>
@@ -54,9 +56,9 @@ function DateBreakdown({selectedMoment, setSelectedMoment}){
 
 function CategoryDisplay({category}){
     return (
-        <div className="category_item">
-            <h3 className="category_description">{category.description}</h3>
-            <h3>{category.cost}</h3>
+        <div className="categoryItem">
+            <h3 className="categoryDescription">{category.description}</h3>
+            <h3 className="categoryCost">{category.cost}</h3>
         </div>
     )
 }
