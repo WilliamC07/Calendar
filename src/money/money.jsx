@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import moment from "moment";
 import DatePicker from "./datePicker";
 import DateView from "./dateView";
 import DateBreakdown from "./dateBreakdown";
 import "./style.css";
 
-function Money(props){
+function ConnectedMoney({currentBalance}){
     const [startingDate, setStartingDate] = useState(moment().day(0));
-    const [currentBalance, setCurrentBalance] = useState(0);
     const [selectedMoment, setSelectedMoment] = useState(null);
 
     return(
@@ -21,5 +21,13 @@ function Money(props){
         </div>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        currentBalance: state.money.currentBalance,
+    }
+}
+
+const Money = connect(mapStateToProps)(ConnectedMoney);
 
 export default Money;
