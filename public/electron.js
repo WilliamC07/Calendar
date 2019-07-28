@@ -4,15 +4,26 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 
 let mainWindow;
+const inDevMode = true;
 
 function createWindow(){
+    if(inDevMode){
+        const os = require('os');
+        BrowserWindow.addDevToolsExtension(
+            path.join('/Users/williamcao/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0')
+        );
+    }
+
     mainWindow = new BrowserWindow({
         fullscreen: true
     });
 
     // Connect to react
-    //mainWindow.loadURL('http://localhost:3000');
-    mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+    if(inDevMode){
+        mainWindow.loadURL('http://localhost:3000');
+    }else{
+        mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+    }
 
     // Close view
     mainWindow.on('closed', () => mainWindow = null);
