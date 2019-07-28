@@ -13,11 +13,12 @@
     "googleapis": "^39.2.0",
     "i": "^0.3.6",
     "moment": "^2.24.0",
-    "npm": "^6.7.0",
+    "npm": "^6.10.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.1",
     "react-bootstrap": "^1.0.0-beta.6",
     "react-dom": "^16.8.1",
+    "react-redux": "^7.1.0",
     "react-scripts": "^2.1.5"
   },
   "scripts": {
@@ -40,7 +41,8 @@
   ],
   "devDependencies": {
     "electron": "^4.0.4",
-    "electron-builder": "^20.39.0"
+    "electron-builder": "^20.39.0",
+    "redux": "^4.0.4"
   },
   "build": {
     "appId": "WilliamArch",
