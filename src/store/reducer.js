@@ -1,9 +1,14 @@
+import moment from 'moment';
 import {
     UPDATE_CURRENT_BALANCE,
 
 } from '../money/actions';
 
 const initialState = {
+    calendar: {
+        monthYearSelected: moment(),
+        daySelected: moment(),
+    },
     money: {
         currentBalance: 0,
     }
