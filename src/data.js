@@ -1,5 +1,6 @@
 const path = window.require('path');
 const fs = window.require('fs');
+const sqlite3 = window.require('sqlite3');
 
 /**
  * Head directory of the program.

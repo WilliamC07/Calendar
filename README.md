@@ -33,15 +33,17 @@ Prereq: npm, nodeJS (tested on 11.6)
 To develop:
 1. Clone repository and change directory into it
 2. Run `npm install`
-3. Run `npm start` to start React
-4. Run `npm run electron` to start electron
+3. Run ```./node_modules/.bin/electron-rebuild  -f -w sqlite3```
+4. Run `npm start` to start React
+5. Run `npm run electron` to start electron. You have to wait until react finish starting up the local server.
 
 To run as as an executable (.dmg for mac):
 1. Clone repository and change directory into it
 2. Run `npm install`
-3. Run `npm run electron-pack`
-4. Type in `cd dist/mac`
-5. Run the .dmg file
+3. Run ```./node_modules/.bin/electron-rebuild  -f -w sqlite3```
+4. Run `npm run electron-pack`
+5. Type in `cd dist/mac`
+6. Run the .dmg file
 
 ## Tools used in this project
 * Git
