@@ -1,0 +1,25 @@
+@import '../_variable.scss';
+
+%textColor{
+  .currentText {
+    color: #FFC15E;
+  }
+
+  .selectedText {
+    color: #8AEA92;
+  }
+
+  .regularText {
+    color: #FEFDFF;
+  }
+}
+
+.monthYearChooserContainer{
+  @extend %textColor;
+
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
