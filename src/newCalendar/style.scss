@@ -16,10 +16,11 @@
 
 .monthYearChooserContainer{
   @extend %textColor;
+  @extend %clickableSVG;
 
   width: 40%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  user-select: none;
 }

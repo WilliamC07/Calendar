@@ -1,0 +1,27 @@
+.monthYearChooserContainer svg {
+  cursor: pointer;
+  background-color: #1e1e1e;
+}
+.monthYearChooserContainer svg:hover {
+  background-color: #2a2a2a;
+}
+
+.monthYearChooserContainer .currentText {
+  color: #FFC15E;
+}
+.monthYearChooserContainer .selectedText {
+  color: #8AEA92;
+}
+.monthYearChooserContainer .regularText {
+  color: #FEFDFF;
+}
+
+.monthYearChooserContainer {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+/*# sourceMappingURL=style.css.map */

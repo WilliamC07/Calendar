@@ -1,0 +1,21 @@
+$background-color: #1E1E1E;
+$foreground-color: #1e1e1e;
+$hover-background-color: #2a2a2a;
+$text-solid-color: #FEFDFF;
+$text-light-color: #b0bec5;
+$text-disabled-color: #b0bec5;
+$pink: #FA2A68;
+$blue: #0E79B2;
+$current-color: #FFC15E;
+$selected-color: #8AEA92;
+
+%clickableSVG {
+  svg {
+    cursor: pointer;
+    background-color: $foreground-color;
+  }
+
+  svg:hover{
+    background-color: $hover-background-color;
+  }
+}

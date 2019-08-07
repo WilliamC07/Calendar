@@ -57,9 +57,9 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected}) {
 
     return (
         <div className="monthYearChooserContainer">
-            <FontAwesomeIcon icon={faChevronLeft} size="lg" onClick={() => changeMonthYearSelected(-1)}/>
+            <FontAwesomeIcon icon={faChevronLeft} size="lg" fixedWidth onClick={() => changeMonthYearSelected(-1)}/>
             <h3 className={textClass}>{selectedMonthYear.format("MMMM, YYYY")}</h3>
-            <FontAwesomeIcon icon={faChevronRight} size="lg" onClick={() => changeMonthYearSelected(1)}/>
+            <FontAwesomeIcon icon={faChevronRight} size="lg" fixedWidth onClick={() => changeMonthYearSelected(1)}/>
         </div>
     )
 }
