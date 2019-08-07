@@ -47,19 +47,19 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected}) {
         setMonthYearSelected(selectedMonthYear.clone().add(monthAmount, 'month'));
     }
 
-    const today = moment();
-    let textClass;
-    if(today.format("MMMMYYYY") === selectedMonthYear.format("MMMMYYYY")){
-        textClass = "currentText";
-    }else{
-        textClass = "regularText";
+    function getClassForMoment(compareMoment){
+        const today = moment();
+        return today.format("MMMMYYYY") === compareMoment.format("MMMMYYYY") ? "currentText" : "regularText";
     }
 
     return (
         <div className="monthYearChooserContainer">
-            <FontAwesomeIcon icon={faChevronLeft} size="lg" fixedWidth onClick={() => changeMonthYearSelected(-1)}/>
-            <h3 className={textClass}>{selectedMonthYear.format("MMMM, YYYY")}</h3>
-            <FontAwesomeIcon icon={faChevronRight} size="lg" fixedWidth onClick={() => changeMonthYearSelected(1)}/>
+            <FontAwesomeIcon className={getClassForMoment(selectedMonthYear.clone().subtract(1, 'month'))}
+                             icon={faChevronLeft} size="lg" fixedWidth
+                             onClick={() => changeMonthYearSelected(-1)}/>
+            <h3 className={getClassForMoment(selectedMonthYear)}>{selectedMonthYear.format("MMMM, YYYY")}</h3>
+            <FontAwesomeIcon className={getClassForMoment(selectedMonthYear.clone().add(1, 'month'))}
+                             icon={faChevronRight} size="lg" fixedWidth onClick={() => changeMonthYearSelected(1)}/>
         </div>
     )
 }
