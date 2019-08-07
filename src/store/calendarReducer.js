@@ -2,8 +2,14 @@ import {
     SET_DAY_SELECTED,
     SET_MONTH_YEAR_SELECTED,
 } from "../newCalendar/actions";
+import moment from "moment";
 
-export default function reducerCalendar(state, action){
+const initialState = {
+    monthYearSelected: moment(),
+    daySelected: moment(),
+};
+
+export default function calendarReducer(state = initialState, action){
     switch(action.type){
         case SET_DAY_SELECTED:
             return {
@@ -14,6 +20,8 @@ export default function reducerCalendar(state, action){
             return {
                 ...state,
                 monthYearSelected: action.moment,
-            }
+            };
+        default:
+            return state;
     }
 }
