@@ -48,17 +48,17 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected}) {
         setMonthYearSelected(selectedMonthYear.clone().add(monthAmount, 'month'));
     }
 
-    function getClassForMoment(compareMoment){
+    function getClassStyle(compareMoment){
         return moment().isSame(compareMoment, 'day') ? "currentText" : "regularText";
     }
 
     return (
         <div className="monthYearChooserContainer">
-            <FontAwesomeIcon className={getClassForMoment(selectedMonthYear.clone().subtract(1, 'month'))}
+            <FontAwesomeIcon className={getClassStyle(selectedMonthYear.clone().subtract(1, 'month'))}
                              icon={faChevronLeft} size="lg" fixedWidth
                              onClick={() => changeMonthYearSelected(-1)}/>
-            <h3 className={getClassForMoment(selectedMonthYear)}>{selectedMonthYear.format("MMMM, YYYY")}</h3>
-            <FontAwesomeIcon className={getClassForMoment(selectedMonthYear.clone().add(1, 'month'))}
+            <h3 className={getClassStyle(selectedMonthYear)}>{selectedMonthYear.format("MMMM, YYYY")}</h3>
+            <FontAwesomeIcon className={getClassStyle(selectedMonthYear.clone().add(1, 'month'))}
                              icon={faChevronRight} size="lg" fixedWidth onClick={() => changeMonthYearSelected(1)}/>
         </div>
     )
@@ -66,11 +66,15 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected}) {
 
 function Grid({daySelected, monthYearSelected, setDaySelected}){
     const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
+
     function createCells(){
         const parts = [];
         for(let i = 0; i < 42; i++){
             const moment = firstSunday.clone().day(i);
-            parts.push(<GridCell cellMoment={moment} key={moment.toISOString()}/>);
+            parts.push(
+                <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
+                          daySelected={daySelected}/>
+            );
         }
         return parts;
     }
@@ -82,15 +86,20 @@ function Grid({daySelected, monthYearSelected, setDaySelected}){
     )
 }
 
-function GridCell({cellMoment, setDaySelected}){
-    function getClassForMoment(){
-        const today = moment();
-        return cellMoment.format("MMDDYYYY") === today.format("MMDDYYYY") ? "currentText" : "regularText";
+function GridCell({cellMoment, setDaySelected, daySelected}){
+    function getClassStyle(){
+        if(cellMoment.isSame(daySelected, 'day')){
+            return "selectedText";
+        }else if(cellMoment.isSame(moment(), 'day')){
+            return "currentText";
+        }else{
+            return "regularText";
+        }
     }
 
     return (
-        <div className="cell">
-            <div className={getClassForMoment()}>
+        <div className="cell" onClick={() => setDaySelected(cellMoment)}>
+            <div className={getClassStyle()}>
                 {cellMoment.get('date')}
             </div>
         </div>

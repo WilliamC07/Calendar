@@ -1,6 +1,7 @@
 .grid .cell, .monthYearChooserContainer svg {
   cursor: pointer;
   background-color: #1e1e1e;
+  user-select: none;
 }
 .grid .cell:hover, .monthYearChooserContainer svg:hover {
   background-color: #2a2a2a;

@@ -12,6 +12,7 @@ $selected-color: #8AEA92;
 %clickable {
   cursor: pointer;
   background-color: $foreground-color;
+  user-select: none;
 
   &:hover{
     background-color: $hover-background-color;
