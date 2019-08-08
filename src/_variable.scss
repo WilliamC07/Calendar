@@ -9,13 +9,11 @@ $blue: #0E79B2;
 $current-color: #FFC15E;
 $selected-color: #8AEA92;
 
-%clickableSVG {
-  svg {
-    cursor: pointer;
-    background-color: $foreground-color;
-  }
+%clickable {
+  cursor: pointer;
+  background-color: $foreground-color;
 
-  svg:hover{
+  &:hover{
     background-color: $hover-background-color;
   }
 }

@@ -1,6 +1,6 @@
 @import '../_variable.scss';
 
-%textColor{
+%textColor {
   .currentText {
     color: #FFC15E;
   }
@@ -14,13 +14,35 @@
   }
 }
 
-.monthYearChooserContainer{
-  @extend %textColor;
-  @extend %clickableSVG;
-
+.calendarBoxConnect {
   width: 40%;
+  height: 45%;
+}
+
+.monthYearChooserContainer {
+  @extend %textColor;
   display: flex;
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  margin: 8px;
+
+  svg {
+    @extend %clickable;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  height: 100%;
+  margin: 15px 8px 8px 8px;
+
+  .cell {
+    @extend %textColor;
+    @extend %clickable;
+    text-align: center;
+    cursor: pointer;
+  }
 }

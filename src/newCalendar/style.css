@@ -1,27 +1,43 @@
-.monthYearChooserContainer svg {
+.grid .cell, .monthYearChooserContainer svg {
   cursor: pointer;
   background-color: #1e1e1e;
 }
-.monthYearChooserContainer svg:hover {
+.grid .cell:hover, .monthYearChooserContainer svg:hover {
   background-color: #2a2a2a;
 }
 
-.monthYearChooserContainer .currentText {
+.grid .cell .currentText, .monthYearChooserContainer .currentText {
   color: #FFC15E;
 }
-.monthYearChooserContainer .selectedText {
+.grid .cell .selectedText, .monthYearChooserContainer .selectedText {
   color: #8AEA92;
 }
-.monthYearChooserContainer .regularText {
+.grid .cell .regularText, .monthYearChooserContainer .regularText {
   color: #FEFDFF;
 }
 
-.monthYearChooserContainer {
+.calendarBoxConnect {
   width: 40%;
+  height: 45%;
+}
+
+.monthYearChooserContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  margin: 8px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  height: 100%;
+  margin: 15px 8px 8px 8px;
+}
+.grid .cell {
+  text-align: center;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

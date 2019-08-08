@@ -12,8 +12,9 @@ import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
 
 function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected}) {
     return (
-        <div>
+        <div className="calendarBoxConnect">
             <MonthYearChooser selectedMonthYear={monthYearSelected} setMonthYearSelected={setMonthYearSelected}/>
+            <Grid daySelected={daySelected} monthYearSelected={monthYearSelected} setDaySelected={setDaySelected}/>
         </div>
     );
 }
@@ -60,6 +61,39 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected}) {
             <h3 className={getClassForMoment(selectedMonthYear)}>{selectedMonthYear.format("MMMM, YYYY")}</h3>
             <FontAwesomeIcon className={getClassForMoment(selectedMonthYear.clone().add(1, 'month'))}
                              icon={faChevronRight} size="lg" fixedWidth onClick={() => changeMonthYearSelected(1)}/>
+        </div>
+    )
+}
+
+function Grid({daySelected, monthYearSelected, setDaySelected}){
+    const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
+    function createCells(){
+        const parts = [];
+        for(let i = 0; i < 42; i++){
+            const moment = firstSunday.clone().day(i);
+            parts.push(<GridCell cellMoment={moment} key={moment.toISOString()}/>);
+        }
+        return parts;
+    }
+
+    return (
+        <div className="grid">
+            {createCells()}
+        </div>
+    )
+}
+
+function GridCell({cellMoment, setDaySelected}){
+    function getClassForMoment(){
+        const today = moment();
+        return cellMoment.format("MMDDYYYY") === today.format("MMDDYYYY") ? "currentText" : "regularText";
+    }
+
+    return (
+        <div className="cell">
+            <div className={getClassForMoment()}>
+                {cellMoment.get('date')}
+            </div>
         </div>
     )
 }
