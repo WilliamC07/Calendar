@@ -73,7 +73,7 @@ function Grid({daySelected, monthYearSelected, setDaySelected}){
             const moment = firstSunday.clone().day(i);
             parts.push(
                 <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
-                          daySelected={daySelected}/>
+                          daySelected={daySelected} monthYearSelected={monthYearSelected}/>
             );
         }
         return parts;
@@ -86,14 +86,16 @@ function Grid({daySelected, monthYearSelected, setDaySelected}){
     )
 }
 
-function GridCell({cellMoment, setDaySelected, daySelected}){
+function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected}){
     function getClassStyle(){
         if(cellMoment.isSame(daySelected, 'day')){
             return "selectedText";
         }else if(cellMoment.isSame(moment(), 'day')){
             return "currentText";
-        }else{
+        }else if(cellMoment.isSame(monthYearSelected, 'month')){
             return "regularText";
+        }else{
+            return "extraneousText"
         }
     }
 

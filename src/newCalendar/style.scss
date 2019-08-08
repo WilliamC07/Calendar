@@ -2,15 +2,19 @@
 
 %textColor {
   .currentText {
-    color: #FFC15E;
+    color: $current-color;
   }
 
   .selectedText {
-    color: #8AEA92;
+    color: $selected-color;
+  }
+
+  .extraneousText{
+    color: $text-light-color;
   }
 
   .regularText {
-    color: #FEFDFF;
+    color: $text-solid-color;
   }
 }
 
