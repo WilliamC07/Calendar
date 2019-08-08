@@ -49,8 +49,7 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected}) {
     }
 
     function getClassForMoment(compareMoment){
-        const today = moment();
-        return today.format("MMMMYYYY") === compareMoment.format("MMMMYYYY") ? "currentText" : "regularText";
+        return moment().isSame(compareMoment, 'day') ? "currentText" : "regularText";
     }
 
     return (
