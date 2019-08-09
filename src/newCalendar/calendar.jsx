@@ -5,9 +5,9 @@ import "./style.scss";
 
 function CalendarConnect(props) {
     return (
-        <CalendarBox>
-
-        </CalendarBox>
+        <div className="calendarRoot">
+            <CalendarBox/>
+        </div>
     );
 }
 
