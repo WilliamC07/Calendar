@@ -10,17 +10,18 @@ function calendarData(database_path){
         + " id INTEGER PRIMARY KEY, "
         + " name TEXT, "
         + " color TEXT, "
-        + " description TEXT);";
+        + " description TEXT)";
     const down = "DROP TABLE IF EXISTS " + TABLE_CATEGORY + ";";
     const seed = (function(){
-        const base = "INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( ";
-        const seedData = ["'school', '#1495e0', 'school work'", "'entertainment', '#53dd6c', 'fun stuff :)'"];
-        return seedData.map((element) => base + element + " );").join(" ");
+        let base = "INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ";
+        const seedData = ["('school', '#1495e0', 'school work'), ", "('entertainment', '#53dd6c', 'fun stuff :)')"];
+        seedData.forEach(value => base += value + " ");
+        return base;
     })();
 
     return {
         migration: () => {
-            database.run(up).run(seed);
+            database.serialize(() => database.run(up).run(seed));
         },
 
         down: () => {
