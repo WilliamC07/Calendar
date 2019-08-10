@@ -4,11 +4,18 @@ html{
     /* Universal Font */
     font-family: BlinkMacSystemFont,
     "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    height: 100%;
+    width: 100%;
 }
 
 body {
-    margin: 5px;
+    height: 100%;
     background-color: $background-color;
+    margin: 0;
+}
+
+#root{
+    height: 100%;
 }
 
 h1, h2, h3, h4, h5 {
