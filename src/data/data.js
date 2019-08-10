@@ -48,7 +48,7 @@ function setFileContent(directoryName, fileName, object){
     fs.writeFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data);
 }
 
-export function sterializeValuesForQuery(values){
+function sterializeValuesForQuery(values){
     const output = [];
     for(const value of values){
         if(typeof(value) === "number"){
@@ -65,4 +65,5 @@ module.exports = {
     getFileContent,
     setFileContent,
     createFileIfMissing: (filePath) => fs.writeFile(filePath, "", (err) => {if(err) throw err}),
+    sterializeValuesForQuery: sterializeValuesForQuery
 };
