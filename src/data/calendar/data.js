@@ -1,23 +1,35 @@
+import {sterializeValuesForQuery} from "../data.js";
 const sqlite3 = require('sqlite3').verbose();
 const table_name_calendar = "calendar";
-const table_name_category = "category";
+const TABLE_CATEGORY = "category";
 
-function calendarData(database){
+function calendarData(database_path){
+    const database = new sqlite3.Database(database_path);
+
+    const up = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ("
+        + " id INTEGER PRIMARY KEY, "
+        + " name TEXT, "
+        + " color TEXT, "
+        + " description TEXT);";
+    const down = "DROP TABLE IF EXISTS " + TABLE_CATEGORY + ";";
+    const seed = (function(){
+        const base = "INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( ";
+        const seedData = ["'school', '#1495e0', 'school work'", "'entertainment', '#53dd6c', 'fun stuff :)'"];
+        return seedData.map((element) => base + element + " );").join(" ");
+    })();
+
     return {
-        up: () => "create table if not exists " + table_name_category + " ("
-                + " id integer primary key, "
-                + " name text, "
-                + " color text, "
-                + " description text);",
-
-        down: () => "drop table if exists " + table_name_category + ";",
-
-        seed: () => {
-            const output = [];
-            const base = "insert into " + table_name_category + " ( name, color, description ) VALUES ( ";
-            const seedData = ["'school', '#1495e0', 'school work'", "'entertainment', '#53dd6c', 'fun stuff :)'"];
-            seedData.forEach(e => output.push(base + e + " );"));
-            return output;
+        migration: () => {
+            database.run(up).run(seed);
         },
+
+        down: () => {
+            database.run(down);
+        },
+
+        insertCategory: (category) => {
+            const input = sterializeValuesForQuery([category.name, category.color, category.description]);
+            database.run("INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( " + input + " );");
+        }
     }
 };
