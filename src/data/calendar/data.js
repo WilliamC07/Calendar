@@ -30,6 +30,18 @@ function calendarData(database_path){
         insertCategory: (category) => {
             const input = sterializeValuesForQuery([category.name, category.color, category.description]);
             database.run("INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( " + input + " );");
+        },
+
+        removeCategory: (id) => {
+            database.run("DELETE FROM " + TABLE_CATEGORY + " WHERE id = " + id + ";");
+        },
+
+        updateCategory: (category) => {
+            database.run(`UPDATE ${TABLE_CATEGORY} SET
+            name = ${category.name} 
+            color = ${category.color} 
+            description = ${category.description} 
+            WHERE id = ${category.id};`);
         }
     }
 };
