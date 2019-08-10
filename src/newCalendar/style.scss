@@ -68,4 +68,20 @@
 .categoryBox {
   grid-area: categoryArea;
   margin: 8px;
+
+  .inputGroup {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    margin: 5px;
+    color: $text-solid-color;
+
+    label {
+      margin-right: 5px;
+    }
+
+    input {
+
+    }
+  }
 }
