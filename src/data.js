@@ -6,7 +6,7 @@ const sqlite3 = window.require('sqlite3');
  * Head directory of the program.
  * @type {string} path to the program directory
  */
-const programDirectory = path.join(window.require('os').homedir(), "Library", "Application Support", "CalendarJS");
+const programDirectory = path.join(window.require('os').homedir(), "CalendarJS");
 createDirectoryIfMissing(programDirectory);
 
 /**
