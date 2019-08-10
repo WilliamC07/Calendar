@@ -41,14 +41,14 @@ function CategoryBoxConnect({}){
             <form>
                 <div className="inputGroup">
                     <label>Name</label>
-                    <input type="text"/>
+                    <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)}/>
                 </div>
                 <div className="inputGroup">
                     <label>Color</label>
                 </div>
                 <div className="inputGroup">
                     <label>Description</label>
-                    <input type="text" value={categoryDesc}/>
+                    <input type="text" value={categoryDesc} onChange={(e) => setCategoryDesc(e.target.value)}/>
                 </div>
                 <div>
                     <input type="button" value={isCreatingNewField ? "create" : "update"}/>
