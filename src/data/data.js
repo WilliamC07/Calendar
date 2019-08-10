@@ -48,6 +48,18 @@ function setFileContent(directoryName, fileName, object){
     fs.writeFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data);
 }
 
+export function sterializeValuesForQuery(values){
+    const output = [];
+    for(const value of values){
+        if(typeof(value) === "number"){
+            output.push(value);
+        }else{
+            output.push("'" + value + "'");
+        }
+    }
+    return output.join(", ");
+}
+
 module.exports = {
     calendarDirectory: subDirectories.calendarDirectory,
     getFileContent,
