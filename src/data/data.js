@@ -60,6 +60,13 @@ function sterializeValuesForQuery(values){
     return output.join(", ");
 }
 
+function createSqliteFile(directory, name){
+    const pathToFile = path.join(directory, name + ".sqlite");
+    if(!fs.existsSync(pathToFile)){
+        fs.writeFileSync(pathToFile, "");
+    }
+}
+
 module.exports = {
     calendarDirectory: subDirectories.calendarDirectory,
     getFileContent,
