@@ -31,9 +31,9 @@ export function updateCategory(category){
         category: category
     }
 }
-export function deleteCategory(category){
+export function deleteCategory(id){
     return {
         type: DELETE_CATEGORY,
-        category: category
+        id: id
     }
 }

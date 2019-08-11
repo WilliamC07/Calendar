@@ -39,7 +39,7 @@ export default function calendarReducer(state = initialState, action){
         case DELETE_CATEGORY:
             return {
                 ...state,
-                categories: state.categories.filter(c => c.id !== action.category.id)
+                categories: state.categories.filter(c => c.id !== action.id)
             };
         default:
             return state;
