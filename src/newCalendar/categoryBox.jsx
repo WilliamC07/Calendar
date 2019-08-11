@@ -1,17 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import Category from "../money/category";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 import {calendarData} from '../data/data';
+import {forEach} from "react-bootstrap/es/utils/ElementChildren";
 
 function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCategory}){
     // todo: initial state is the last one opened
-    const [categorySelected, setCategorySelected] = useState("School");
-    const [isCreatingNewField, setIsCreatingNewField] = useState(false);
+    const [categorySelected, setCategorySelected] = useState(1);
+    const [isCreatingNewField, setIsCreatingNewField] = useState(true);
     const [categoryName, setCategoryName] = useState("");
     const [categoryColor, setCategoryColor] = useState("");
     const [categoryDesc, setCategoryDesc] = useState("");
+
+    useEffect(() => {
+        console.log(categories);
+    });
 
     function cancelCreation(){
         if(isCreatingNewField){
@@ -22,16 +27,19 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
     }
 
     function createOrUpdate(){
+        if(isCreatingNewField){
+            addCategory({name: categoryName, color: categoryColor, description: categoryDesc});
+        }else{
 
+        }
     }
 
     return (
         <div className="categoryBox">
             <div>
                 <select value={categorySelected} onChange={(e) => setCategorySelected(e.target.value)}>
-                    <option value="School">School</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Work">Work</option>
+                    {categories.map(category => <option value={category.id}
+                                                            key={category.name + category.id}>{category.name}</option>)}
                 </select>
                 <FontAwesomeIcon icon={faPlus} fixedWidth/>
             </div>
