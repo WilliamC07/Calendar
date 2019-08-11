@@ -1,9 +1,5 @@
 import {sterializeValuesForQuery} from "../data.js";
-import {
-    ADD_CATEGORY,
-    UPDATE_CATEGORY,
-    DELETE_CATEGORY, addCategory, deleteCategory, updateCategory
-} from "../../newCalendar/actions";
+import {addCategory, deleteCategory, updateCategory, setCategories} from "../../newCalendar/actions";
 const sqlite3 = window.require('sqlite3').verbose();
 const table_name_calendar = "calendar";
 const TABLE_CATEGORY = "category";
@@ -64,6 +60,16 @@ export default function calendarClosure(database_path){
                     console.log(err);
                 }else{
                     dispatch(updateCategory(category));
+                }
+            });
+        },
+
+        getCategories: (dispatch) => {
+            database.all("SELECT * FROM " + TABLE_CATEGORY, [], function(err, rows){
+                if(err){
+                    console.log(err);
+                } else{
+                    dispatch(setCategories(rows));
                 }
             });
         }

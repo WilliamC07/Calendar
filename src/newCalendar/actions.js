@@ -18,6 +18,7 @@ export function setDaySelected(moment){
 export const ADD_CATEGORY = "ADD_CATEGORY";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const DELETE_CATEGORY = "DELETE_CATEGORY";
+export const SET_CATEGORIES = "SET_CATEGORIES";
 
 export function addCategory(category){
     return {
@@ -35,5 +36,11 @@ export function deleteCategory(id){
     return {
         type: DELETE_CATEGORY,
         id: id
+    }
+}
+export function setCategories(categories){
+    return{
+        type: SET_CATEGORIES,
+        categories
     }
 }

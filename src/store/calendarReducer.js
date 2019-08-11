@@ -4,6 +4,7 @@ import {
     ADD_CATEGORY,
     UPDATE_CATEGORY,
     DELETE_CATEGORY,
+    SET_CATEGORIES
 } from "../newCalendar/actions";
 import moment from "moment";
 import category from "../money/category";
@@ -40,6 +41,11 @@ export default function calendarReducer(state = initialState, action){
             return {
                 ...state,
                 categories: state.categories.filter(c => c.id !== action.id)
+            };
+        case SET_CATEGORIES:
+            return {
+                ...state,
+                categories: action.categories,
             };
         default:
             return state;
