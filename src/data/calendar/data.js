@@ -17,6 +17,7 @@ export default function calendarClosure(database_path){
         + " color TEXT, "
         + " description TEXT)";
     const down = "DROP TABLE IF EXISTS " + TABLE_CATEGORY + ";";
+    // testing purposes only
     const seed = (function(){
         let base = "INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ";
         const seedData = ["('school', '#1495e0', 'school work'), ", "('entertainment', '#53dd6c', 'fun stuff :)')"];
@@ -24,11 +25,9 @@ export default function calendarClosure(database_path){
         return base;
     })();
 
+    // migration
+    database.serialize(() => database.run(up));
     return {
-        migration: () => {
-            database.serialize(() => database.run(up).run(seed));
-        },
-
         down: () => {
             database.run(down);
         },
