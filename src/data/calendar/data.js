@@ -4,11 +4,11 @@ import {
     UPDATE_CATEGORY,
     DELETE_CATEGORY, addCategory, deleteCategory, updateCategory
 } from "../../newCalendar/actions";
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = window.require('sqlite3').verbose();
 const table_name_calendar = "calendar";
 const TABLE_CATEGORY = "category";
 
-export default function calendarData(database_path){
+export default function calendarClosure(database_path){
     const database = new sqlite3.Database(database_path);
 
     const up = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ("

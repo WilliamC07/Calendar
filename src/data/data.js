@@ -1,7 +1,6 @@
-import calendarData from "./calendar/data";
+import calendarClosure from "./calendar/data";
 const path = window.require('path');
 const fs = window.require('fs');
-const sqlite3 = window.require('sqlite3');
 
 /**
  * Head directory of the program.
@@ -36,7 +35,7 @@ function createDirectoryIfMissing(directoryPath){
     }
 }
 
-function getFileContent(directoryName, fileName){
+export function getFileContent(directoryName, fileName){
     const pathToFile =  path.join(subDirectories[directoryName + "Directory"], fileName);
     if(!fs.existsSync(pathToFile)){
         return {};
@@ -44,12 +43,12 @@ function getFileContent(directoryName, fileName){
     return JSON.parse(fs.readFileSync(pathToFile));
 }
 
-function setFileContent(directoryName, fileName, object){
+export function setFileContent(directoryName, fileName, object){
     const data = JSON.stringify(object, null, 2);
     fs.writeFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data);
 }
 
-function sterializeValuesForQuery(values){
+export function sterializeValuesForQuery(values){
     const output = [];
     for(const value of values){
         if(typeof(value) === "number"){
@@ -61,7 +60,7 @@ function sterializeValuesForQuery(values){
     return output.join(", ");
 }
 
-function createSqliteFile(directory, name){
+export function createSqliteFile(directory, name){
     const pathToFile = path.join(directory, name + ".sqlite");
     if(!fs.existsSync(pathToFile)){
         fs.writeFileSync(pathToFile, "");
@@ -70,14 +69,7 @@ function createSqliteFile(directory, name){
 }
 
 const data = {
-    calendar: calendarData(createSqliteFile(subDirectories.calendarDirectory, "calendar"))
+    calendar: calendarClosure(createSqliteFile(subDirectories.calendarDirectory, "calendar"))
 };
 
-module.exports = {
-    calendarDirectory: subDirectories.calendarDirectory,
-    getFileContent,
-    setFileContent,
-    createFileIfMissing: (filePath) => fs.writeFile(filePath, "", (err) => {if(err) throw err}),
-    sterializeValuesForQuery: sterializeValuesForQuery,
-    calendarData: data.calendar
-};
+export let calendarData = data.calendar;
