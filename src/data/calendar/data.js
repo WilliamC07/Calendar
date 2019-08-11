@@ -1,9 +1,14 @@
 import {sterializeValuesForQuery} from "../data.js";
+import {
+    ADD_CATEGORY,
+    UPDATE_CATEGORY,
+    DELETE_CATEGORY, addCategory, deleteCategory, updateCategory
+} from "../../newCalendar/actions";
 const sqlite3 = require('sqlite3').verbose();
 const table_name_calendar = "calendar";
 const TABLE_CATEGORY = "category";
 
-function calendarData(database_path){
+export default function calendarData(database_path){
     const database = new sqlite3.Database(database_path);
 
     const up = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ("
@@ -28,21 +33,40 @@ function calendarData(database_path){
             database.run(down);
         },
 
-        insertCategory: (category) => {
+        insertCategory: (category, dispatch) => {
             const input = sterializeValuesForQuery([category.name, category.color, category.description]);
-            database.run("INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( " + input + " );");
+            database.run("INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( " + input + " );", [], function (err) {
+                if(err){
+                    console.log(err);
+                }else{
+                    category.id = this.lastID;
+                    dispatch(addCategory(category));
+                }
+            });
         },
 
-        removeCategory: (id) => {
-            database.run("DELETE FROM " + TABLE_CATEGORY + " WHERE id = " + id + ";");
+        removeCategory: (id, dispatch) => {
+            database.run("DELETE FROM " + TABLE_CATEGORY + " WHERE id = " + id + ";", [], function(err){
+                if(err){
+                    console.log(err);
+                }else{
+                    dispatch(deleteCategory(id));
+                }
+            });
         },
 
-        updateCategory: (category) => {
+        updateCategory: (category, dispatch) => {
             database.run(`UPDATE ${TABLE_CATEGORY} SET
             name = ${category.name} 
             color = ${category.color} 
             description = ${category.description} 
-            WHERE id = ${category.id};`);
+            WHERE id = ${category.id};`, [], function(err) {
+                if(err){
+                    console.log(err);
+                }else{
+                    dispatch(updateCategory(category));
+                }
+            });
         }
     }
 };

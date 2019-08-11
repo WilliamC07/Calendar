@@ -1,3 +1,4 @@
+import calendarData from "./calendar/data";
 const path = window.require('path');
 const fs = window.require('fs');
 const sqlite3 = window.require('sqlite3');
@@ -65,12 +66,18 @@ function createSqliteFile(directory, name){
     if(!fs.existsSync(pathToFile)){
         fs.writeFileSync(pathToFile, "");
     }
+    return pathToFile;
 }
+
+const data = {
+    calendar: calendarData(createSqliteFile(subDirectories.calendarDirectory, "calendar"))
+};
 
 module.exports = {
     calendarDirectory: subDirectories.calendarDirectory,
     getFileContent,
     setFileContent,
     createFileIfMissing: (filePath) => fs.writeFile(filePath, "", (err) => {if(err) throw err}),
-    sterializeValuesForQuery: sterializeValuesForQuery
+    sterializeValuesForQuery: sterializeValuesForQuery,
+    calendarData: data.calendar
 };

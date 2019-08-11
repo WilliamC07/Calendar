@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import Category from "../money/category";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
+import {calendarData} from '../data/data';
 
-function CategoryBoxConnect({}){
+function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCategory}){
     // todo: initial state is the last one opened
     const [categorySelected, setCategorySelected] = useState("School");
     const [isCreatingNewField, setIsCreatingNewField] = useState(false);
@@ -20,11 +21,7 @@ function CategoryBoxConnect({}){
         }
     }
 
-    function createCategory(){
-
-    }
-
-    function updateCategory(){
+    function createOrUpdate(){
 
     }
 
@@ -51,7 +48,7 @@ function CategoryBoxConnect({}){
                     <input type="text" value={categoryDesc} onChange={(e) => setCategoryDesc(e.target.value)}/>
                 </div>
                 <div>
-                    <input type="button" value={isCreatingNewField ? "create" : "update"}/>
+                    <input type="button" value={isCreatingNewField ? "create" : "update"} onClick={createOrUpdate}/>
                     <input type="button" value="cancel" onClick={cancelCreation}/>
                 </div>
             </form>
@@ -60,15 +57,17 @@ function CategoryBoxConnect({}){
 }
 
 
-function mapStateToProps(){
+function mapStateToProps(store){
     return {
-
+        categories: store.calendar.categories,
     }
 }
 
-function mapDispatchToProps(){
+function mapDispatchToProps(dispatch) {
     return {
-
+        updateCategory: (category) => calendarData.updateCategory(category, dispatch),
+        deleteCategory: (id) => calendarData.removeCategory(id, dispatch),
+        addCategory: (category) => calendarData.insertCategory(category, dispatch)
     }
 }
 
