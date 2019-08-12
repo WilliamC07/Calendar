@@ -8,7 +8,7 @@ import {calendarData} from '../data/data';
 function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCategory, getCategories}){
     // todo: initial state is the last one opened
     const [categorySelected, setCategorySelected] = useState(1);
-    const [isCreatingNewField, setIsCreatingNewField] = useState(true);
+    const [isCreatingNewField, setIsCreatingNewField] = useState(false);
     const [categoryName, setCategoryName] = useState("");
     const [categoryColor, setCategoryColor] = useState("");
     const [categoryDesc, setCategoryDesc] = useState("");
@@ -22,7 +22,8 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
         }
     });
 
-    function cancelCreation(){
+    function cancelCreation(e){
+        e.preventDefault();
         if(isCreatingNewField){
             // todo: go back to last selected item
         }else{
@@ -30,9 +31,12 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
         }
     }
 
-    function createOrUpdate(){
+    function createOrUpdate(e){
+        e.preventDefault();
         if(isCreatingNewField){
             addCategory({name: categoryName, color: categoryColor, description: categoryDesc});
+            // go back to viewing previous element
+            setIsCreatingNewField(false);
         }else{
 
         }
@@ -41,11 +45,13 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
     return (
         <div className="categoryBox">
             <div className="choosingCategory">
-                <select value={categorySelected} onChange={(e) => setCategorySelected(e.target.value)}>
+                <select value={isCreatingNewField ? "-1" : categorySelected} onChange={(e) => setCategorySelected(e.target.value)}>
                     {categories.map(category => <option value={category.id}
                                                         key={category.name + category.id}>{category.name}</option>)}
+                    {isCreatingNewField && <option value="-1">New Event</option>}
                 </select>
-                <label htmlFor="newEventButton" className={isCreatingNewField ? "selectedText" : "regularText"}>
+                <label htmlFor="newEventButton" className={isCreatingNewField ? "selectedText" : "regularText"}
+                       onClick={() => setIsCreatingNewField(!isCreatingNewField)}>
                     New Event<FontAwesomeIcon icon={faPlus} fixedWidth id="newEventButton" size="sm"/>
                 </label>
             </div>
