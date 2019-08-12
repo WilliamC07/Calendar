@@ -48,11 +48,11 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
                 <select value={isCreatingNewField ? "-1" : categorySelected} onChange={(e) => setCategorySelected(e.target.value)}>
                     {categories.map(category => <option value={category.id}
                                                         key={category.name + category.id}>{category.name}</option>)}
-                    {isCreatingNewField && <option value="-1">New Event</option>}
+                    {isCreatingNewField && <option value="-1">New Category</option>}
                 </select>
                 <label htmlFor="newEventButton" className={isCreatingNewField ? "selectedText" : "regularText"}
                        onClick={() => setIsCreatingNewField(!isCreatingNewField)}>
-                    New Event<FontAwesomeIcon icon={faPlus} fixedWidth id="newEventButton" size="sm"/>
+                    New Category<FontAwesomeIcon icon={faPlus} fixedWidth id="newEventButton" size="sm"/>
                 </label>
             </div>
             <form>
