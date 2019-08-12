@@ -69,19 +69,74 @@
   grid-area: categoryArea;
   margin: 8px;
 
+  .choosingCategory {
+    display: flex;
+    align-items: center;
+    @extend %textColor;
+
+    select {
+      width: 40%;
+    }
+    label {
+      @extend %clickable;
+      margin-right: 5px;
+      margin-left: 5px;
+      font-size: 1.1em;
+    }
+  }
+
   .inputGroup {
     display: flex;
     box-sizing: border-box;
     align-items: center;
     margin: 5px;
     color: $text-solid-color;
+    height: 2em;
+    margin-right: 0;
 
     label {
-      margin-right: 5px;
+      display: flex;
+      align-items: center;
+      background: $foreground-color;
+      height: 100%;
+      padding-left: 5px;
     }
 
-    input {
+    input[type="text"] {
+      background: $foreground-color;
+      border: none;
+      height: 100%;
+      padding-left: 10px;
+      font-size: 1.1em;
+      flex-grow: 2;
+      color: $text-solid-color;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+      padding-top: 0;
+      padding-bottom: 0;
 
+      &:focus{
+        box-shadow: none;
+        outline: 0;
+      }
+    }
+
+    button {
+      @extend %clickable;
+      $paddingSpacing: 5px;
+      padding-top: $paddingSpacing;
+      padding-bottom: $paddingSpacing;
+      margin-right: 5px;
+      border-radius: 5px;
+      border: none;
+
+      &.cancel {
+        color: $pink;
+      }
+
+      &.regularText{
+        color: $text-solid-color;
+      }
     }
   }
 }

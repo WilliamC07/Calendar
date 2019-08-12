@@ -40,28 +40,30 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
 
     return (
         <div className="categoryBox">
-            <div>
+            <div className="choosingCategory">
                 <select value={categorySelected} onChange={(e) => setCategorySelected(e.target.value)}>
                     {categories.map(category => <option value={category.id}
                                                         key={category.name + category.id}>{category.name}</option>)}
                 </select>
-                <FontAwesomeIcon icon={faPlus} fixedWidth/>
+                <label htmlFor="newEventButton" className={isCreatingNewField ? "selectedText" : "regularText"}>
+                    New Event<FontAwesomeIcon icon={faPlus} fixedWidth id="newEventButton" size="sm"/>
+                </label>
             </div>
             <form>
                 <div className="inputGroup">
-                    <label>Name</label>
+                    <label>Name:</label>
                     <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)}/>
                 </div>
                 <div className="inputGroup">
-                    <label>Color</label>
+                    <label>Color:</label>
                 </div>
                 <div className="inputGroup">
-                    <label>Description</label>
+                    <label>Description:</label>
                     <input type="text" value={categoryDesc} onChange={(e) => setCategoryDesc(e.target.value)}/>
                 </div>
-                <div>
-                    <input type="button" value={isCreatingNewField ? "create" : "update"} onClick={createOrUpdate}/>
-                    <input type="button" value="cancel" onClick={cancelCreation}/>
+                <div className="inputGroup">
+                    <button className="regularText" onClick={createOrUpdate}>{isCreatingNewField ? "create" : "update"}</button>
+                    <button className="cancel" onClick={cancelCreation}>Cancel</button>
                 </div>
             </form>
         </div>
