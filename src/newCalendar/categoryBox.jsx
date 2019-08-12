@@ -68,7 +68,7 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
                     <input type="text" value={categoryDesc} onChange={(e) => setCategoryDesc(e.target.value)}/>
                 </div>
                 <div className="inputGroup">
-                    <button className="regularText" onClick={createOrUpdate}>{isCreatingNewField ? "create" : "update"}</button>
+                    <button className="create" onClick={createOrUpdate}>{isCreatingNewField ? "Create" : "Update"}</button>
                     <button className="cancel" onClick={cancelCreation}>Cancel</button>
                 </div>
             </form>
