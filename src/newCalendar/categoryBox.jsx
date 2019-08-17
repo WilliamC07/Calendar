@@ -57,7 +57,14 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
     function cancelCreationHandler(e){
         e.preventDefault();
         if(mode === "create"){
-            setMode("view")
+            if(categories.length === 0){
+                setMode("none");
+            }else{
+                const lastCategory = categories[categories.length - 1];
+                setCategoryAttributeToState(lastCategory);
+                setSelectedCategoryID(lastCategory.id);
+                setMode("view");
+            }
         }else{
             setCategoryAttributeToState(categories.filter(c => c.id === selectedCategoryID)[0]);
         }
