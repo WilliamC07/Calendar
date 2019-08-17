@@ -1,5 +1,10 @@
 import {sterializeValuesForQuery} from "../data.js";
-import {addCategory, deleteCategory, updateCategory, setCategories} from "../../newCalendar/actions";
+import {
+    addCategory,
+    deleteCategory,
+    updateCategory,
+    setCategories,
+} from "../../newCalendar/actions";
 const sqlite3 = window.require('sqlite3').verbose();
 const table_name_calendar = "calendar";
 const TABLE_CATEGORY = "category";
@@ -52,10 +57,10 @@ export default function calendarClosure(database_path){
 
         updateCategory: (category, dispatch) => {
             database.run(`UPDATE ${TABLE_CATEGORY} SET
-            name = ${category.name} 
-            color = ${category.color} 
-            description = ${category.description} 
-            WHERE id = ${category.id};`, [], function(err) {
+            name = '${category.name}',
+            color = '${category.color}', 
+            description = '${category.description}' 
+            WHERE id = ${category.id}`, [], function(err) {
                 if(err){
                     console.log(err);
                 }else{
