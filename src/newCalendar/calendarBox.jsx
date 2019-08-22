@@ -76,10 +76,10 @@ function MonthYearGreaterSelector({monthYearSelected, setMonthYearSelected}){
 
     function getMonthChooseClass(monthNumber) {
         const chosenMoment = moment().set('year', selectedYear).set('month', monthNumber);
-        if(chosenMoment.isSame(moment(), "month")){
-            return "currentText";
-        }else if(chosenMoment.isSame(monthYearSelected, "month")){
+        if(chosenMoment.get('month') === selectedMonth){
             return "selectedText";
+        }else if(chosenMoment.isSame(moment(), "month")){
+            return "currentText";
         }else{
             return "regularText";
         }
@@ -101,7 +101,7 @@ function MonthYearGreaterSelector({monthYearSelected, setMonthYearSelected}){
             <div className="bottomContainerChooser">
                 <input type="number" max={parseInt(moment().set('year', selectedYear).set('month', selectedMonth).daysInMonth())}
                        min={1} value={selectedDay} onChange={e => setSelectedDay(e.target.value)}/>
-               <button onClick={() => setMonthYearSelected(moment().set('year', selectedYear).set('month', selectedMonth).set('date', selectedDay))}>Select</button>
+                <button onClick={() => setMonthYearSelected(moment().set('year', selectedYear).set('month', selectedMonth).set('date', selectedDay))}>Select</button>
                 <button onClick={() => setMonthYearSelected(moment())}>Today</button>
             </div>
         </div>
