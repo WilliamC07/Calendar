@@ -1,23 +1,32 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
-import Calendar from './calendar/calendarComponentNew.jsx';
+import Calendar from './newCalendar/calendar';
 import Money from './money/money.jsx';
-import './index.css';
+import './index.scss';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 class App extends Component{
     constructor(props){
         super(props);
         this.state = {
             // Possible views are: dashboard calendar money notes mail todos weather
-            view: 'money',
+            view: 'calendar',
         }
     }
 
     render() {
+        const theme = createMuiTheme({
+            palette: {
+                type: 'dark',
+            },
+        });
+
         return (
-            <React.Fragment>
+            <MuiThemeProvider theme={theme}>
+                <CssBaseline />
                 {this.getView()}
-            </React.Fragment>
+            </MuiThemeProvider>
         )
     }
 
