@@ -1,4 +1,4 @@
-import {getFileContent, setFileContent} from "../data.js";
+import {getFileContent, setFileContent} from "../data/data.js";
 import Category from "./category";
 
 const DIRECTORY_NAME = "money";

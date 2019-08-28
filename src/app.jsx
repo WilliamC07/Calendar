@@ -3,8 +3,6 @@ import Dashboard from './dashboard/dashboard.jsx';
 import Calendar from './newCalendar/calendar';
 import Money from './money/money.jsx';
 import './index.scss';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 class App extends Component{
     constructor(props){
@@ -16,17 +14,10 @@ class App extends Component{
     }
 
     render() {
-        const theme = createMuiTheme({
-            palette: {
-                type: 'dark',
-            },
-        });
-
         return (
-            <MuiThemeProvider theme={theme}>
-                <CssBaseline />
+            <React.Fragment>
                 {this.getView()}
-            </MuiThemeProvider>
+            </React.Fragment>
         )
     }
 

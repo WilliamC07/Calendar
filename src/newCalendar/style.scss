@@ -42,8 +42,36 @@
     user-select: none;
     margin: 8px;
 
-    svg {
+    svg, .monthChooserHeading{
       @extend %clickable;
+    }
+  }
+
+  .monthYearGreaterSelector {
+    .monthChoosingContainer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      width: 100%;
+      height: 70%;
+      @extend %textColor;
+
+      h2 {
+        @extend %clickable;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .yearChoosingContainer{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      input[type="number"]{
+        text-align: center;
+      }
     }
   }
 
