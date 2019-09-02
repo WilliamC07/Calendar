@@ -1,7 +1,13 @@
 @import "../../_variable.scss";
 
-.eventViewerBox{
-  .h5{
-    display: inline;
+.newEventContainer{
+  .headerContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .makerContainer{
+
   }
 }
