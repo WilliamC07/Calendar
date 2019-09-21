@@ -4,8 +4,9 @@ import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
 import {connect} from "react-redux";
+import MomentPicker from "../momentPicker";
 
-function NewEventViewerBoxConnect({categories}) {
+function NewEventViewerBoxConnect({categories, daySelected}) {
     const [expanded, setExpanded] = useState(true); // true for testing
     const [eventInfo, setEventInfo] = useState({
         title: "",
@@ -17,10 +18,14 @@ function NewEventViewerBoxConnect({categories}) {
         setEventInfo({...eventInfo, [e.target.name]: e.target.value})
     };
 
+    const setStartingMoment = (moment) => {
+
+    };
+
     return (
         <div className="newEventContainer">
             <div className="headerContainer">
-                <h2>New Event</h2>
+                <h2 className="header">New Event</h2>
                 <button onClick={() => setExpanded(!expanded)}>
                     <FontAwesomeIcon icon={expanded ? faChevronUp : faChevronDown} fixedWidth size="lg"/>
                 </button>
@@ -42,6 +47,9 @@ function NewEventViewerBoxConnect({categories}) {
                                                                 key={"category" + category.id}>{category.name}</option>)}
                         </select>
                     </div>
+                    <div className="formGroup">
+                        <MomentPicker startingMoment={daySelected} setSelectedMoment={setStartingMoment}/>
+                    </div>
                 </form>
             }
         </div>
@@ -51,6 +59,7 @@ function NewEventViewerBoxConnect({categories}) {
 function mapStateToProps(store){
     return {
         categories: store.calendar.categories,
+        daySelected: store.calendar.daySelected,
     }
 }
 
