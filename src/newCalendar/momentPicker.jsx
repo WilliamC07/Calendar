@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "./style.scss";
 import moment from "moment";
 
-export default function MomentPicker({startingMoment, setSelectedMoment}){
+export default function MomentPicker({startingMoment, setSelectedMoment, isAbove}){
     const [viewingMoment, setViewingMoment] = useState(startingMoment);
     const [isSelecting, setSelecting] = useState(false);
 
@@ -22,7 +22,8 @@ export default function MomentPicker({startingMoment, setSelectedMoment}){
             elements.push(
                 <div key={currentMoment.format("pickerMMMDYYYY")}
                      className={styleClass}
-                     onClick={() => {
+                     onClick={(e) => {
+                         e.preventDefault(); // don't click what is underneath
                          setSelectedMoment(currentMoment);
                          setViewingMoment(currentMoment);
                          setSelecting(false);
@@ -36,10 +37,10 @@ export default function MomentPicker({startingMoment, setSelectedMoment}){
     }
 
     return (
-        <div className="momentPickerContainer">
+        <div className={"momentPickerContainer " + (isAbove ? "above" : "")}>
             {
                 <div className="selectedMoment" onClick={() => setSelecting(!isSelecting)}>
-                    {viewingMoment.format("M/D/YY")}
+                    {startingMoment.format("M/D/YY")}
                 </div>
             }
             {isSelecting &&

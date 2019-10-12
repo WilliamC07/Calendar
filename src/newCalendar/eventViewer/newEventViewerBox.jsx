@@ -12,7 +12,8 @@ function NewEventViewerBoxConnect({categories, daySelected}) {
         title: "",
         description: "",
         category: "", // an integer as string since html treats everything as a string :/
-        momentStart: daySelected.clone()
+        momentStart: daySelected.clone(),
+        momentEnd: daySelected.clone()
     });
 
     // Since the prop categories has to be read from database, there is technically two updates: one of default empty
@@ -35,6 +36,13 @@ function NewEventViewerBoxConnect({categories, daySelected}) {
         setEventInfo({
             ...eventInfo,
             momentStart
+        })
+    };
+
+    const setEndingMoment = (momentEnd) => {
+        setEventInfo({
+            ...eventInfo,
+            momentEnd
         })
     };
 
@@ -69,7 +77,12 @@ function NewEventViewerBoxConnect({categories, daySelected}) {
                         </select>
                     </div>
                     <div className="formGroup">
-                        <MomentPicker startingMoment={eventInfo.momentStart} setSelectedMoment={setStartingMoment}/>
+                        <label>Start Date</label>
+                        <MomentPicker startingMoment={eventInfo.momentStart} setSelectedMoment={setStartingMoment} isAbove={true}/>
+                    </div>
+                    <div className="formGroup">
+                        <label>End Date</label>
+                        <MomentPicker startingMoment={eventInfo.momentEnd} setSelectedMoment={setEndingMoment} isAbove={false}/>
                     </div>
                     <button type="submit" onClick={createEvent}>Create</button>
                 </form>

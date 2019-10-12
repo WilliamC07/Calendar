@@ -181,6 +181,10 @@
   }
 }
 
+.above {
+  z-index: 10;
+}
+
 .momentPickerContainer {
   position: relative;
   width: 12em;
