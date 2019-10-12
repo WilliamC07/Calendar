@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import "./style.scss";
+import moment from "moment";
 
 export default function MomentPicker({startingMoment, setSelectedMoment}){
     const [viewingMoment, setViewingMoment] = useState(startingMoment);
@@ -11,8 +12,16 @@ export default function MomentPicker({startingMoment, setSelectedMoment}){
 
         for(let i = 0; i < 6 * 7; i++){
             const currentMoment = firstSunday.clone().day(i);
+            const today = moment();
+            let styleClass = "";
+            if(currentMoment.isSame(startingMoment, "day")){
+                styleClass = "selectedText";
+            }else if(currentMoment.isSame(today, "day")){
+                styleClass = "currentText";
+            }
             elements.push(
                 <div key={currentMoment.format("pickerMMMDYYYY")}
+                     className={styleClass}
                      onClick={() => {
                          setSelectedMoment(currentMoment);
                          setViewingMoment(currentMoment);

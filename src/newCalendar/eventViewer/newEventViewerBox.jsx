@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
@@ -12,14 +12,35 @@ function NewEventViewerBoxConnect({categories, daySelected}) {
         title: "",
         description: "",
         category: "", // an integer as string since html treats everything as a string :/
+        momentStart: daySelected.clone()
     });
+
+    // Since the prop categories has to be read from database, there is technically two updates: one of default empty
+    // list and another when this program finish reading the db and populates the empty list
+    // we need to set a category chosen to default of the first category since there has to be a category for each event
+    useEffect(() => {
+        if(categories.length > 0){
+            setEventInfo({
+                ...eventInfo,
+                category: String(categories[0].id)
+            })
+        }
+    }, [categories]);
 
     const handleEventInfo = (e) => {
         setEventInfo({...eventInfo, [e.target.name]: e.target.value})
     };
 
-    const setStartingMoment = (moment) => {
+    const setStartingMoment = (momentStart) => {
+        setEventInfo({
+            ...eventInfo,
+            momentStart
+        })
+    };
 
+    const createEvent = (e) => {
+        e.preventDefault();
+        console.log(eventInfo);
     };
 
     return (
@@ -48,8 +69,9 @@ function NewEventViewerBoxConnect({categories, daySelected}) {
                         </select>
                     </div>
                     <div className="formGroup">
-                        <MomentPicker startingMoment={daySelected} setSelectedMoment={setStartingMoment}/>
+                        <MomentPicker startingMoment={eventInfo.momentStart} setSelectedMoment={setStartingMoment}/>
                     </div>
+                    <button type="submit" onClick={createEvent}>Create</button>
                 </form>
             }
         </div>

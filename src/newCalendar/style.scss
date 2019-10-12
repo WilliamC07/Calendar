@@ -189,8 +189,16 @@
     color: $selected-color;
   }
   .pickerWrapper {
+    background-color: $background-color;
     position: absolute;
     width: 12em;
+    color: $text-light-color;
+  }
+  .selectedText {
+    color: $selected-color;
+  }
+  .currentText {
+    color: $current-color;
   }
   .header{
     display: flex;
@@ -203,7 +211,7 @@
     div {
       cursor: pointer;
       &:hover{
-        background-color: red;
+        background-color: $hover-background-color;
       }
     }
   }
