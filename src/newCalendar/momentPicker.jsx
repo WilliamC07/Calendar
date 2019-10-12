@@ -12,7 +12,12 @@ export default function MomentPicker({startingMoment, setSelectedMoment}){
         for(let i = 0; i < 6 * 7; i++){
             const currentMoment = firstSunday.clone().day(i);
             elements.push(
-                <div key={currentMoment.format("pickerMMMDYYYY")} onClick={() => setSelectedMoment(currentMoment)}>
+                <div key={currentMoment.format("pickerMMMDYYYY")}
+                     onClick={() => {
+                         setSelectedMoment(currentMoment);
+                         setViewingMoment(currentMoment);
+                         setSelecting(false);
+                     }}>
                     {currentMoment.date()}
                 </div>
             );
@@ -34,13 +39,11 @@ export default function MomentPicker({startingMoment, setSelectedMoment}){
                         <button onClick={(e) => {
                             e.preventDefault();
                             setViewingMoment(viewingMoment.clone().subtract(1, "months"));
-                            setSelecting(!isSelecting);
                         }}>{"<"}</button>
                         <div>{viewingMoment.format("MMM YYYY")}</div>
                         <button onClick={(e) => {
                             e.preventDefault();
                             setViewingMoment(viewingMoment.clone().add(1, "months"));
-                            setSelecting(!isSelecting);
                         }}>{">"}</button>
                     </div>
                     <div className="daysContainer">
