@@ -12,6 +12,9 @@ import category from "../money/category";
 const initialState = {
     monthYearSelected: moment(),
     daySelected: moment(),
+    /**
+     * [{id: #, name: "", color: "", description: ""}]
+     */
     categories: []
 };
 
