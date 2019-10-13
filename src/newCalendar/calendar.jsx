@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import CalendarBox from "./calendarBox";
 import CategoryBox from "./categoryBox";
 import NewEventViewerBox from "./eventViewer/newEventViewerBox";
+import EventContainer from "./eventViewer/eventContainer";
 import "./style.scss";
 
 function CalendarConnect(props) {
@@ -11,6 +12,7 @@ function CalendarConnect(props) {
             <CalendarBox/>
             <CategoryBox/>
             <NewEventViewerBox/>
+            <EventContainer/>
         </div>
     );
 }

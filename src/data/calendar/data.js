@@ -4,7 +4,8 @@ import {
     deleteCategory,
     updateCategory,
     setCategories,
-    addEvent
+    addEvent,
+    setEvents
 } from "../../newCalendar/actions";
 const sqlite3 = window.require('sqlite3').verbose();
 const table_name_calendar = "calendar";
@@ -109,7 +110,14 @@ export default function calendarClosure(database_path){
         },
 
         getEvents: (dispatch) => {
-
+            database.all("SELECT * FROM " + TABLE_EVENTS, [], function(err, rows){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(rows);
+                    dispatch(setEvents(rows));
+                }
+            })
         }
     }
 };
