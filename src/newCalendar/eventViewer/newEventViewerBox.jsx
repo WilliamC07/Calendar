@@ -5,9 +5,9 @@ import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";
-import {addEvent} from "../actions";
+import {calendarData} from '../../data/data';
 
-function NewEventViewerBoxConnect({categories, daySelected}) {
+function NewEventViewerBoxConnect({categories, daySelected, insertEvent}) {
     const [expanded, setExpanded] = useState(true); // true for testing
     const [eventInfo, setEventInfo] = useState({
         title: "",
@@ -50,6 +50,7 @@ function NewEventViewerBoxConnect({categories, daySelected}) {
     const createEvent = (e) => {
         e.preventDefault();
         console.log(eventInfo);
+        insertEvent(eventInfo);
     };
 
     return (
@@ -101,8 +102,8 @@ function mapStateToProps(store){
 
 function mapDispatchToProps(dispatch){
     return {
-        createEvent: (event) => {
-            addEvent(event)
+        insertEvent: (event) => {
+            calendarData.insertEvent(event, dispatch)
         }
     }
 }

@@ -4,20 +4,31 @@ import {
     deleteCategory,
     updateCategory,
     setCategories,
+    addEvent
 } from "../../newCalendar/actions";
 const sqlite3 = window.require('sqlite3').verbose();
 const table_name_calendar = "calendar";
 const TABLE_CATEGORY = "category";
+const TABLE_EVENTS = "events";
 
 export default function calendarClosure(database_path){
     const database = new sqlite3.Database(database_path);
 
-    const up = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ("
+    const upCategory = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ("
         + " id INTEGER PRIMARY KEY, "
         + " name TEXT, "
         + " color TEXT, "
         + " description TEXT)";
-    const down = "DROP TABLE IF EXISTS " + TABLE_CATEGORY + ";";
+    const downCategory = "DROP TABLE IF EXISTS " + TABLE_CATEGORY + ";";
+    const upEvents = "CREATE TABLE IF NOT EXISTS " + TABLE_EVENTS + " ("
+        + "id INTEGER PRIMARY KEY, "
+        + "title TEXT, "
+        + "description TEXT, "
+        + "category INTEGER, "
+        + "start TEXT, "
+        + "end TEXT, "
+        + "FOREIGN KEY (category) REFERENCES category (id));";
+    const downEvents = "DROP TABLE IF EXISTS " + TABLE_EVENTS + ";";
     // testing purposes only
     const seed = (function(){
         let base = "INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ";
@@ -27,10 +38,16 @@ export default function calendarClosure(database_path){
     })();
 
     // migration
-    database.serialize(() => database.run(up));
+    database.serialize(() => {
+        database.run(upCategory);
+        database.run(upEvents);
+    });
     return {
         down: () => {
-            database.run(down);
+            database.serialize(() => {
+                database.run(downCategory);
+                database.run(downEvents);
+            });
         },
 
         insertCategory: (category, dispatch) => {
@@ -43,6 +60,18 @@ export default function calendarClosure(database_path){
                     dispatch(addCategory(category));
                 }
             });
+        },
+
+        insertEvent: (event, dispatch) => {
+            const input = sterializeValuesForQuery([event.title, event.description, event.category, event.momentStart.toISOString(), event.momentEnd.toISOString()])
+            database.run("INSERT INTO " + TABLE_EVENTS + " ( title, description, category, start, end ) VALUES ( " + input + ");", [], function(err){
+                if(err){
+                    console.log(err);
+                }else{
+                    event.id = this.lastID;
+                    dispatch(addEvent(event))
+                }
+            })
         },
 
         removeCategory: (id, dispatch) => {
@@ -77,6 +106,10 @@ export default function calendarClosure(database_path){
                     dispatch(setCategories(rows));
                 }
             });
+        },
+
+        getEvents: (dispatch) => {
+
         }
     }
 };
