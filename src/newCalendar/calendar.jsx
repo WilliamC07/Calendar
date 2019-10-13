@@ -9,10 +9,14 @@ import "./style.scss";
 function CalendarConnect(props) {
     return (
         <div className="calendarRoot">
-            <CalendarBox/>
-            <CategoryBox/>
-            <NewEventViewerBox/>
-            <EventContainer/>
+            <div className="leftSide">
+                <CalendarBox/>
+                <CategoryBox/>
+            </div>
+            <div className="rightSide">
+                <NewEventViewerBox/>
+                <EventContainer/>
+            </div>
         </div>
     );
 }

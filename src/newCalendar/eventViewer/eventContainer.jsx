@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {connect} from "react-redux";
 import {calendarData} from "../../data/data";
 import moment from "moment";
+import "./design.scss";
 
 function EventContainerConnect({daySelected, events, getEvents}){
     const firstRender = useRef(true);
@@ -37,7 +38,7 @@ function EventContainerConnect({daySelected, events, getEvents}){
     }
 
     return (
-        <div>
+        <div className="eventViewerContainer">
             {getDayDivider()}
         </div>
     )
