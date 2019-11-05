@@ -11,3 +11,7 @@
 .DS_Store
 build/
 dist/
+
+#using scss, so ignore .css and .css.map
+*.css
+*.css.map

@@ -1,12 +1,12 @@
+import calendarClosure from "./calendar/data";
 const path = window.require('path');
 const fs = window.require('fs');
-const sqlite3 = window.require('sqlite3');
 
 /**
  * Head directory of the program.
  * @type {string} path to the program directory
  */
-const programDirectory = path.join(window.require('os').homedir(), "Library", "Application Support", "CalendarJS");
+const programDirectory = path.join(window.require('os').homedir(), "CalendarJS");
 createDirectoryIfMissing(programDirectory);
 
 /**
@@ -35,7 +35,7 @@ function createDirectoryIfMissing(directoryPath){
     }
 }
 
-function getFileContent(directoryName, fileName){
+export function getFileContent(directoryName, fileName){
     const pathToFile =  path.join(subDirectories[directoryName + "Directory"], fileName);
     if(!fs.existsSync(pathToFile)){
         return {};
@@ -43,14 +43,33 @@ function getFileContent(directoryName, fileName){
     return JSON.parse(fs.readFileSync(pathToFile));
 }
 
-function setFileContent(directoryName, fileName, object){
+export function setFileContent(directoryName, fileName, object){
     const data = JSON.stringify(object, null, 2);
     fs.writeFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data);
 }
 
-module.exports = {
-    calendarDirectory: subDirectories.calendarDirectory,
-    getFileContent,
-    setFileContent,
-    createFileIfMissing: (filePath) => fs.writeFile(filePath, "", (err) => {if(err) throw err}),
+export function sterializeValuesForQuery(values){
+    const output = [];
+    for(const value of values){
+        if(typeof(value) === "number"){
+            output.push(value);
+        }else{
+            output.push("'" + value + "'");
+        }
+    }
+    return output.join(", ");
+}
+
+export function createSqliteFile(directory, name){
+    const pathToFile = path.join(directory, name + ".sqlite");
+    if(!fs.existsSync(pathToFile)){
+        fs.writeFileSync(pathToFile, "");
+    }
+    return pathToFile;
+}
+
+const data = {
+    calendar: calendarClosure(createSqliteFile(subDirectories.calendarDirectory, "calendar"))
 };
+
+export let calendarData = data.calendar;

@@ -1,28 +1,8 @@
-import {
-    UPDATE_CURRENT_BALANCE,
+import {combineReducers} from 'redux';
+import calendarReducer from "./calendarReducer";
 
-} from '../money/actions';
-
-const initialState = {
-    money: {
-        currentBalance: 0,
-    }
-};
-
-function rootReducer(state = initialState, action){
-    switch(action.type){
-        case UPDATE_CURRENT_BALANCE:
-            return {
-                ...state,
-                money: {
-                    currentBalance: action.amount
-                }
-            };
-    }
-
-    return state;
-}
-
-
+const rootReducer = combineReducers({
+    calendar: calendarReducer
+});
 
 export default rootReducer;

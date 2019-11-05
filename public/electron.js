@@ -8,10 +8,10 @@ const inDevMode = true;
 
 function createWindow(){
     if(inDevMode){
-        const os = require('os');
-        BrowserWindow.addDevToolsExtension(
-            path.join('/Users/williamcao/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0')
-        );
+        // const os = require('os');
+        // BrowserWindow.addDevToolsExtension(
+        //     path.join('/Users/williamcao/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.0.2_0')
+        // );
     }
 
     mainWindow = new BrowserWindow({

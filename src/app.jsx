@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
-import Calendar from './calendar/calendarComponentNew.jsx';
+import Calendar from './newCalendar/calendar';
 import Money from './money/money.jsx';
-import './index.css';
+import './index.scss';
 
 class App extends Component{
     constructor(props){
         super(props);
         this.state = {
             // Possible views are: dashboard calendar money notes mail todos weather
-            view: 'money',
+            view: 'calendar',
         }
     }
 
