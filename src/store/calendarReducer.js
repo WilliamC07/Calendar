@@ -7,7 +7,6 @@ import {
     SET_CATEGORIES, SET_EVENT, ADD_EVENT
 } from "../newCalendar/actions";
 import moment from "moment";
-import category from "../money/category";
 
 const initialState = {
     monthYearSelected: moment(),
