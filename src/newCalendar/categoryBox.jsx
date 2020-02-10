@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
+import * as data from "../data/calendar/data";
+import * as action from "./actions";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
-import {calendarData} from '../data/data';
 
-function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCategory, getCategories}){
+function CategoryBoxConnect({categories, createCategory, updateCategory, deleteCategory}){
     // none: no category selected | create: new event made | view: old event viewing
     const [mode, setMode] = useState("none");
     // -1 for "none" or "create" mode | other positive integers for view
@@ -12,15 +13,7 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
     const [categoryName, setCategoryName] = useState("");
     const [categoryColor, setCategoryColor] = useState("");
     const [categoryDesc, setCategoryDesc] = useState("");
-    const firstUpdate = useRef(true);
 
-    // load data from disk the first time this component renders
-    useEffect(() => {
-        if(firstUpdate.current){
-            getCategories();
-            firstUpdate.current = false;
-        }
-    });
     // update view if categories update
     useEffect(() => {
         if(categories.length > 0){
@@ -44,14 +37,13 @@ function CategoryBoxConnect({categories, updateCategory, deleteCategory, addCate
     }
     function createOrUpdateHandler(e){
         e.preventDefault();
-        const createdCategory = {name: categoryName, color: categoryColor, description: categoryDesc};
+        const categoryDetails = [categoryName, categoryColor, categoryDesc];
         if(mode === "create"){
             // id will be set automatically from the database when added
-            addCategory(createdCategory);
+            createCategory(categoryDetails);
         }else{
             // don't modify category directly (don't modify state directly), create copy instead
-            createdCategory.id = selectedCategoryID;
-            updateCategory(createdCategory);
+            updateCategory(selectedCategoryID, categoryDetails);
         }
     }
     function cancelCreationHandler(e){
@@ -142,10 +134,28 @@ function mapStateToProps(store){
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateCategory: (category) => calendarData.updateCategory(category, dispatch),
-        deleteCategory: (id) => calendarData.removeCategory(id, dispatch),
-        addCategory: (category) => calendarData.insertCategory(category, dispatch),
-        getCategories: () => calendarData.getCategories(dispatch),
+        /**
+         * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
+         */
+        createCategory: (categoryDetails) => {
+            const createdCategory = data.createCategory(categoryDetails);
+            dispatch(action.addCategory(createdCategory));
+        },
+        /**
+         * @param id {number} id of the category to update
+         * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
+         */
+        updateCategory: (id, categoryDetails) => {
+            const updatedCategory = data.updateCategory(id, categoryDetails);
+            dispatch(action.updateCategory(updatedCategory));
+        },
+        /**
+         * @param categoryID {number}
+         */
+        deleteCategory: (id) => {
+            data.deleteCategory(id);
+            dispatch(action.deleteCategory(id));
+        }
     }
 }
 

@@ -5,7 +5,6 @@ import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";
-import {calendarData} from '../../data/data';
 
 function NewEventViewerBoxConnect({categories, daySelected, insertEvent}) {
     const [expanded, setExpanded] = useState(true); // true for testing
@@ -103,7 +102,7 @@ function mapStateToProps(store){
 function mapDispatchToProps(dispatch){
     return {
         insertEvent: (event) => {
-            calendarData.insertEvent(event, dispatch)
+
         }
     }
 }

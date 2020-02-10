@@ -1,18 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {connect} from "react-redux";
-import {calendarData} from "../../data/data";
 import moment from "moment";
 import "./design.scss";
 
-function EventContainerConnect({daySelected, events, getEvents}){
-    const firstRender = useRef(true);
-    useEffect(() => {
-        if(firstRender.current){
-            getEvents();
-            firstRender.current = false;
-        }
-    });
-
+function EventContainerConnect({daySelected, events}){
     function getDayDivider(){
         const output = [];
         console.log("events read:");
@@ -62,7 +53,7 @@ function mapStateToProps(store){
 
 function mapDispatchToProps(dispatch){
     return {
-        getEvents: () => calendarData.getEvents(dispatch)
+
     }
 }
 

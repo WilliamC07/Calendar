@@ -1,123 +1,102 @@
-import {sterializeValuesForQuery} from "../data.js";
-import {
-    addCategory,
-    deleteCategory,
-    updateCategory,
-    setCategories,
-    addEvent,
-    setEvents
-} from "../../newCalendar/actions";
-const sqlite3 = window.require('sqlite3').verbose();
-const table_name_calendar = "calendar";
+import {subDirectories} from "../data";
+import Category from './Category';
+import moment from 'moment';
+import Event from './Event';
+const path = require("path");
+const Database = window.require("better-sqlite3");
+
 const TABLE_CATEGORY = "category";
 const TABLE_EVENTS = "events";
 
-export default function calendarClosure(database_path){
-    const database = new sqlite3.Database(database_path);
+/**
+ * @type {Database} Database connection
+ */
+const connection = new Database(path.join(subDirectories.calendarDirectory, "data.sqlite3"), {verbose: console.log});
+// Create tables
+connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_CATEGORY} (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    color TEXT,
+    description TEXT)`);
+connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_EVENTS} (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    category id,
+    start TEXT,
+    end TEXT,
+    foreign key (category) REFERENCES category (id));`);
 
-    const upCategory = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ("
-        + " id INTEGER PRIMARY KEY, "
-        + " name TEXT, "
-        + " color TEXT, "
-        + " description TEXT)";
-    const downCategory = "DROP TABLE IF EXISTS " + TABLE_CATEGORY + ";";
-    const upEvents = "CREATE TABLE IF NOT EXISTS " + TABLE_EVENTS + " ("
-        + "id INTEGER PRIMARY KEY, "
-        + "title TEXT, "
-        + "description TEXT, "
-        + "category INTEGER, "
-        + "start TEXT, "
-        + "end TEXT, "
-        + "FOREIGN KEY (category) REFERENCES category (id));";
-    const downEvents = "DROP TABLE IF EXISTS " + TABLE_EVENTS + ";";
-    // testing purposes only
-    const seed = (function(){
-        let base = "INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ";
-        const seedData = ["('school', '#1495e0', 'school work'), ", "('entertainment', '#53dd6c', 'fun stuff :)')"];
-        seedData.forEach(value => base += value + " ");
-        return base;
-    })();
+/**
+ * Creates a new category and store to disk.
+ * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
+ * @return {Category}
+ */
+export function createCategory(categoryDetails){
+    const info = connection.prepare(`INSERT INTO ${TABLE_CATEGORY} (name, color, description) VALUES(?, ?, ?)`).run(...categoryDetails);
+    const category = new Category(...categoryDetails);
+    category.id = info.lastInsertRowid;
+    return category;
+}
 
-    // migration
-    database.serialize(() => {
-        database.run(upCategory);
-        database.run(upEvents);
-    });
-    return {
-        down: () => {
-            database.serialize(() => {
-                database.run(downCategory);
-                database.run(downEvents);
-            });
-        },
+/**
+ * Deletes category of the given id number
+ * @param categoryID {number}
+ */
+export function deleteCategory(categoryID){
+    connection.prepare(`DELETE FROM ${TABLE_CATEGORY} WHERE id = ?`).run(categoryID);
+}
 
-        insertCategory: (category, dispatch) => {
-            const input = sterializeValuesForQuery([category.name, category.color, category.description]);
-            database.run("INSERT INTO " + TABLE_CATEGORY + " ( name, color, description ) VALUES ( " + input + " );", [], function (err) {
-                if(err){
-                    console.log(err);
-                }else{
-                    category.id = this.lastID;
-                    dispatch(addCategory(category));
-                }
-            });
-        },
+/**
+ * Creates a new event
+ * @param eventDetails {Array.<{title: string, description: string, category: id, start: Moment, end: Moment}>} Will be modified by this function.
+ * @returns {Event}
+ */
+export function createEvent(eventDetails){
+    eventDetails[3] = eventDetails[3].toISOString();
+    eventDetails[4] = eventDetails[3].toISOString();
+    const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, start, end ) VALUES (?, ?, ?, ?, ?)`).run(...eventDetails);
+    const event = new Event(...eventDetails);
+    event.id = info.lastInsertRowid;
+    return event;
+}
 
-        insertEvent: (event, dispatch) => {
-            const input = sterializeValuesForQuery([event.title, event.description, event.category, event.momentStart.toISOString(), event.momentEnd.toISOString()])
-            database.run("INSERT INTO " + TABLE_EVENTS + " ( title, description, category, start, end ) VALUES ( " + input + ");", [], function(err){
-                if(err){
-                    console.log(err);
-                }else{
-                    event.id = this.lastID;
-                    dispatch(addEvent(event))
-                }
-            })
-        },
+/**
+ * Update the given category
+ * @param id {number} id of the category to update
+ * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
+ * @return {Category} New Category instance with updated values
+ */
+export function updateCategory(id, categoryDetails){
+    connection.prepare(`UPDATE ${TABLE_CATEGORY} SET name = ?, color = ?, description = ? WHERE id = ?`).run(id, ...categoryDetails);
+    const updatedCategory = new Category(...categoryDetails);
+    updatedCategory.id = id;
+    return updatedCategory;
+}
 
-        removeCategory: (id, dispatch) => {
-            database.run("DELETE FROM " + TABLE_CATEGORY + " WHERE id = " + id + ";", [], function(err){
-                if(err){
-                    console.log(err);
-                }else{
-                    dispatch(deleteCategory(id));
-                }
-            });
-        },
-
-        updateCategory: (category, dispatch) => {
-            database.run(`UPDATE ${TABLE_CATEGORY} SET
-            name = '${category.name}',
-            color = '${category.color}', 
-            description = '${category.description}' 
-            WHERE id = ${category.id}`, [], function(err) {
-                if(err){
-                    console.log(err);
-                }else{
-                    dispatch(updateCategory(category));
-                }
-            });
-        },
-
-        getCategories: (dispatch) => {
-            database.all("SELECT * FROM " + TABLE_CATEGORY, [], function(err, rows){
-                if(err){
-                    console.log(err);
-                } else{
-                    dispatch(setCategories(rows));
-                }
-            });
-        },
-
-        getEvents: (dispatch) => {
-            database.all("SELECT * FROM " + TABLE_EVENTS, [], function(err, rows){
-                if(err){
-                    console.log(err);
-                }else{
-                    console.log(rows);
-                    dispatch(setEvents(rows));
-                }
-            })
-        }
+/**
+ * Gets all the created categories
+ * @returns {Category[]}
+ */
+export function getCategories(){
+    const data = connection.prepare(`SELECT * FROM ${TABLE_CATEGORY}`).all();
+    // convert object to Category object
+    const categories = new Array(data.length).fill(new Category());
+    for(let i = 0; i < data.length; i++){
+        Object.assign(categories[i], data[i]);
     }
-};
+    return categories;
+}
+
+/**
+ * Gets all the created Events
+ * @returns {Event[]}
+ */
+export function getEvents(){
+    const data = connection.prepare(`SELECT * FROM ${TABLE_EVENTS}`).all();
+    // convert data to Event object
+    const events = new Array(data.length).fill(new Event());
+    for(let i = 0; i < data.length; i++){
+        Object.assign(events[i], data[i]);
+    }
+    return events;
+}

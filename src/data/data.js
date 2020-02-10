@@ -1,75 +1,29 @@
-import calendarClosure from "./calendar/data";
+import {createDirectory, createFile} from "./utility";
 const path = window.require('path');
-const fs = window.require('fs');
 
 /**
- * Head directory of the program.
+ * Head directory of the program ("~/CalendarJS")
  * @type {string} path to the program directory
  */
 const programDirectory = path.join(window.require('os').homedir(), "CalendarJS");
-createDirectoryIfMissing(programDirectory);
+createDirectory(programDirectory);
 
 /**
  * All the subdirectories from the head directory of the program.
  * To add another directory, just follow the format in the object. The directory will be automatically created if it
  * does not exist.
- * @type {{calendarDirectory: string}}
+ * @type {{calendarDirectory: string, moneyDirectory: string}}
  */
-const subDirectories = {
+export const subDirectories = {
     calendarDirectory: path.join(programDirectory, "calendar"),
     moneyDirectory: path.join(programDirectory, "money"),
 };
-
-/* create directories if missing */
-for(let subDirectory in subDirectories){
-    createDirectoryIfMissing(subDirectories[subDirectory]);
-}
-
 /**
- * Creates the directory given if one does not exists.
- * @param directoryPath String representation of the path to the directory
+ * Creates:
+ * 1. A directory in {@link programDirectory} for each module of this program
+ * 2. "data.sqlite3" file in each directory
  */
-function createDirectoryIfMissing(directoryPath){
-    if(!fs.existsSync(directoryPath)){
-        fs.mkdirSync(directoryPath);
-    }
+for(let directory in Object.values(subDirectories)){
+    createDirectory(directory);
+    createFile(path.join(directory, "data.sqlite3"))
 }
-
-export function getFileContent(directoryName, fileName){
-    const pathToFile =  path.join(subDirectories[directoryName + "Directory"], fileName);
-    if(!fs.existsSync(pathToFile)){
-        return {};
-    }
-    return JSON.parse(fs.readFileSync(pathToFile));
-}
-
-export function setFileContent(directoryName, fileName, object){
-    const data = JSON.stringify(object, null, 2);
-    fs.writeFileSync(path.join(subDirectories[directoryName + "Directory"], fileName), data);
-}
-
-export function sterializeValuesForQuery(values){
-    const output = [];
-    for(const value of values){
-        if(typeof(value) === "number"){
-            output.push(value);
-        }else{
-            output.push("'" + value + "'");
-        }
-    }
-    return output.join(", ");
-}
-
-export function createSqliteFile(directory, name){
-    const pathToFile = path.join(directory, name + ".sqlite");
-    if(!fs.existsSync(pathToFile)){
-        fs.writeFileSync(pathToFile, "");
-    }
-    return pathToFile;
-}
-
-const data = {
-    calendar: calendarClosure(createSqliteFile(subDirectories.calendarDirectory, "calendar"))
-};
-
-export let calendarData = data.calendar;

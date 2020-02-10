@@ -7,18 +7,25 @@ import {
     SET_CATEGORIES, SET_EVENT, ADD_EVENT
 } from "../newCalendar/actions";
 import moment from "moment";
+import Category from "../data/calendar/Category";
+import Event from "../data/calendar/Event";
+import {getEvents, getCategories} from '../data/calendar/data';
 
+/**
+ *
+ * @type {{daySelected: moment, monthYearSelected: moment, categories: Category[], events: Event[]}}
+ */
 const initialState = {
     monthYearSelected: moment(),
     daySelected: moment(),
     /**
      * [{id: #, name: "", color: "", description: ""}]
      */
-    categories: [],
+    categories: getCategories(),
     /**
      * [{id: #, name: "", description: "", category: #, start: moment, end: moment}
      */
-    events: []
+    events: getEvents()
 };
 
 export default function calendarReducer(state = initialState, action){

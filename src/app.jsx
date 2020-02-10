@@ -27,7 +27,7 @@ class App extends Component{
             case 'calendar':
                 return <Calendar changeView={this.changeView}/>;
             case 'money':
-                return <Money changeView={this.changeView}/>;
+                return <div>money</div>;
             default:
                 return (
                     <h1>Don't know what view -- bug {this.state.view}</h1>
