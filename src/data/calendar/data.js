@@ -69,7 +69,7 @@ export function createEvent(eventDetails){
  * @return {Category} New Category instance with updated values
  */
 export function updateCategory(id, categoryDetails){
-    connection.prepare(`UPDATE ${TABLE_CATEGORY} SET name = ?, color = ?, description = ? WHERE id = ?`).run(id, ...categoryDetails);
+    connection.prepare(`UPDATE ${TABLE_CATEGORY} SET name = ?, color = ?, description = ? WHERE id = ?`).run(...categoryDetails, id);
     const updatedCategory = new Category(...categoryDetails);
     updatedCategory.id = id;
     return updatedCategory;

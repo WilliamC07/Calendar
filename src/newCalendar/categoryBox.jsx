@@ -147,6 +147,7 @@ function mapDispatchToProps(dispatch) {
          */
         updateCategory: (id, categoryDetails) => {
             const updatedCategory = data.updateCategory(id, categoryDetails);
+            console.log("update: ", updatedCategory);
             dispatch(action.updateCategory(updatedCategory));
         },
         /**
