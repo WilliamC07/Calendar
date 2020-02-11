@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
 import Calendar from './newCalendar/calendar';
-import Money from './money/money.jsx';
 import './index.scss';
 
 class App extends Component{
@@ -28,7 +27,7 @@ class App extends Component{
             case 'calendar':
                 return <Calendar changeView={this.changeView}/>;
             case 'money':
-                return <Money changeView={this.changeView}/>;
+                return <div>money</div>;
             default:
                 return (
                     <h1>Don't know what view -- bug {this.state.view}</h1>

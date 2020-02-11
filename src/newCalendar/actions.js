@@ -1,3 +1,5 @@
+import Category from "../data/calendar/Category";
+
 export const SET_MONTH_YEAR_SELECTED = "SET_MONTH_YEAR_SELECTED";
 export const SET_DAY_SELECTED = "SET_DAY_SELECTED";
 export function setMonthYearSelected(moment){
@@ -18,6 +20,12 @@ export const ADD_CATEGORY = "ADD_CATEGORY";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const DELETE_CATEGORY = "DELETE_CATEGORY";
 export const SET_CATEGORIES = "SET_CATEGORIES";
+
+/**
+ * Keeps track of a new category.
+ * @param category {Category} Category created
+ * @returns {{type: string, category: Category}}
+ */
 export function addCategory(category){
     return {
         type: ADD_CATEGORY,
@@ -43,11 +51,11 @@ export function setCategories(categories){
     }
 }
 
-export const ADD_EVENT = "ADD_EVENT";
+export const CREATE_EVENT = "CREATE_EVENT";
 export const SET_EVENT = "SET_EVENT";
-export function addEvent(event){
+export function createEvent(event){
     return {
-        type: ADD_EVENT,
+        type: CREATE_EVENT,
         event
     }
 }

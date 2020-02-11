@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
+import * as actions from "../actions";
+import * as data from "../../data/calendar/data";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";
-import {calendarData} from '../../data/data';
 
-function NewEventViewerBoxConnect({categories, daySelected, insertEvent}) {
+function NewEventViewerBoxConnect({categories, daySelected, createEvent}) {
     const [expanded, setExpanded] = useState(true); // true for testing
     const [eventInfo, setEventInfo] = useState({
         title: "",
@@ -16,18 +17,6 @@ function NewEventViewerBoxConnect({categories, daySelected, insertEvent}) {
         momentStart: daySelected.clone(),
         momentEnd: daySelected.clone()
     });
-
-    // Since the prop categories has to be read from database, there is technically two updates: one of default empty
-    // list and another when this program finish reading the db and populates the empty list
-    // we need to set a category chosen to default of the first category since there has to be a category for each event
-    useEffect(() => {
-        if(categories.length > 0){
-            setEventInfo({
-                ...eventInfo,
-                category: String(categories[0].id)
-            })
-        }
-    }, [categories]);
 
     const handleEventInfo = (e) => {
         setEventInfo({...eventInfo, [e.target.name]: e.target.value})
@@ -47,10 +36,9 @@ function NewEventViewerBoxConnect({categories, daySelected, insertEvent}) {
         })
     };
 
-    const createEvent = (e) => {
+    const handleCreate = (e) => {
         e.preventDefault();
-        console.log(eventInfo);
-        insertEvent(eventInfo);
+        createEvent(Object.values(eventInfo));
     };
 
     return (
@@ -86,7 +74,7 @@ function NewEventViewerBoxConnect({categories, daySelected, insertEvent}) {
                         <label>End Date</label>
                         <MomentPicker startingMoment={eventInfo.momentEnd} setSelectedMoment={setEndingMoment} isAbove={false}/>
                     </div>
-                    <button type="submit" onClick={createEvent}>Create</button>
+                    <button type="submit" onClick={handleCreate}>Create</button>
                 </form>
             }
         </div>
@@ -102,8 +90,13 @@ function mapStateToProps(store){
 
 function mapDispatchToProps(dispatch){
     return {
-        insertEvent: (event) => {
-            calendarData.insertEvent(event, dispatch)
+        /**
+         * @param eventDetails {Array.<{title: string, description: string, category: id, start: Moment, end: Moment}>} Will be modified by this function.
+         */
+        createEvent: (eventDetails) => {
+            const createdEvent = data.createEvent(eventDetails);
+            console.log("created ", createdEvent);
+            dispatch(actions.createEvent(createdEvent));
         }
     }
 }
