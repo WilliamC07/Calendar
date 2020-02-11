@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
 import Calendar from './newCalendar/calendar';
+import Notification from './notification/Notification';
 import './index.scss';
 
 class App extends Component{
@@ -15,7 +16,10 @@ class App extends Component{
     render() {
         return (
             <React.Fragment>
-                {this.getView()}
+                <Notification/>
+                <div className="mainViewContainer">
+                    {this.getView()}
+                </div>
             </React.Fragment>
         )
     }
