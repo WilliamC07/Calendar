@@ -21,6 +21,7 @@ connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_CATEGORY} (
 connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_EVENTS} (
     id INTEGER PRIMARY KEY,
     title TEXT,
+    description TEXT,
     category id,
     start TEXT,
     end TEXT,
@@ -48,12 +49,13 @@ export function deleteCategory(categoryID){
 
 /**
  * Creates a new event
- * @param eventDetails {Array.<{title: string, description: string, category: id, start: Moment, end: Moment}>} Will be modified by this function.
+ * @param eventDetails {Array.<{title: string, description: string, category: number, start: Moment, end: Moment}>} Will be modified by this function.
  * @returns {Event}
  */
 export function createEvent(eventDetails){
+    eventDetails[2] = parseInt(eventDetails[2]);
     eventDetails[3] = eventDetails[3].toISOString();
-    eventDetails[4] = eventDetails[3].toISOString();
+    eventDetails[4] = eventDetails[4].toISOString();
     const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, start, end ) VALUES (?, ?, ?, ?, ?)`).run(...eventDetails);
     const event = new Event(...eventDetails);
     event.id = info.lastInsertRowid;

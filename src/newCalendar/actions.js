@@ -51,11 +51,11 @@ export function setCategories(categories){
     }
 }
 
-export const ADD_EVENT = "ADD_EVENT";
+export const CREATE_EVENT = "CREATE_EVENT";
 export const SET_EVENT = "SET_EVENT";
-export function addEvent(event){
+export function createEvent(event){
     return {
-        type: ADD_EVENT,
+        type: CREATE_EVENT,
         event
     }
 }

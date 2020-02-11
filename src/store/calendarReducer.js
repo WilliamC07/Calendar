@@ -4,7 +4,7 @@ import {
     ADD_CATEGORY,
     UPDATE_CATEGORY,
     DELETE_CATEGORY,
-    SET_CATEGORIES, SET_EVENT, ADD_EVENT
+    SET_CATEGORIES, SET_EVENT, CREATE_EVENT
 } from "../newCalendar/actions";
 import moment from "moment";
 import Category from "../data/calendar/Category";
@@ -60,7 +60,7 @@ export default function calendarReducer(state = initialState, action){
                 ...state,
                 categories: action.categories,
             };
-        case ADD_EVENT:
+        case CREATE_EVENT:
             return {
                 ...state,
                 events: [...state.events, action.event]
