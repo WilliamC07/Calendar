@@ -4,11 +4,13 @@ import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
 import * as actions from "../actions";
+import {notify} from "../../notification/actions"
 import * as data from "../../data/calendar/data";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";
+import {NotificationObject, NotificationType} from "../../notification/NotificationObject";
 
-function NewEventViewerBoxConnect({categories, daySelected, createEvent}) {
+function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
     const [expanded, setExpanded] = useState(true); // true for testing
     const [eventInfo, setEventInfo] = useState({
         title: "",
@@ -38,7 +40,18 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent}) {
 
     const handleCreate = (e) => {
         e.preventDefault();
+        if(eventInfo.title.trim().length === 0){
+            notify(new NotificationObject(NotificationType.ERROR, "New event requires a title!"));
+            return;
+        }else if(eventInfo.momentEnd.isBefore(eventInfo.momentStart)){
+            notify(new NotificationObject(NotificationType.ERROR, "End date must be after start date!"));
+            return;
+        }else if(eventInfo.description.trim().length === 0){
+            notify(new NotificationObject(NotificationType.WARNING, "No description given!"));
+            return;
+        }
         createEvent(Object.values(eventInfo));
+        notify(new NotificationObject(NotificationType.SUCCESS, "Successfully created event!"))
     };
 
     return (
@@ -91,13 +104,16 @@ function mapStateToProps(store){
 function mapDispatchToProps(dispatch){
     return {
         /**
-         * @param eventDetails {Array.<{title: string, description: string, category: id, start: Moment, end: Moment}>} Will be modified by this function.
+         * @param eventDetails {Array.<{title: string, description: string, category: number, start: Moment, end: Moment}>} Will be modified by this function.
          */
         createEvent: (eventDetails) => {
             const createdEvent = data.createEvent(eventDetails);
-            console.log("created ", createdEvent);
             dispatch(actions.createEvent(createdEvent));
-        }
+        },
+        /**
+         * @param notification {NotificationObject}
+         */
+        notify: (notification) => {dispatch(notify(notification));},
     }
 }
 

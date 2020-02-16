@@ -1,0 +1,21 @@
+.notification-container{
+  position: absolute;
+  top: 3%;
+  left: 3%;
+}
+
+.notification{
+  height: 30px;
+  width: 15em;
+  border-radius: 5px 5px 5px;
+
+  &[data-notification-type="ERROR"]{
+    background-color: red;
+  }
+  &[data-notification-type="WARNING"]{
+    background-color: yellow;
+  }
+  &[data-notification-type="SUCCESS"]{
+    background-color: greenyellow;
+  }
+}
