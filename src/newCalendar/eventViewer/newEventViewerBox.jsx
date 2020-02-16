@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
@@ -15,13 +15,25 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
     const [eventInfo, setEventInfo] = useState({
         title: "",
         description: "",
-        category: "", // an integer as string since html treats everything as a string :/
+        category: categories.length === 0 ? 0 :categories[0].id, // default category to the first one
         momentStart: daySelected.clone(),
         momentEnd: daySelected.clone()
     });
 
+    useEffect(() => {
+        // there weren't any categories before and the user just created one. use the newly created category as default
+        if(eventInfo.category === 0 && categories.length !== 0){
+            setEventInfo({...eventInfo, "category": categories[0].id})
+        }
+    }, [categories]);
+
     const handleEventInfo = (e) => {
-        setEventInfo({...eventInfo, [e.target.name]: e.target.value})
+        if(e.target.name === "category"){
+            // html stores everything as a string, but we need an number value for category id
+            setEventInfo({...eventInfo, "category": parseInt(e.target.value)});
+        }else{
+            setEventInfo({...eventInfo, [e.target.name]: e.target.value});
+        }
     };
 
     const setStartingMoment = (momentStart) => {
@@ -46,7 +58,12 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         }else if(eventInfo.momentEnd.isBefore(eventInfo.momentStart)){
             notify(new NotificationObject(NotificationType.ERROR, "End date must be after start date!"));
             return;
-        }else if(eventInfo.description.trim().length === 0){
+        }else if(eventInfo.category === 0){
+            notify(new NotificationObject(NotificationType.ERROR, "No category chosen for the event"));
+            return;
+        }
+
+        if(eventInfo.description.trim().length === 0) {
             notify(new NotificationObject(NotificationType.WARNING, "No description given!"));
             return;
         }

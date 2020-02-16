@@ -53,7 +53,6 @@ export function deleteCategory(categoryID){
  * @returns {Event}
  */
 export function createEvent(eventDetails){
-    eventDetails[2] = parseInt(eventDetails[2]);
     eventDetails[3] = eventDetails[3].toISOString();
     eventDetails[4] = eventDetails[4].toISOString();
     const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, start, end ) VALUES (?, ?, ?, ?, ?)`).run(...eventDetails);
