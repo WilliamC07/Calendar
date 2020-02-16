@@ -95,9 +95,11 @@ export function getCategories(){
 export function getEvents(){
     const data = connection.prepare(`SELECT * FROM ${TABLE_EVENTS}`).all();
     // convert data to Event object
-    const events = new Array(data.length).fill(new Event());
+    const events = [];
     for(let i = 0; i < data.length; i++){
-        Object.assign(events[i], data[i]);
+        const event = new Event();
+        Object.assign(event, data[i]);
+        events.push(event);
     }
     return events;
 }
