@@ -12,4 +12,10 @@
   &[data-notification-type="ERROR"]{
     background-color: red;
   }
+  &[data-notification-type="WARNING"]{
+    background-color: yellow;
+  }
+  &[data-notification-type="SUCCESS"]{
+    background-color: greenyellow;
+  }
 }
