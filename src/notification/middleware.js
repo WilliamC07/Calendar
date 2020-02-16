@@ -6,7 +6,7 @@ export const middlewareCloseNotification = store => next => action => {
         setTimeout(() => {
             store.dispatch(actions.removeNotification(action.notification.id));
             console.log("removed for ", action.notification.id);
-        }, 1000);
+        }, 4000);
     }
     return next(action);
 };
