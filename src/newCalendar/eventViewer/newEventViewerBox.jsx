@@ -41,9 +41,17 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
     const handleCreate = (e) => {
         e.preventDefault();
         if(eventInfo.title.trim().length === 0){
-            notify(new NotificationObject(NotificationType.ERROR, "New event requires a title"));
+            notify(new NotificationObject(NotificationType.ERROR, "New event requires a title!"));
+            return;
+        }else if(eventInfo.momentEnd.isBefore(eventInfo.momentStart)){
+            notify(new NotificationObject(NotificationType.ERROR, "End date must be after start date!"));
+            return;
+        }else if(eventInfo.description.trim().length === 0){
+            notify(new NotificationObject(NotificationType.WARNING, "No description given!"));
+            return;
         }
         createEvent(Object.values(eventInfo));
+        notify(new NotificationObject(NotificationType.SUCCESS, "Successfully created event!"))
     };
 
     return (
