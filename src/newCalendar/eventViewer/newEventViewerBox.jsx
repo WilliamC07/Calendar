@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
-import * as actions from "../actions";
+import * as actions from "../../store/calendar/actions";
 import {notify} from "../../notification/actions"
 import * as data from "../../data/calendar/data";
 import {connect} from "react-redux";

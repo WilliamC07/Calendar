@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import * as data from "../data/calendar/data";
-import * as action from "./actions";
+import * as actions from "../store/calendar/actions";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 
@@ -139,7 +139,7 @@ function mapDispatchToProps(dispatch) {
          */
         createCategory: (categoryDetails) => {
             const createdCategory = data.createCategory(categoryDetails);
-            dispatch(action.addCategory(createdCategory));
+            dispatch(actions.createCategory(createdCategory));
         },
         /**
          * @param id {number} id of the category to update
@@ -148,14 +148,14 @@ function mapDispatchToProps(dispatch) {
         updateCategory: (id, categoryDetails) => {
             const updatedCategory = data.updateCategory(id, categoryDetails);
             console.log("update: ", updatedCategory);
-            dispatch(action.updateCategory(updatedCategory));
+            dispatch(actions.updateCategory(updatedCategory));
         },
         /**
-         * @param categoryID {number}
+         * @param id {number}
          */
         deleteCategory: (id) => {
             data.deleteCategory(id);
-            dispatch(action.deleteCategory(id));
+            dispatch(actions.deleteCategory(id));
         }
     }
 }
