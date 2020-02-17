@@ -1,0 +1,10 @@
+.timePickerContainer{
+  color: white;
+  background: #262626;
+}
+
+.timePickerContainer span{
+  &[data-selected="true"]{
+    color: greenyellow;
+  }
+}
