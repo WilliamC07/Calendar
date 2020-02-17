@@ -9,6 +9,7 @@ import * as data from "../../data/calendar/data";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";
 import {NotificationObject, NotificationType} from "../../notification/NotificationObject";
+import TimePicker from "../timePicker";
 
 function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
     const [expanded, setExpanded] = useState(true); // true for testing
@@ -16,6 +17,7 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         title: "",
         description: "",
         category: categories.length === 0 ? 0 :categories[0].id, // default category to the first one
+        isAllDay: true,
         momentStart: daySelected.clone(),
         momentEnd: daySelected.clone()
     });
@@ -31,6 +33,9 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         if(e.target.name === "category"){
             // html stores everything as a string, but we need an number value for category id
             setEventInfo({...eventInfo, "category": parseInt(e.target.value)});
+        }else if(e.target.name === "toggleAllDay"){
+            e.preventDefault();
+            setEventInfo({...eventInfo, "isAllDay": !eventInfo.isAllDay});
         }else{
             setEventInfo({...eventInfo, [e.target.name]: e.target.value});
         }
@@ -97,12 +102,31 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
                         </select>
                     </div>
                     <div className="formGroup">
-                        <label>Start Date</label>
-                        <MomentPicker startingMoment={eventInfo.momentStart} setSelectedMoment={setStartingMoment} isAbove={true}/>
+                        <button name="toggleAllDay" onClick={handleEventInfo}>{eventInfo.isAllDay ? "All day" : "Timed"}</button>
                     </div>
-                    <div className="formGroup">
-                        <label>End Date</label>
-                        <MomentPicker startingMoment={eventInfo.momentEnd} setSelectedMoment={setEndingMoment} isAbove={false}/>
+                    <div className="eventCreatorTimeField">
+                        <div className="formGroup">
+                            <label>Start Date</label>
+                            <MomentPicker startingMoment={eventInfo.momentStart} setSelectedMoment={setStartingMoment} isAbove={true}/>
+                        </div>
+                        {!eventInfo.isAllDay &&
+                            <div className="formGroup">
+                                <label>Time start</label>
+                                <TimePicker current={eventInfo.momentStart} update={(newMoment) => setEventInfo({...eventInfo, momentStart: newMoment})}/>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <div className="formGroup">
+                            <label>End Date</label>
+                            <MomentPicker startingMoment={eventInfo.momentEnd} setSelectedMoment={setEndingMoment} isAbove={false}/>
+                        </div>
+                        {!eventInfo.isAllDay &&
+                            <div className="formGroup">
+                                <label>Time end</label>
+                                <TimePicker current={eventInfo.momentEnd} update={(newMoment) => setEventInfo({...eventInfo, momentEnd: newMoment})}/>
+                            </div>
+                        }
                     </div>
                     <button type="submit" onClick={handleCreate}>Create</button>
                 </form>

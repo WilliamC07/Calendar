@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import "./timePickerStyle.scss";
 
-export default function TimePicker({}){
-    const [hour, setHour] = useState(0);
-    const [minute, setMinute] = useState(0);
-    const [isAM, setIsAM] = useState(true);
+export default function TimePicker({update, current}){
+    const [hour, setHour] = useState(parseInt(current.format("hh")));
+    const [minute, setMinute] = useState(current.get("minute"));
+    const [isAM, setIsAM] = useState(current.get("hour") < 12);
     const [editingIndex, setEditingIndex] = useState(0); // 0 for hour, 1 for minute, 2 for isAM
 
     function handleKeyPress(e){
@@ -78,14 +78,16 @@ export default function TimePicker({}){
                 }
             }
         }
+        // bro what is this ternary... :(
+        update(current.clone().set({minute, hour: hour + (isAM ? (hour === 12 ? -12 : 0) : (hour === 12 ? 0 : 12))}));
         // prevent default action of tab
         e.preventDefault();
     }
 
     return (
-        <div className="timePickerContainer" onKeyDown={handleKeyPress} tabIndex="0">
+        <span className="timePickerContainer" onKeyDown={handleKeyPress} tabIndex="0">
             {/* format as H:MM <AM/PM> */ }
             <span data-selected={editingIndex === 0}>{hour}</span><span data-selected={editingIndex === 1}>{`:${String(minute).padStart(2, '0')}`}</span><span data-selected={editingIndex === 2}>{`${isAM ? "AM" : "PM"}`}</span>
-        </div>
+        </span>
     )
 }

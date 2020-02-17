@@ -23,6 +23,7 @@ connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_EVENTS} (
     title TEXT,
     description TEXT,
     category id,
+    isAllDay INTEGER,
     start TEXT,
     end TEXT,
     foreign key (category) REFERENCES category (id));`);
@@ -49,13 +50,14 @@ export function deleteCategory(categoryID){
 
 /**
  * Creates a new event
- * @param eventDetails {Array.<{title: string, description: string, category: number, start: Moment, end: Moment}>} Will be modified by this function.
+ * @param eventDetails {Array.<{title: string, description: string, category: number, isAllDay: boolean, start: Moment, end: Moment}>} Will be modified by this function.
  * @returns {Event}
  */
 export function createEvent(eventDetails){
-    eventDetails[3] = eventDetails[3].toISOString();
+    eventDetails[3] = eventDetails[3] ? 1 : 0; // sqlite3 cannot store boolean, only integer
     eventDetails[4] = eventDetails[4].toISOString();
-    const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, start, end ) VALUES (?, ?, ?, ?, ?)`).run(...eventDetails);
+    eventDetails[5] = eventDetails[5].toISOString();
+    const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, isAllDay, start, end ) VALUES (?, ?, ?, ?, ?, ?)`).run(...eventDetails);
     const event = new Event(...eventDetails);
     event.id = info.lastInsertRowid;
     return event;
@@ -98,6 +100,7 @@ export function getEvents(){
     const events = [];
     for(let i = 0; i < data.length; i++){
         const event = new Event();
+        data[i][4] = data[i][4] ? true : false;  // need to convert sqlite3 integer to boolean
         Object.assign(event, data[i]);
         events.push(event);
     }
