@@ -74,6 +74,15 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         }
         createEvent(Object.values(eventInfo));
         notify(new NotificationObject(NotificationType.SUCCESS, "Successfully created event!"))
+        // clear the state
+        setEventInfo({
+            title: "",
+            description: "",
+            category: categories.length === 0 ? 0 :categories[0].id,
+            isAllDay: true,
+            momentStart: daySelected.clone(),
+            momentEnd: daySelected.clone()
+        })
     };
 
     return (
