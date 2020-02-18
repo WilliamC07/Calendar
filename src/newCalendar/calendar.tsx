@@ -1,6 +1,6 @@
 import React from 'react';
 import CalendarBox from "./calendarBox";
-import CategoryBox from "./categoryBox";
+import CategoryBox from "./category-box";
 import NewEventViewerBox from "./eventViewer/newEventViewerBox";
 import EventContainer from "./eventViewer/eventContainer";
 import "./style.scss";

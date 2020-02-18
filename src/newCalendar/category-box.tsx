@@ -4,8 +4,23 @@ import * as data from "../data/calendar/data";
 import * as actions from "../store/calendar/actions";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
+import {Dispatch} from "redux";
+import Category from "../data/calendar/Category";
+import {ApplicationState} from "../store";
 
-function CategoryBoxConnect({categories, createCategory, updateCategory, deleteCategory}){
+interface StateToProps {
+    categories: Category[];
+}
+
+interface DispatchToProps{
+    createCategory: (categoryDetails: [string, string, string]) => void;
+    updateCategory: (id: number, categoryDetails: [string, string, string]) => void;
+    deleteCategory: (id: number) => void;
+}
+
+type Props = StateToProps & DispatchToProps;
+
+const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategory, deleteCategory}) => {
     // none: no category selected | create: new event made | view: old event viewing
     const [mode, setMode] = useState("none");
     // -1 for "none" or "create" mode | other positive integers for view
@@ -24,20 +39,20 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
         }
     }, [categories]);
 
-    function chooseCategoryHandler(e){
-        const targetID = parseInt(e.target.value);
+    function chooseCategoryHandler(e: React.FormEvent<HTMLSelectElement>){
+        const targetID = parseInt(e.currentTarget.value);
         setSelectedCategoryID(targetID);
         setCategoryAttributeToState(categories.filter(c => c.id.toString() === targetID.toString())[0]);
     }
-    function createNewCategoryHandler(e){
+    function createNewCategoryHandler(){
         setMode("create");
         setCategoryName("");
         setCategoryColor("");
         setCategoryDesc("");
     }
-    function createOrUpdateHandler(e){
+    function createOrUpdateHandler(e: React.FormEvent<HTMLButtonElement>){
         e.preventDefault();
-        const categoryDetails = [categoryName, categoryColor, categoryDesc];
+        const categoryDetails: [string, string, string] = [categoryName, categoryColor, categoryDesc];
         if(mode === "create"){
             // id will be set automatically from the database when added
             createCategory(categoryDetails);
@@ -46,7 +61,7 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
             updateCategory(selectedCategoryID, categoryDetails);
         }
     }
-    function cancelCreationHandler(e){
+    function cancelCreationHandler(e: React.FormEvent<HTMLButtonElement>){
         e.preventDefault();
         if(mode === "create"){
             if(categories.length === 0){
@@ -61,7 +76,7 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
             setCategoryAttributeToState(categories.filter(c => c.id === selectedCategoryID)[0]);
         }
     }
-    function deleteCategoryHandler(e){
+    function deleteCategoryHandler(e: React.FormEvent<HTMLButtonElement>){
         e.preventDefault();
         const toDelete = selectedCategoryID;
         if(categories.length <= 1){
@@ -79,7 +94,7 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
         deleteCategory(toDelete);
     }
 
-    function setCategoryAttributeToState(category){
+    function setCategoryAttributeToState(category: Category){
         setCategoryName(category.name);
         setCategoryColor(category.color);
         setCategoryDesc(category.description);
@@ -91,7 +106,7 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
                 <div className="choosingCategory">
                     <select value={mode === "view" ? selectedCategoryID.toString() : "-1"} onChange={chooseCategoryHandler}>
                         {mode === "view" && categories.map(category => <option value={category.id}
-                                                            key={category.name + category.id}>{category.name}</option>)}
+                                                                               key={category.name + category.id}>{category.name}</option>)}
                         {mode === "create" && <option value="-1">New Category</option>}
                         {mode === "none" && <option value="-1">Nothing Selected</option>}
                     </select>
@@ -113,7 +128,7 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
                 </div>
                 {
                     mode !== "none" &&
-                        <div className="inputGroup">
+                    <div className="inputGroup">
                         <button className="create" onClick={createOrUpdateHandler}>{mode === "create" ? "Create" : "Update"}</button>
                         <button className="cancel" onClick={cancelCreationHandler}>Cancel</button>
                         {mode === "view" && <button className="cancel" onClick={deleteCategoryHandler}>Delete</button>}
@@ -122,43 +137,29 @@ function CategoryBoxConnect({categories, createCategory, updateCategory, deleteC
             </form>
         </div>
     )
-}
+};
 
-
-function mapStateToProps(store){
+function mapStateToProps({calendar}: ApplicationState){
     return {
-        categories: store.calendar.categories,
-        selectedCategoryID: store.calendar.selectedCategoryID,
+        categories: calendar.categories,
     }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch) {
     return {
-        /**
-         * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
-         */
-        createCategory: (categoryDetails) => {
+        createCategory: (categoryDetails: [string, string, string]) => {
             const createdCategory = data.createCategory(categoryDetails);
             dispatch(actions.createCategory(createdCategory));
         },
-        /**
-         * @param id {number} id of the category to update
-         * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
-         */
-        updateCategory: (id, categoryDetails) => {
+        updateCategory: (id: number, categoryDetails: [string, string, string]) => {
             const updatedCategory = data.updateCategory(id, categoryDetails);
-            console.log("update: ", updatedCategory);
             dispatch(actions.updateCategory(updatedCategory));
         },
-        /**
-         * @param id {number}
-         */
-        deleteCategory: (id) => {
+        deleteCategory: (id: number) => {
             data.deleteCategory(id);
             dispatch(actions.deleteCategory(id));
         }
     }
 }
 
-const CategoryBox = connect(mapStateToProps, mapDispatchToProps)(CategoryBoxConnect);
-export default CategoryBox;
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryBox);

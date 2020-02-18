@@ -30,7 +30,7 @@ connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_EVENTS} (
 
 /**
  * Creates a new category and store to disk.
- * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
+ * @param categoryDetails {[string, string, string]}
  * @return {Category}
  */
 export function createCategory(categoryDetails){
@@ -66,7 +66,7 @@ export function createEvent(eventDetails){
 /**
  * Update the given category
  * @param id {number} id of the category to update
- * @param categoryDetails {Array.<{name: string, color: string, description: string}>}
+ * @param categoryDetails {[string, string, string]}
  * @return {Category} New Category instance with updated values
  */
 export function updateCategory(id, categoryDetails){
