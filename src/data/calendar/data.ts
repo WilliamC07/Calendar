@@ -1,6 +1,6 @@
 import {subDirectories} from "../data";
 import Category from '../../calendar/category';
-import moment from 'moment';
+import moment, {Moment} from 'moment';
 import Event from '../../calendar/event';
 const path = require("path");
 const Database = window.require("better-sqlite3");
@@ -103,13 +103,22 @@ export function getCategories(){
  * @returns List of all the events the user created
  */
 export function getEvents(): Event[]{
-    const data: [number, string, string, number, number|boolean, string, string][] = connection.prepare(`SELECT * FROM ${TABLE_EVENTS}`).all();
+    interface DataStructure {
+        id: number;
+        title: string;
+        description: string;
+        category: number;
+        isAllDay: number;
+        end: string;
+        start: string
+    }
+    const data: DataStructure[] = connection.prepare(`SELECT * FROM ${TABLE_EVENTS}`).all();
     // convert data to Event object
     const events = [];
     for(let i = 0; i < data.length; i++){
-        const event = new Event("", "", -1, false, moment(), moment());
-        data[i][4] = !!data[i][4];  // need to convert sqlite3 integer to boolean
-        Object.assign(event, data[i]);
+        const rawEvent = data[i];
+        const event = new Event(rawEvent.title, rawEvent.description, rawEvent.category, !!rawEvent.isAllDay, moment(rawEvent.start), moment(rawEvent.end));
+        event.id = rawEvent.id;
         events.push(event);
     }
     return events;
