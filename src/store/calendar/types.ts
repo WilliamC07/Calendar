@@ -1,6 +1,6 @@
 import moment from "moment";
-import Category from "../../data/calendar/Category";
-import Event from "../../data/calendar/Event";
+import Category from "../../calendar/category";
+import Event from "../../calendar/event";
 
 export enum CalendarActionsTypes {
     SET_MONTH_YEAR_SELECTED = "@@calendar/SET_MONTH_YEAR_SELECTED",

@@ -3,13 +3,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
-import * as actions from "../../store/calendar/actions";
-import {notify} from "../../store/notification/actions"
-import * as data from "../../data/calendar/data";
+import * as actions from "../../../store/calendar/actions"
+import {notify} from "../../../store/notification/actions"
+import * as data from "../../../data/calendar/data";
 import {connect} from "react-redux";
-import MomentPicker from "../moment-picker";
-import {Notification, NotificationType} from "../../notification/notification";
-import TimePicker from "../time-picker";
+import MomentPicker from "../../views/moment-picker";
+import {Notification, NotificationType} from "../../../notification/notification";
+import TimePicker from "../../views/time-picker";
 
 function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
     const [expanded, setExpanded] = useState(true); // true for testing

@@ -1,8 +1,8 @@
 import {Moment} from 'moment';
 import {action} from 'typesafe-actions';
 import {CalendarActionsTypes} from "./types";
-import Category from "../../data/calendar/Category";
-import Event from "../../data/calendar/Event";
+import Category from "../../calendar/category";
+import Event from "../../calendar/event";
 
 export const setMonthYearSelected = (moment: Moment) => action(CalendarActionsTypes.SET_MONTH_YEAR_SELECTED, moment);
 export const setDaySelected = (moment: Moment) => action(CalendarActionsTypes.SET_DAY_SELECTED, moment);

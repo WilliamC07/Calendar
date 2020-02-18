@@ -1,7 +1,7 @@
 import {subDirectories} from "../data";
-import Category from './Category';
+import Category from '../../calendar/category';
 import moment from 'moment';
-import Event from './Event';
+import Event from '../../calendar/event';
 const path = require("path");
 const Database = window.require("better-sqlite3");
 
