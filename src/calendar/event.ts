@@ -26,13 +26,4 @@ export default class Event{
         this.start = moment(start);
         this.end = moment(end);
     }
-
-    get startTime(): Moment{
-        return moment(this.start);
-    }
-
-    get endTime(): Moment{
-        return moment(this.end);
-    }
-
 }
