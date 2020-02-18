@@ -29,18 +29,19 @@ can't say it works on them. I have screenshots below of the program (TODO).
 
 ### How to run
 Prereq: npm, nodeJS (tested on 11.6)
+There is 909 MB of node_modules, so it will take some time to install.
 
 To develop:
 1. Clone repository and change directory into it
 2. Run `npm install`
-3. Run ```./node_modules/.bin/electron-rebuild  -f -w better-sqlite3 && ./node_modules/.bin/electron-rebuild  -f -w node-sass```
+3. Run ```./node_modules/.bin/electron-rebuild  -f -w better-sqlite3 && ./node_modules/.bin/electron-rebuild  -f -w node-sass``` (this is very slow)
 4. Run `npm start` to start React
 5. Run `npm run electron` to start electron. You have to wait until react finish starting up the local server.
 
 To run as as an executable (.dmg for mac):
 1. Clone repository and change directory into it
 2. Run `npm install`
-3. Run ```./node_modules/.bin/electron-rebuild  -f -w better-sqlite3 && ./node_modules/.bin/electron-rebuild  -f -w node-sass```
+3. Run ```./node_modules/.bin/electron-rebuild  -f -w better-sqlite3 && ./node_modules/.bin/electron-rebuild  -f -w node-sass``` (this is very slow)
 4. Run `npm run electron-pack`
 5. Type in `cd dist/mac`
 6. Run the .dmg file
