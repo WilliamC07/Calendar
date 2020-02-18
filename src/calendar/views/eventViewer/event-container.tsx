@@ -1,17 +1,38 @@
 import React, {useState, useRef, useEffect} from 'react';
+import Event from "../../event";
 import {connect} from "react-redux";
 import moment from "moment";
 import "./design.scss";
+import {ApplicationState} from "../../../store";
+import {Dispatch} from "redux";
+import EventView from "./event-view";
 
-function EventContainerConnect({daySelected, events}){
+interface Props {
+    daySelected: moment.Moment;
+    events: Event[]
+}
+
+const EventContainer: React.FC<Props> = ({daySelected, events}) => {
     function getDayDivider(){
         const output = [];
-        console.log("events read:");
-        console.log(events);
+
+        const sortedEvents = events.slice().sort((e1, e2) => {
+            if(e1.isAllDay && !e2.isAllDay){
+                return -1;
+            }else if(e1.isAllDay && e2.isAllDay){
+                return e1.title.localeCompare(e2.title);
+            }else if(e1.start.isSame(e2.start)){
+                // same starting time, so compare id for continuity of previous day event list
+                return e1.id - e2.id;
+            }else{
+                // different starting time, so list earlier one first
+                return e1.start.isAfter(e2.start) ? -1 : 1;
+            }
+        });
 
         for(let i = 0; i < 3; i++){
             const displayMoment = daySelected.clone().add(i, 'd');
-            const eventsForMoment = events.filter(event => {
+            const eventsForMoment = sortedEvents.filter(event => {
                 const start = moment(event.start).startOf('day');
                 const end = moment(event.end).endOf('day');
                 return displayMoment.isBetween(start, end);
@@ -20,7 +41,7 @@ function EventContainerConnect({daySelected, events}){
             output.push(
                 <div key={displayMoment.toISOString()}>
                     <p>{displayMoment.format("dddd, MMMM D")}</p>
-                    {eventsForMoment.map(event => <EventBox key={"event" + event.id} event={event}/>)}
+                    {eventsForMoment.map(event => <EventView key={"event" + event.id} event={event}/>)}
                 </div>
             )
         }
@@ -33,30 +54,19 @@ function EventContainerConnect({daySelected, events}){
             {getDayDivider()}
         </div>
     )
-}
+};
 
-function EventBox({event}){
-    return (
-        <div>
-            <p>{event.title}</p>
-            <p>{event.description}</p>
-        </div>
-    )
-}
-
-function mapStateToProps(store){
+function mapStateToProps(store: ApplicationState){
     return {
         daySelected: store.calendar.daySelected,
         events: store.calendar.events
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch: Dispatch){
     return {
 
     }
 }
 
-const EventContainer = connect(mapStateToProps, mapDispatchToProps)(EventContainerConnect);
-
-export default EventContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(EventContainer);
