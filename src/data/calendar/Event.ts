@@ -6,25 +6,25 @@ export default class Event{
     description: string;
     category: number;
     isAllDay: boolean;
-    start: string;
-    end: string;
+    start: Moment;
+    end: Moment;
 
     /**
      * @param title {string}
      * @param description {string}
      * @param category {number} Matches an id of a category
-     * @param isAllDay {boolean} If the event is all day
-     * @param start {string} ISOString of the starting time
-     * @param end {string} ISOString of the ending time
+     * @param isAllDay {number} If the event is all day. 1 for true. 0 for false
+     * @param start {moment.Moment} Starting time
+     * @param end {moment.Moment} Ending time
      */
-    constructor(title: string, description: string, category: number, isAllDay: boolean, start: string, end: string){
+    constructor(title: string, description: string, category: number, isAllDay: boolean | number, start: string | Moment, end: string | Moment){
         this.id = -1; // this will be set when we insert into the sqlite database
         this.title = title;
         this.description = description;
         this.category = category;
-        this.isAllDay = isAllDay;
-        this.start = start;
-        this.end = end;
+        this.isAllDay = !!isAllDay;
+        this.start = moment(start);
+        this.end = moment(end);
     }
 
     get startTime(): Moment{
