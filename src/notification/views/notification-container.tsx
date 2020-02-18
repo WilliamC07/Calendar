@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import "./style.scss";
-import {NotificationObject} from "./NotificationObject";
-import {ApplicationState} from "../store";
+import {Notification} from "../notification";
+import {ApplicationState} from "../../store";
 
 interface PropsFromState {
-    notifications: NotificationObject[]
+    notifications: Notification[]
 }
 
-const Notification: React.FC<PropsFromState> = ({notifications}) => {
+const NotificationContainer: React.FC<PropsFromState> = ({notifications}) => {
     return (
         <div className="notification-container">
             {notifications.map((notification) =>
@@ -25,4 +25,4 @@ function mapStateToProps({notification}: ApplicationState){
     }
 }
 
-export default connect(mapStateToProps)(Notification);
+export default connect(mapStateToProps)(NotificationContainer);

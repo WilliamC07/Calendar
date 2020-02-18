@@ -1,4 +1,4 @@
-import {NotificationObject} from "../../notification/NotificationObject";
+import {Notification} from "../../notification/notification";
 
 export enum NotificationTypes {
     ADD_NOTIFICATION = "@@notifications/ADD_NOTIFICATION",
@@ -6,5 +6,5 @@ export enum NotificationTypes {
 }
 
 export interface NotificationState {
-    readonly notifications: NotificationObject[]
+    readonly notifications: Notification[]
 }
