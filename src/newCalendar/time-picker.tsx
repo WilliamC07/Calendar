@@ -1,14 +1,21 @@
 import React, {useState} from 'react';
 import "./timePickerStyle.scss";
+import moment from "moment";
 
-export default function TimePicker({update, current}){
+interface Props {
+    current: moment.Moment,
+    update: (moment: moment.Moment) => void,
+}
+
+const TimePicker: React.FC<Props> = ({update, current}) => {
     const [hour, setHour] = useState(parseInt(current.format("hh")));
     const [minute, setMinute] = useState(current.get("minute"));
     const [isAM, setIsAM] = useState(current.get("hour") < 12);
     const [editingIndex, setEditingIndex] = useState(0); // 0 for hour, 1 for minute, 2 for isAM
 
-    function handleKeyPress(e){
-        const key = e.key;
+    function handleKeyPress(e: React.KeyboardEvent){
+        // we know it is of type "string", but isNaN accepts number only and we want to pass in a string
+        const key: any = e.key;
         if(key === "Tab" || key === "ArrowRight"){
             // editing field to right (or wrap around)
             setEditingIndex((editingIndex + 1) % 3);
@@ -85,9 +92,11 @@ export default function TimePicker({update, current}){
     }
 
     return (
-        <span className="timePickerContainer" onKeyDown={handleKeyPress} tabIndex="0">
+        <span className="timePickerContainer" onKeyDown={handleKeyPress} tabIndex={0}>
             {/* format as H:MM <AM/PM> */ }
             <span data-selected={editingIndex === 0}>{hour}</span><span data-selected={editingIndex === 1}>{`:${String(minute).padStart(2, '0')}`}</span><span data-selected={editingIndex === 2}>{`${isAM ? "AM" : "PM"}`}</span>
         </span>
     )
-}
+};
+
+export default TimePicker;

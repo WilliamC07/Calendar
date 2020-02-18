@@ -9,7 +9,7 @@ import * as data from "../../data/calendar/data";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";
 import {Notification, NotificationType} from "../../notification/notification";
-import TimePicker from "../timePicker";
+import TimePicker from "../time-picker";
 
 function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
     const [expanded, setExpanded] = useState(true); // true for testing
