@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
-import Calendar from './newCalendar/calendar';
+import Calendar from './calendar/calendar';
 import Notification from './notification/views/notification-container';
 import './index.scss';
 
