@@ -3,13 +3,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
-import * as actions from "../actions";
-import {notify} from "../../notification/actions"
-import * as data from "../../data/calendar/data";
+import * as actions from "../../../store/calendar/actions"
+import {notify} from "../../../store/notification/actions"
+import * as data from "../../../data/calendar/data";
 import {connect} from "react-redux";
-import MomentPicker from "../momentPicker";
-import {NotificationObject, NotificationType} from "../../notification/NotificationObject";
-import TimePicker from "../timePicker";
+import MomentPicker from "../../views/moment-picker";
+import {Notification, NotificationType} from "../../../notification/notification";
+import TimePicker from "../../views/time-picker";
 
 function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
     const [expanded, setExpanded] = useState(true); // true for testing
@@ -58,22 +58,22 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
     const handleCreate = (e) => {
         e.preventDefault();
         if(eventInfo.title.trim().length === 0){
-            notify(new NotificationObject(NotificationType.ERROR, "New event requires a title!"));
+            notify(new Notification(NotificationType.ERROR, "New event requires a title!"));
             return;
         }else if(eventInfo.momentEnd.isBefore(eventInfo.momentStart)){
-            notify(new NotificationObject(NotificationType.ERROR, "End date must be after start date!"));
+            notify(new Notification(NotificationType.ERROR, "End date must be after start date!"));
             return;
         }else if(eventInfo.category === 0){
-            notify(new NotificationObject(NotificationType.ERROR, "No category chosen for the event"));
+            notify(new Notification(NotificationType.ERROR, "No category chosen for the event"));
             return;
         }
 
         if(eventInfo.description.trim().length === 0) {
-            notify(new NotificationObject(NotificationType.WARNING, "No description given!"));
+            notify(new Notification(NotificationType.WARNING, "No description given!"));
             return;
         }
         createEvent(Object.values(eventInfo));
-        notify(new NotificationObject(NotificationType.SUCCESS, "Successfully created event!"))
+        notify(new Notification(NotificationType.SUCCESS, "Successfully created event!"))
         // clear the state
         setEventInfo({
             title: "",
@@ -161,7 +161,7 @@ function mapDispatchToProps(dispatch){
             dispatch(actions.createEvent(createdEvent));
         },
         /**
-         * @param notification {NotificationObject}
+         * @param notification {Notification}
          */
         notify: (notification) => {dispatch(notify(notification));},
     }

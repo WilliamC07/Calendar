@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     setMonthYearSelected,
     setDaySelected,
-} from './actions';
+} from '../../store/calendar/actions';
 import moment from 'moment';
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
@@ -16,9 +16,7 @@ function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelecte
     return (
         <div className="calendarBoxConnect">
             <MonthYearChooser selectedMonthYear={monthYearSelected} setMonthYearSelected={setMonthYearSelected} setIsChoosingDate={setIsChoosingDate}/>
-            {isChoosingDate
-                ? <MonthYearGreaterSelector setMonthYearSelected={setMonthYearSelected} monthYearSelected={monthYearSelected}/>
-                : <Grid daySelected={daySelected} monthYearSelected={monthYearSelected} setDaySelected={setDaySelected}/>}
+            <Grid daySelected={daySelected} monthYearSelected={monthYearSelected} setDaySelected={setDaySelected}/>
         </div>
     );
 }
@@ -47,6 +45,7 @@ function mapDispatchToProps(dispatch) {
 const CalendarBox = connect(mapStateToProps, mapDispatchToProps)(CalendarBoxConnect);
 export default CalendarBox;
 
+// TODO: Temporary removed. need to finish
 function MonthYearChooser({selectedMonthYear, setMonthYearSelected, setIsChoosingDate}) {
     function changeMonthYearSelected(monthAmount){
         setMonthYearSelected(selectedMonthYear.clone().add(monthAmount, 'month'));
@@ -68,6 +67,7 @@ function MonthYearChooser({selectedMonthYear, setMonthYearSelected, setIsChoosin
     )
 }
 
+// TODO: Temporary removed. need to finish
 function MonthYearGreaterSelector({monthYearSelected, setMonthYearSelected}){
     const [selectedMonth, setSelectedMonth] = useState(monthYearSelected.get('month'));
     const [selectedYear, setSelectedYear] = useState(monthYearSelected.get('year'));

@@ -1,6 +1,6 @@
 import {createStore, applyMiddleware} from 'redux';
 import {middlewareCloseNotification} from "../notification/middleware";
-import rootReducer from './reducer';
+import {rootReducer} from './index';
 
 const store = createStore(rootReducer, applyMiddleware(
     middlewareCloseNotification

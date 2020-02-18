@@ -2,7 +2,13 @@ import React, {useState} from "react";
 import "./style.scss";
 import moment from "moment";
 
-export default function MomentPicker({startingMoment, setSelectedMoment, isAbove}){
+interface Props {
+    startingMoment: moment.Moment;
+    setSelectedMoment: (moment: moment.Moment) => void;
+    isAbove: boolean
+}
+
+const MomentPicker: React.FC<Props> = ({startingMoment, setSelectedMoment, isAbove}) => {
     const [viewingMoment, setViewingMoment] = useState(startingMoment);
     const [isSelecting, setSelecting] = useState(false);
 
@@ -44,23 +50,25 @@ export default function MomentPicker({startingMoment, setSelectedMoment, isAbove
                 </div>
             }
             {isSelecting &&
-                <div className="pickerWrapper">
-                    <div className="header">
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            setViewingMoment(viewingMoment.clone().subtract(1, "months"));
-                        }}>{"<"}</button>
-                        <div>{viewingMoment.format("MMM YYYY")}</div>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            setViewingMoment(viewingMoment.clone().add(1, "months"));
-                        }}>{">"}</button>
-                    </div>
-                    <div className="daysContainer">
-                        {daysToShow()}
-                    </div>
+            <div className="pickerWrapper">
+                <div className="header">
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        setViewingMoment(viewingMoment.clone().subtract(1, "months"));
+                    }}>{"<"}</button>
+                    <div>{viewingMoment.format("MMM YYYY")}</div>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        setViewingMoment(viewingMoment.clone().add(1, "months"));
+                    }}>{">"}</button>
                 </div>
+                <div className="daysContainer">
+                    {daysToShow()}
+                </div>
+            </div>
             }
         </div>
     )
-}
+};
+
+export default MomentPicker;

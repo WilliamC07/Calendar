@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
 import CalendarBox from "./calendarBox";
-import CategoryBox from "./categoryBox";
+import CategoryBox from "./category-box";
 import NewEventViewerBox from "./eventViewer/newEventViewerBox";
 import EventContainer from "./eventViewer/eventContainer";
 import "./style.scss";
 
-function CalendarConnect(props) {
+export default function Calendar(){
     return (
         <div className="calendarRoot">
             <div className="leftSide">
@@ -18,20 +17,5 @@ function CalendarConnect(props) {
                 <EventContainer/>
             </div>
         </div>
-    );
+    )
 }
-
-function mapStateToProps() {
-    return {
-
-    }
-}
-
-function mapDispatchToProps() {
-    return {
-
-    }
-}
-
-const Calendar = connect(mapStateToProps, mapDispatchToProps)(CalendarConnect);
-export default Calendar;

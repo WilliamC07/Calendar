@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
-import Calendar from './newCalendar/calendar';
-import Notification from './notification/Notification';
+import Calendar from './calendar/views/calendar';
+import Notification from './notification/views/notification-container';
 import './index.scss';
 
 class App extends Component{
