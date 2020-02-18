@@ -3,7 +3,7 @@ import {CalendarActionsTypes, CalendarState} from "./types";
 import {getCategories, getEvents} from "../../data/calendar/data";
 import moment from "moment";
 
-export const initialState: CalendarState = {
+const initialState: CalendarState = {
     categories: getCategories(),
     daySelected: moment(),
     events: getEvents(),

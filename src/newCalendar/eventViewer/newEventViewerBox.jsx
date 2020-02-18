@@ -4,7 +4,7 @@ import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {faChevronUp} from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import "./design.scss";
 import * as actions from "../../store/calendar/actions";
-import {notify} from "../../notification/actions"
+import {notify} from "../../store/notification/actions"
 import * as data from "../../data/calendar/data";
 import {connect} from "react-redux";
 import MomentPicker from "../momentPicker";

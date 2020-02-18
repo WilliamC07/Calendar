@@ -1,11 +1,10 @@
-import * as actions from "./actions";
+import * as actions from "../store/notification/actions";
+import {NotificationTypes} from "../store/notification/types";
 
 export const middlewareCloseNotification = store => next => action => {
-    if(action.type === actions.ADD_NOTIFICATION){
-        console.log("added timeout for ", action.notification);
+    if(action.type === NotificationTypes.ADD_NOTIFICATION){
         setTimeout(() => {
-            store.dispatch(actions.removeNotification(action.notification.id));
-            console.log("removed for ", action.notification.id);
+            store.dispatch(actions.removeNotification(action.payload.id));
         }, 4000);
     }
     return next(action);
