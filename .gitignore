@@ -15,3 +15,6 @@ dist/
 #using scss, so ignore .css and .css.map
 *.css
 *.css.map
+
+#typescript stuff
+src/react-app-env.d.ts
