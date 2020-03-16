@@ -1,6 +1,9 @@
 import moment, {Moment} from "moment";
 
 export default class Event{
+    /**
+     * This value should be set when you insert into the database. Should be unique.
+     */
     id: number;
     title: string;
     description: string;
