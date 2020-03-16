@@ -56,6 +56,10 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
     };
 
     const handleCreate = (e) => {
+        console.log("INFO: ----");
+        console.log(eventInfo);
+        console.log(`Is end before start? ${eventInfo.momentEnd.isBefore(eventInfo.momentStart)}`);
+
         e.preventDefault();
         if(eventInfo.title.trim().length === 0){
             notify(new Notification(NotificationType.ERROR, "New event requires a title!"));
@@ -73,7 +77,7 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
             return;
         }
         createEvent(Object.values(eventInfo));
-        notify(new Notification(NotificationType.SUCCESS, "Successfully created event!"))
+        notify(new Notification(NotificationType.SUCCESS, "Successfully created event!"));
         // clear the state
         setEventInfo({
             title: "",
@@ -82,7 +86,9 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
             isAllDay: true,
             momentStart: daySelected.clone(),
             momentEnd: daySelected.clone()
-        })
+        });
+
+        e.preventDefault();
     };
 
     return (

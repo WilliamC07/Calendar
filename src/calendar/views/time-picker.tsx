@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./timePickerStyle.scss";
-import moment from "moment";
+import moment, {Moment} from "moment";
 
 interface Props {
     current: moment.Moment,
@@ -12,6 +12,14 @@ const TimePicker: React.FC<Props> = ({update, current}) => {
     const [minute, setMinute] = useState(current.get("minute"));
     const [isAM, setIsAM] = useState(current.get("hour") < 12);
     const [editingIndex, setEditingIndex] = useState(0); // 0 for hour, 1 for minute, 2 for isAM
+
+    // When the user changes the time (click on keyboard), update the display and parent's state
+    useEffect(() => {
+        const copy = current.clone();
+        const newTime = moment(`${hour}:${minute} ${isAM ? "AM" : "PM"}`, ["h:mm A"]);
+        copy.set({minute: newTime.get("minute"), hour: newTime.get("hour")});
+        update(copy);
+    }, [hour, minute, isAM]);
 
     function handleKeyPress(e: React.KeyboardEvent){
         // we know it is of type "string", but isNaN accepts number only and we want to pass in a string
@@ -85,8 +93,7 @@ const TimePicker: React.FC<Props> = ({update, current}) => {
                 }
             }
         }
-        // bro what is this ternary... :(
-        update(current.clone().set({minute, hour: hour + (isAM ? (hour === 12 ? -12 : 0) : (hour === 12 ? 0 : 12))}));
+
         // prevent default action of tab
         e.preventDefault();
     }
