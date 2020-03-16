@@ -5,11 +5,12 @@ import {Moment} from "moment";
 
 interface Props {
     event: Event;
+    setSelected: () => void;
 }
 
-const EventView: React.FC<Props> = ({event}) => {
+const EventView: React.FC<Props> = ({event, setSelected}) => {
     return (
-        <div className="event-view">
+        <div className="event-view" onClick={setSelected}>
             <TimeDisplay isAllDay={event.isAllDay} start={event.start} end={event.end}/>
             <div className="event-brief-overview">
                 {event.title}

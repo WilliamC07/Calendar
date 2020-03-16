@@ -6,6 +6,7 @@ import "./design.scss";
 import {ApplicationState} from "../../../store";
 import {Dispatch} from "redux";
 import EventView from "./event-view";
+import EventViewDetailed from "./event-view-detailed";
 
 interface Props {
     daySelected: moment.Moment;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const EventContainer: React.FC<Props> = ({daySelected, events}) => {
+    const [selectedEventID, setSelectedEventID] = useState(-1);
+
     function getDayDivider(){
         const output = [];
 
@@ -41,7 +44,14 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
             output.push(
                 <div key={displayMoment.toISOString()}>
                     <p>{displayMoment.format("dddd, MMMM D")}</p>
-                    {eventsForMoment.map(event => <EventView key={"event" + event.id} event={event}/>)}
+                    {eventsForMoment.map(event => {
+                        return (
+                            <React.Fragment>
+                                <EventView key={"event" + event.id} event={event} setSelected={() => setSelectedEventID(event.id)}/>
+                                { event.id === selectedEventID && <EventViewDetailed event={event} close={() => setSelectedEventID(-1)}/>}
+                            </React.Fragment>
+                        )
+                    })}
                 </div>
             )
         }
