@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import MomentPicker from "../../views/moment-picker";
 import {Notification, NotificationType} from "../../../notification/notification";
 import TimePicker from "../../views/time-picker";
+import Event from "../../event";
 
 function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
     const [expanded, setExpanded] = useState(true); // true for testing
@@ -61,33 +62,25 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         console.log(`Is end before start? ${eventInfo.momentEnd.isBefore(eventInfo.momentStart)}`);
 
         e.preventDefault();
-        if(eventInfo.title.trim().length === 0){
-            notify(new Notification(NotificationType.ERROR, "New event requires a title!"));
-            return;
-        }else if(eventInfo.momentEnd.isBefore(eventInfo.momentStart)){
-            notify(new Notification(NotificationType.ERROR, "End date must be after start date!"));
-            return;
-        }else if(eventInfo.category === 0){
-            notify(new Notification(NotificationType.ERROR, "No category chosen for the event"));
-            return;
-        }
+        try {
+            const newEvent = new Event(eventInfo.title, eventInfo.description, eventInfo.category, eventInfo.isAllDay,
+                eventInfo.momentStart, eventInfo.momentEnd);
+            createEvent(newEvent);
+            notify(new Notification(NotificationType.SUCCESS, "Successfully created event!"));
 
-        if(eventInfo.description.trim().length === 0) {
-            notify(new Notification(NotificationType.WARNING, "No description given!"));
-            return;
+            // clear the state
+            setEventInfo({
+                title: "",
+                description: "",
+                category: categories.length === 0 ? 0 :categories[0].id,
+                isAllDay: true,
+                momentStart: daySelected.clone(),
+                momentEnd: daySelected.clone()
+            });
+        }catch(e){
+            // Failed to create event
+            notify(new Notification(NotificationType.ERROR, e.message))
         }
-        createEvent(Object.values(eventInfo));
-        notify(new Notification(NotificationType.SUCCESS, "Successfully created event!"));
-        // clear the state
-        setEventInfo({
-            title: "",
-            description: "",
-            category: categories.length === 0 ? 0 :categories[0].id,
-            isAllDay: true,
-            momentStart: daySelected.clone(),
-            momentEnd: daySelected.clone()
-        });
-
         e.preventDefault();
     };
 
@@ -160,11 +153,11 @@ function mapStateToProps(store){
 function mapDispatchToProps(dispatch){
     return {
         /**
-         * @param eventDetails {Array.<{title: string, description: string, category: number, start: Moment, end: Moment}>} Will be modified by this function.
+         * @param newEvent {Event}
          */
-        createEvent: (eventDetails) => {
-            const createdEvent = data.createEvent(eventDetails);
-            dispatch(actions.createEvent(createdEvent));
+        createEvent: (newEvent) => {
+            data.createEvent(newEvent);
+            dispatch(actions.createEvent(newEvent));
         },
         /**
          * @param notification {Notification}

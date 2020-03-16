@@ -53,20 +53,12 @@ export function deleteCategory(categoryID: number){
  * @param eventDetails [title, description, id of category corresponding, isAllDay, start moment, end moment].
  * @returns Newly created event
  */
-export function createEvent(eventDetails: [string, string, number, boolean, moment.Moment, moment.Moment]): Event{
-    const formattedData = [
-        eventDetails[0], // title
-        eventDetails[1], // description
-        eventDetails[2], // id of category corresponding to this event
-        eventDetails[3] ? 1 : 0, // isAllDay. Sqlite3 does not store boolean, we must convert to integer
-        eventDetails[4].toISOString(), // start of the event
-        eventDetails[5].toISOString() // end of the event
-    ];
-    const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, isAllDay, start, end ) VALUES (?, ?, ?, ?, ?, ?)`).run(...formattedData);
+export function createEvent(newEvent: Event){
+    const info = connection
+        .prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, isAllDay, start, end ) VALUES (?, ?, ?, ?, ?, ?)`)
+        .run(newEvent.title, newEvent.description, newEvent.category, newEvent.isAllDay ? 1 : 0, newEvent.start.toISOString(), newEvent.end.toISOString());
 
-    const event = new Event(...eventDetails);
-    event.id = info.lastInsertRowid;
-    return event;
+    newEvent.id = info.lastInsertRowid;
 }
 
 /**
