@@ -46,8 +46,8 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
                     <p>{displayMoment.format("dddd, MMMM D")}</p>
                     {eventsForMoment.map(event => {
                         return (
-                            <React.Fragment>
-                                <EventView key={"event" + event.id} event={event} setSelected={() => setSelectedEventID(event.id)}/>
+                            <React.Fragment key={"event" + event.id}>
+                                <EventView event={event} setSelected={() => setSelectedEventID(event.id)}/>
                                 { event.id === selectedEventID && <EventViewDetailed event={event} close={() => setSelectedEventID(-1)}/>}
                             </React.Fragment>
                         )
