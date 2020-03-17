@@ -141,6 +141,7 @@ function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected}){
             <div className={getClassStyle()}>
                 {cellMoment.get('date')}
             </div>
+            <div className="circle"/>
         </div>
     )
 }
