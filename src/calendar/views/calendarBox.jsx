@@ -9,8 +9,9 @@ import {
 import moment from 'moment';
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import Event from "../event";
 
-function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected}) {
+function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected, events}) {
     const [isChoosingDate, setIsChoosingDate] = useState(false);
 
     function createCells(){
@@ -20,7 +21,8 @@ function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelecte
             const moment = firstSunday.clone().day(i);
             parts.push(
                 <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
-                          daySelected={daySelected} monthYearSelected={monthYearSelected}/>
+                          daySelected={daySelected} monthYearSelected={monthYearSelected}
+                          hasEvents={Event.eventsForMoment(events, moment).length !== 0}/>
             );
         }
         return parts;
@@ -47,6 +49,7 @@ function mapStateToProps(store) {
     return {
         daySelected: store.calendar.daySelected,
         monthYearSelected: store.calendar.monthYearSelected,
+        events: store.calendar.events
     }
 }
 
@@ -123,7 +126,7 @@ function MonthYearGreaterSelector({monthYearSelected, setMonthYearSelected}){
     )
 }
 
-function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected}){
+function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected, hasEvents}){
     function getClassStyle(){
         if(cellMoment.isSame(daySelected, 'day')){
             return "selectedText";
@@ -141,7 +144,7 @@ function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected}){
             <div className={getClassStyle()}>
                 {cellMoment.get('date')}
             </div>
-            <div className="circle"/>
+            {hasEvents && <div className="circle"/>}
         </div>
     )
 }
