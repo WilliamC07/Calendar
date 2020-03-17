@@ -51,3 +51,7 @@ To run as as an executable (.dmg for mac):
 * WebStorm
 * React
 * Electron
+
+## Improvements that can be made:
+- Getting events for a certain day is O(n) (n = amount of events user created)
+- All events are read from database into memory
