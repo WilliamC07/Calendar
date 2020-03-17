@@ -13,10 +13,25 @@ import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
 function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected}) {
     const [isChoosingDate, setIsChoosingDate] = useState(false);
 
+    function createCells(){
+        const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
+        const parts = [];
+        for(let i = 0; i < 42; i++){
+            const moment = firstSunday.clone().day(i);
+            parts.push(
+                <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
+                          daySelected={daySelected} monthYearSelected={monthYearSelected}/>
+            );
+        }
+        return parts;
+    }
+
     return (
         <div className="calendarBoxConnect">
             <MonthYearChooser selectedMonthYear={monthYearSelected} setMonthYearSelected={setMonthYearSelected} setIsChoosingDate={setIsChoosingDate}/>
-            <Grid daySelected={daySelected} monthYearSelected={monthYearSelected} setDaySelected={setDaySelected}/>
+            <div className="grid">
+                {createCells()}
+            </div>
         </div>
     );
 }
@@ -104,28 +119,6 @@ function MonthYearGreaterSelector({monthYearSelected, setMonthYearSelected}){
                 <button onClick={() => setMonthYearSelected(moment().set('year', selectedYear).set('month', selectedMonth).set('date', selectedDay))}>Select</button>
                 <button onClick={() => setMonthYearSelected(moment())}>Today</button>
             </div>
-        </div>
-    )
-}
-
-function Grid({daySelected, monthYearSelected, setDaySelected}){
-    const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
-
-    function createCells(){
-        const parts = [];
-        for(let i = 0; i < 42; i++){
-            const moment = firstSunday.clone().day(i);
-            parts.push(
-                <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
-                          daySelected={daySelected} monthYearSelected={monthYearSelected}/>
-            );
-        }
-        return parts;
-    }
-
-    return (
-        <div className="grid">
-            {createCells()}
         </div>
     )
 }
