@@ -19,9 +19,10 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
     function getDayDivider(){
         const output = [];
 
+        // Show events for the selected moment and the next 2 days.
         for(let i = 0; i < 3; i++){
             const displayMoment = daySelected.clone().add(i, 'd');
-            const eventsForMoment = Event.eventsForMoment(events, daySelected).sort(Event.sortEvents);
+            const eventsForMoment = Event.eventsForMoment(events, daySelected.clone().add(i, "day")).sort(Event.sortEvents);
 
             output.push(
                 <div key={displayMoment.toISOString()}>
