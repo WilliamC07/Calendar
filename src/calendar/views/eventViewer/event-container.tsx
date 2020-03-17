@@ -19,19 +19,7 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
     function getDayDivider(){
         const output = [];
 
-        const sortedEvents = events.slice().sort((e1, e2) => {
-            if(e1.isAllDay && !e2.isAllDay){
-                return -1;
-            }else if(e1.isAllDay && e2.isAllDay){
-                return e1.title.localeCompare(e2.title);
-            }else if(e1.start.isSame(e2.start)){
-                // same starting time, so compare id for continuity of previous day event list
-                return e1.id - e2.id;
-            }else{
-                // different starting time, so list earlier one first
-                return e1.start.isAfter(e2.start) ? -1 : 1;
-            }
-        });
+        const sortedEvents = events.slice().sort(Event.sortEvents);
 
         for(let i = 0; i < 3; i++){
             const displayMoment = daySelected.clone().add(i, 'd');
