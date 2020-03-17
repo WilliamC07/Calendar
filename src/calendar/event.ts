@@ -1,4 +1,4 @@
-import moment, {Moment} from "moment";
+import moment,{Moment} from "moment";
 
 export default class Event{
     /**
@@ -61,5 +61,18 @@ export default class Event{
             // different starting time, so list earlier one first
             return e1.start.isAfter(e2.start) ? -1 : 1;
         }
+    }
+
+    /**
+     * Gets all the elements for the given moment
+     * @param events List of all the elements
+     * @param momentSelected
+     */
+    static eventsForMoment(events: Event[], momentSelected: Moment): Event[]{
+        return events.filter(event => {
+            const start = moment(event.start).startOf('day');
+            const end = moment(event.end).endOf('day');
+            return momentSelected.isBetween(start, end);
+        });
     }
 }

@@ -19,15 +19,9 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
     function getDayDivider(){
         const output = [];
 
-        const sortedEvents = events.slice().sort(Event.sortEvents);
-
         for(let i = 0; i < 3; i++){
             const displayMoment = daySelected.clone().add(i, 'd');
-            const eventsForMoment = sortedEvents.filter(event => {
-                const start = moment(event.start).startOf('day');
-                const end = moment(event.end).endOf('day');
-                return displayMoment.isBetween(start, end);
-            });
+            const eventsForMoment = Event.eventsForMoment(events, daySelected).sort(Event.sortEvents);
 
             output.push(
                 <div key={displayMoment.toISOString()}>
