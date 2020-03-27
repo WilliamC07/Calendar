@@ -4,6 +4,9 @@
  * Relationship: Many to one
  */
 export default class Category{
+    /**
+     * This value should be set when you insert into the database. Should be unique.
+     */
     id: number;
     name: string;
     color: string;

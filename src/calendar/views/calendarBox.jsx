@@ -9,14 +9,31 @@ import {
 import moment from 'moment';
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import Event from "../event";
 
-function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected}) {
+function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected, events}) {
     const [isChoosingDate, setIsChoosingDate] = useState(false);
+
+    function createCells(){
+        const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
+        const parts = [];
+        for(let i = 0; i < 42; i++){
+            const moment = firstSunday.clone().day(i);
+            parts.push(
+                <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
+                          daySelected={daySelected} monthYearSelected={monthYearSelected}
+                          hasEvents={Event.eventsForMoment(events, moment).length !== 0}/>
+            );
+        }
+        return parts;
+    }
 
     return (
         <div className="calendarBoxConnect">
             <MonthYearChooser selectedMonthYear={monthYearSelected} setMonthYearSelected={setMonthYearSelected} setIsChoosingDate={setIsChoosingDate}/>
-            <Grid daySelected={daySelected} monthYearSelected={monthYearSelected} setDaySelected={setDaySelected}/>
+            <div className="grid">
+                {createCells()}
+            </div>
         </div>
     );
 }
@@ -32,6 +49,7 @@ function mapStateToProps(store) {
     return {
         daySelected: store.calendar.daySelected,
         monthYearSelected: store.calendar.monthYearSelected,
+        events: store.calendar.events
     }
 }
 
@@ -108,29 +126,7 @@ function MonthYearGreaterSelector({monthYearSelected, setMonthYearSelected}){
     )
 }
 
-function Grid({daySelected, monthYearSelected, setDaySelected}){
-    const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
-
-    function createCells(){
-        const parts = [];
-        for(let i = 0; i < 42; i++){
-            const moment = firstSunday.clone().day(i);
-            parts.push(
-                <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
-                          daySelected={daySelected} monthYearSelected={monthYearSelected}/>
-            );
-        }
-        return parts;
-    }
-
-    return (
-        <div className="grid">
-            {createCells()}
-        </div>
-    )
-}
-
-function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected}){
+function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected, hasEvents}){
     function getClassStyle(){
         if(cellMoment.isSame(daySelected, 'day')){
             return "selectedText";
@@ -148,6 +144,7 @@ function GridCell({cellMoment, setDaySelected, daySelected, monthYearSelected}){
             <div className={getClassStyle()}>
                 {cellMoment.get('date')}
             </div>
+            {hasEvents && <div className="circle"/>}
         </div>
     )
 }

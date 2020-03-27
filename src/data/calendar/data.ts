@@ -1,6 +1,6 @@
 import {subDirectories} from "../data";
 import Category from '../../calendar/category';
-import moment from 'moment';
+import moment, {Moment} from 'moment';
 import Event from '../../calendar/event';
 const path = require("path");
 const Database = window.require("better-sqlite3");
@@ -53,20 +53,12 @@ export function deleteCategory(categoryID: number){
  * @param eventDetails [title, description, id of category corresponding, isAllDay, start moment, end moment].
  * @returns Newly created event
  */
-export function createEvent(eventDetails: [string, string, number, boolean, moment.Moment, moment.Moment]): Event{
-    const formattedData = [
-        eventDetails[0], // title
-        eventDetails[1], // description
-        eventDetails[2], // id of category corresponding to this event
-        eventDetails[3] ? 1 : 0, // isAllDay. Sqlite3 does not store boolean, we must convert to integer
-        eventDetails[4].toISOString(), // start of the event
-        eventDetails[5].toISOString() // end of the event
-    ];
-    const info = connection.prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, isAllDay, start, end ) VALUES (?, ?, ?, ?, ?, ?)`).run(...formattedData);
+export function createEvent(newEvent: Event){
+    const info = connection
+        .prepare(`INSERT INTO ${TABLE_EVENTS} ( title, description, category, isAllDay, start, end ) VALUES (?, ?, ?, ?, ?, ?)`)
+        .run(newEvent.title, newEvent.description, newEvent.category, newEvent.isAllDay ? 1 : 0, newEvent.start.toISOString(), newEvent.end.toISOString());
 
-    const event = new Event(...eventDetails);
-    event.id = info.lastInsertRowid;
-    return event;
+    newEvent.id = info.lastInsertRowid;
 }
 
 /**
@@ -103,13 +95,22 @@ export function getCategories(){
  * @returns List of all the events the user created
  */
 export function getEvents(): Event[]{
-    const data: [number, string, string, number, number|boolean, string, string][] = connection.prepare(`SELECT * FROM ${TABLE_EVENTS}`).all();
+    interface DataStructure {
+        id: number;
+        title: string;
+        description: string;
+        category: number;
+        isAllDay: number;
+        end: string;
+        start: string
+    }
+    const data: DataStructure[] = connection.prepare(`SELECT * FROM ${TABLE_EVENTS}`).all();
     // convert data to Event object
     const events = [];
     for(let i = 0; i < data.length; i++){
-        const event = new Event("", "", -1, false, moment(), moment());
-        data[i][4] = !!data[i][4];  // need to convert sqlite3 integer to boolean
-        Object.assign(event, data[i]);
+        const rawEvent = data[i];
+        const event = new Event(rawEvent.title, rawEvent.description, rawEvent.category, !!rawEvent.isAllDay, moment(rawEvent.start), moment(rawEvent.end));
+        event.id = rawEvent.id;
         events.push(event);
     }
     return events;
