@@ -7,13 +7,15 @@ import {ApplicationState} from "../../../store";
 import {Dispatch} from "redux";
 import EventView from "./event-view";
 import EventViewDetailed from "./event-view-detailed";
+import Category from "../../category";
 
 interface Props {
     daySelected: moment.Moment;
-    events: Event[]
+    categories: Category[];
+    events: Event[];
 }
 
-const EventContainer: React.FC<Props> = ({daySelected, events}) => {
+const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
     const [selectedEventID, setSelectedEventID] = useState(-1);
 
     function getDayDivider(){
@@ -31,7 +33,7 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
                         return (
                             <React.Fragment key={"event" + event.id}>
                                 <EventView event={event} setSelected={() => setSelectedEventID(event.id)}/>
-                                { event.id === selectedEventID && <EventViewDetailed event={event} close={() => setSelectedEventID(-1)}/>}
+                                { event.id === selectedEventID && <EventViewDetailed event={event} close={() => setSelectedEventID(-1)} categories={categories}/>}
                             </React.Fragment>
                         )
                     })}
@@ -52,7 +54,8 @@ const EventContainer: React.FC<Props> = ({daySelected, events}) => {
 function mapStateToProps(store: ApplicationState){
     return {
         daySelected: store.calendar.daySelected,
-        events: store.calendar.events
+        events: store.calendar.events,
+        categories: store.calendar.categories
     }
 }
 
