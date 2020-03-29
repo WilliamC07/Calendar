@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -13,6 +13,17 @@ import Event from "../event";
 
 function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected, events}) {
     const [isChoosingDate, setIsChoosingDate] = useState(false);
+    const [daysWithEvents, setDaysWithEvents] = useState(new Set());
+
+    useEffect(() => {
+        const moments = new Set();
+        for(const event of events){
+            for(const day of event.daysOccurOn()){
+                moments.add(day);
+            }
+        }
+        setDaysWithEvents(moments);
+    }, [events]);
 
     function createCells(){
         const firstSunday = monthYearSelected.clone().set('date', 1).day(0);
@@ -22,7 +33,7 @@ function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelecte
             parts.push(
                 <GridCell cellMoment={moment} setDaySelected={setDaySelected} key={moment.toISOString()}
                           daySelected={daySelected} monthYearSelected={monthYearSelected}
-                          hasEvents={Event.eventsForMoment(events, moment).length !== 0}/>
+                          hasEvents={daysWithEvents.has(moment.format("YYYY-MM-DD"))}/>
             );
         }
         return parts;
