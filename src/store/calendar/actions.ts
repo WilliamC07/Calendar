@@ -11,4 +11,5 @@ export const updateCategory = (category: Category) => action(CalendarActionsType
 export const deleteCategory = (id: number) => action(CalendarActionsTypes.DELETE_CATEGORY, id);
 export const setCategories = (categories: Category[]) => action(CalendarActionsTypes.SET_CATEGORIES, categories);
 export const createEvent = (event: Event) => action(CalendarActionsTypes.CREATE_EVENT, event);
+export const updateEvent = (event: Event) => action(CalendarActionsTypes.UPDATE_EVENT, event);
 export const setEvents = (events: Event[]) => action(CalendarActionsTypes.SET_EVENTS, events);

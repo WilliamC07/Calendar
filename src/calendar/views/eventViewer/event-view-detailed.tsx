@@ -4,13 +4,22 @@ import {Moment} from "moment";
 import MomentPicker from "../moment-picker";
 import TimePicker from "../time-picker";
 import Category from "../../category";
+import * as data from "../../../data/calendar/data";
+import * as calendar_actions from "../../../store/calendar/actions";
+import * as notification_actions from "../../../store/notification/actions";
+import {ApplicationState} from "../../../store";
+import {Dispatch} from "redux";
+import {connect} from "react-redux";
+import {Notification, NotificationType} from "../../../notification/notification";
 
 interface Props {
     event: Event;
     categories: Category[];
+    updateEvent: (event: Event) => void;
+    notify: (notification: Notification) => void;
     close: () => void;
 }
-const EventViewDetailed: React.FC<Props> = ({event, close, categories}) => {
+const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, updateEvent, notify}) => {
     const [eventInfo, setEventInfo] = useState({
         title: event.title,
         description: event.description,
@@ -50,8 +59,16 @@ const EventViewDetailed: React.FC<Props> = ({event, close, categories}) => {
     const handleDelete = () => {
 
     };
-    const handleUpdate = () => {
-
+    const handleUpdate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        try {
+            const newEvent = new Event(eventInfo.title, eventInfo.description, eventInfo.category, eventInfo.isAllDay, eventInfo.momentStart, eventInfo.momentEnd);
+            newEvent.id = event.id;
+            updateEvent(newEvent);
+        }catch(e){
+            // Failed to create event
+            notify(new Notification(NotificationType.ERROR, e.message))
+        }
+        e.preventDefault();
     };
 
     return (
@@ -104,5 +121,28 @@ const EventViewDetailed: React.FC<Props> = ({event, close, categories}) => {
         </form>
     )
 };
+
+function mapStateToProps(store: ApplicationState){
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch: Dispatch){
+    return {
+        /**
+         * @param event Should be a new instance of Event
+         */
+        updateEvent: (event: Event) => {
+            data.updateEvent(event);
+            dispatch(calendar_actions.updateEvent(event));
+        },
+        notify: (notification: Notification) => {
+            dispatch(notification_actions.notify(notification));
+        }
+    }
+}
+
+const EventViewDetailed = connect(mapStateToProps, mapDispatchToProps)(EventViewDetailedConnect);
 
 export default EventViewDetailed;

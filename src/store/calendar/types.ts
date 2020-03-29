@@ -10,7 +10,8 @@ export enum CalendarActionsTypes {
     DELETE_CATEGORY = "@@calendar/DELETE_CATEGORY",
     SET_CATEGORIES = "@@calendar/SET_CATEGORIES",
     CREATE_EVENT = "@@calendar/CREATE_EVENT",
-    SET_EVENTS = "@@calendar/SET_EVENTS"
+    SET_EVENTS = "@@calendar/SET_EVENTS",
+    UPDATE_EVENT = "@@calendar/UPDATE_EVENT",
 }
 
 export interface CalendarState {
