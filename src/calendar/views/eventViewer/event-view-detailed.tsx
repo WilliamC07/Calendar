@@ -99,7 +99,7 @@ const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, up
                 {!eventInfo.isAllDay &&
                 <div className="formGroup">
                     <label>Time start</label>
-                    <TimePicker current={eventInfo.momentStart} update={(newMoment) => setEventInfo({...eventInfo, momentStart: newMoment})}/>
+                    <TimePicker current={eventInfo.momentStart} update={setStartingMoment}/>
                 </div>
                 }
             </div>
@@ -111,7 +111,7 @@ const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, up
                 {!eventInfo.isAllDay &&
                 <div className="formGroup">
                     <label>Time end</label>
-                    <TimePicker current={eventInfo.momentEnd} update={(newMoment) => setEventInfo({...eventInfo, momentEnd: newMoment})}/>
+                    <TimePicker current={eventInfo.momentEnd} update={setEndingMoment}/>
                 </div>
                 }
             </div>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./style.scss";
 import moment from "moment";
 
@@ -11,6 +11,10 @@ interface Props {
 const MomentPicker: React.FC<Props> = ({startingMoment, setSelectedMoment, isAbove}) => {
     const [viewingMoment, setViewingMoment] = useState(startingMoment);
     const [isSelecting, setSelecting] = useState(false);
+
+    useEffect(() => {
+        setViewingMoment(startingMoment);
+    }, [startingMoment]);
 
     function daysToShow(){
         const elements = [];
