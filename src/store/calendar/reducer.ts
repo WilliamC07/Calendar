@@ -53,7 +53,7 @@ export const calendarReducer: Reducer<CalendarState> = (state: CalendarState = i
                 events: action.payload
             };
         case CalendarActionsTypes.UPDATE_EVENT: {
-            const newEvents = state.events.filter((event) => event !== action.payload.id);
+            const newEvents = state.events.filter((event) => event.id !== action.payload.id);
             newEvents.push(action.payload);
             return {
                 ...state,
