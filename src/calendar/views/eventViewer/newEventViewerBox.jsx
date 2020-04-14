@@ -18,9 +18,10 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         title: "",
         description: "",
         category: categories.length === 0 ? 0 :categories[0].id, // default category to the first one
-        isAllDay: true,
+        isAllDay: false,
         momentStart: daySelected.clone(),
-        momentEnd: daySelected.clone()
+        momentEnd: daySelected.clone(),
+        areMomentsValid: [true, true]  // [startMoment, endMoment]
     });
 
     useEffect(() => {
@@ -42,18 +43,21 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         }
     };
 
-    const setStartingMoment = (momentStart) => {
+    const setStartingMoment = (momentStart, isValid) => {
+        console.log("is start time moment valid?", isValid);
         setEventInfo({
             ...eventInfo,
-            momentStart
-        })
+            momentStart,
+            areMomentsValid: [isValid, eventInfo.areMomentsValid[1]]
+        });
     };
 
-    const setEndingMoment = (momentEnd) => {
+    const setEndingMoment = (momentEnd, isValid) => {
         setEventInfo({
             ...eventInfo,
-            momentEnd
-        })
+            momentEnd,
+            areMomentsValid: [eventInfo.areMomentsValid[0], isValid]
+        });
     };
 
     const handleCreate = (e) => {
@@ -62,6 +66,14 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
         console.log(`Is end before start? ${eventInfo.momentEnd.isBefore(eventInfo.momentStart)}`);
 
         e.preventDefault();
+
+        if(!(eventInfo.areMomentsValid[0] && eventInfo.areMomentsValid[0])){
+            console.log("moment failed");
+            // one moment is invalid
+            notify(new Notification(NotificationType.ERROR, "Invalid starting/ending time"));
+            return;
+        }
+
         try {
             const newEvent = new Event(eventInfo.title, eventInfo.description, eventInfo.category, eventInfo.isAllDay,
                 eventInfo.momentStart, eventInfo.momentEnd);
@@ -120,7 +132,7 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
                         {!eventInfo.isAllDay &&
                             <div className="formGroup">
                                 <label>Time start</label>
-                                <TimePicker current={eventInfo.momentStart} update={(newMoment) => setEventInfo({...eventInfo, momentStart: newMoment})}/>
+                                <TimePicker current={eventInfo.momentStart} update={setStartingMoment}/>
                             </div>
                         }
                     </div>
@@ -132,7 +144,7 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
                         {!eventInfo.isAllDay &&
                             <div className="formGroup">
                                 <label>Time end</label>
-                                <TimePicker current={eventInfo.momentEnd} update={(newMoment) => setEventInfo({...eventInfo, momentEnd: newMoment})}/>
+                                <TimePicker current={eventInfo.momentEnd} update={setEndingMoment}/>
                             </div>
                         }
                     </div>
