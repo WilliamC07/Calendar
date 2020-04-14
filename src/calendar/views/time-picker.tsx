@@ -13,7 +13,6 @@ const TimePicker: React.FC<Props> = ({update, current}) => {
     const [isAM, setIsAM] = useState(current.get("hour") < 12);
     const [editingIndex, setEditingIndex] = useState(0); // 0 for hour, 1 for minute, 2 for isAM
 
-    // When the user changes the time (click on keyboard), update the display and parent's state
     useEffect(() => {
         const copy = current.clone();
         const newTime = moment(`${hour}:${minute} ${isAM ? "AM" : "PM"}`, ["h:mm A"]);

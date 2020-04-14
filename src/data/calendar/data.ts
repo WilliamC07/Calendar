@@ -62,6 +62,26 @@ export function createEvent(newEvent: Event){
 }
 
 /**
+ * Updates the database to reflect the updated event
+ * @param event
+ */
+export function updateEvent(event: Event){
+    const query = `
+    UPDATE ${TABLE_EVENTS}
+    SET 
+        title = ?,
+        description = ?,
+        category = ?,
+        isAllDay = ?,
+        start = ?,
+        end = ?
+    WHERE
+        id = ?
+    `;
+    connection.prepare(query).run(event.title, event.description, event.category, event.isAllDay ? 1 : 0, event.start.toISOString(), event.end.toISOString(), event.id);
+}
+
+/**
  * Update the given category
  * @param id id of the category to update
  * @param categoryDetails [name, color, description]

@@ -75,4 +75,20 @@ export default class Event{
             return momentSelected.isBetween(start, end);
         });
     }
+
+    /**
+     * Get a list of strings of all the days this event occurs on
+     * @return Array of moments formatted as "YYYY-MM-DD" (ISO) (Example: "2020-03-28")
+     */
+    public daysOccurOn(): string[]{
+        const days: string[] = [];
+        const currentMoment = this.start.clone().startOf("day");
+
+        while(this.end.isSameOrAfter(currentMoment)){
+            days.push(currentMoment.format("YYYY-MM-DD"));
+            currentMoment.add("1", "d");
+        }
+
+        return days;
+    }
 }
