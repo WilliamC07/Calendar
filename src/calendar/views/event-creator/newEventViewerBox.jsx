@@ -7,9 +7,9 @@ import * as actions from "../../../store/calendar/actions"
 import {notify} from "../../../store/notification/actions"
 import * as data from "../../../data/calendar/data";
 import {connect} from "react-redux";
-import MomentPicker from "../../views/moment-picker";
+import MomentPicker from "../util/moment-picker";
 import {Notification, NotificationType} from "../../../notification/notification";
-import TimePicker from "../../views/time-picker";
+import TimePicker from "../util/time-picker";
 import Event from "../../event";
 
 function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}) {
