@@ -1,11 +1,11 @@
 import React from 'react';
-import CalendarBox from "./calendarBox";
-import CategoryBox from "./category-box";
-import NewEventViewerBox from "./eventViewer/newEventViewerBox";
-import EventContainer from "./eventViewer/event-container";
+import CalendarBox from "./calendar/calendarBox";
+import CategoryBox from "./category/category-box";
+import NewEventViewerBox from "./event-creator/newEventViewerBox";
+import EventContainer from "./event-viewer/event-container";
 import "./style.scss";
 
-export default function Calendar(){
+export default function Index(){
     return (
         <div className="calendarRoot">
             <div className="leftSide">

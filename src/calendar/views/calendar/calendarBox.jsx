@@ -5,11 +5,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     setMonthYearSelected,
     setDaySelected,
-} from '../../store/calendar/actions';
+} from '../../../store/calendar/actions';
 import moment from 'moment';
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons/faChevronRight";
-import Event from "../event";
+import Event from "../../event";
 
 function CalendarBoxConnect({daySelected, monthYearSelected, setMonthYearSelected, setDaySelected, events}) {
     const [isChoosingDate, setIsChoosingDate] = useState(false);

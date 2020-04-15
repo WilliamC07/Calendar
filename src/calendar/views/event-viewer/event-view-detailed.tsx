@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import Event from "../../event";
 import {Moment} from "moment";
-import MomentPicker from "../moment-picker";
-import TimePicker from "../time-picker";
+import MomentPicker from "../util/moment-picker";
+import TimePicker from "../util/time-picker";
 import Category from "../../category";
 import * as data from "../../../data/calendar/data";
 import * as calendar_actions from "../../../store/calendar/actions";

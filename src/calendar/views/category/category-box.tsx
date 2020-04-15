@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import * as data from "../../data/calendar/data";
-import * as actions from "../../store/calendar/actions";
+import * as data from "../../../data/calendar/data";
+import * as actions from "../../../store/calendar/actions";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 import {Dispatch} from "redux";
-import Category from "../category";
-import {ApplicationState} from "../../store";
+import Category from "../../category";
+import {ApplicationState} from "../../../store";
 
 interface StateToProps {
     categories: Category[];
