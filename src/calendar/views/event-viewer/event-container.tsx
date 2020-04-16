@@ -53,7 +53,7 @@ const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
 
 function mapStateToProps(store: ApplicationState){
     return {
-        daySelected: store.calendar.daySelected,
+        daySelected: store.calendar.momentSelected,
         events: store.calendar.events,
         categories: store.calendar.categories
     }

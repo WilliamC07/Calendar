@@ -158,7 +158,7 @@ function NewEventViewerBoxConnect({categories, daySelected, createEvent, notify}
 function mapStateToProps(store){
     return {
         categories: store.calendar.categories,
-        daySelected: store.calendar.daySelected,
+        daySelected: store.calendar.momentSelected,
     }
 }
 

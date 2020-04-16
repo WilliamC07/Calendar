@@ -58,7 +58,7 @@ CalendarBoxConnect.prototype = {
 
 function mapStateToProps(store) {
     return {
-        daySelected: store.calendar.daySelected,
+        daySelected: store.calendar.momentSelected,
         monthYearSelected: store.calendar.monthYearSelected,
         events: store.calendar.events
     }
