@@ -15,9 +15,10 @@ interface Props {
   events: Event[],
 
   setMonthYearSelected: (newMoment: Moment) => void,
+  setMomentSelected: (selected: Moment) => void,
 }
 
-const Component: React.FC<Props> = ({momentSelected, monthYearSelected, setMonthYearSelected, events}) => {
+const Component: React.FC<Props> = ({momentSelected, monthYearSelected, setMonthYearSelected, events, setMomentSelected}) => {
   function generateCells(): JSX.Element[] {
     const cells: JSX.Element[] = [];
     const firstSundayOfMonth = monthYearSelected.clone().set('date', 1).day(0);
@@ -28,7 +29,8 @@ const Component: React.FC<Props> = ({momentSelected, monthYearSelected, setMonth
       const key = current.toISOString() + "corner";
       const numberOfEvents = Event.eventsForMoment(events, current).length;
       cells.push(
-        <Cell currentMoment={current} key={key} numberOfEvents={numberOfEvents}/>
+        <Cell currentMoment={current} key={key} numberOfEvents={numberOfEvents} handleSelect={setMomentSelected}
+              momentSelected={momentSelected}/>
       );
     }
 
@@ -55,9 +57,8 @@ function mapStateToProps(store: ApplicationState) {
 
 function mapDispatchToProps(dispatch: Dispatch){
   return {
-    setMonthYearSelected: (newMoment: Moment) => {
-      dispatch(actions.setMonthYearSelected(newMoment));
-    }
+    setMonthYearSelected: (newMoment: Moment) => dispatch(actions.setMonthYearSelected(newMoment)),
+    setMomentSelected: (selected: Moment) => dispatch(actions.setDaySelected(selected))
   }
 }
 
