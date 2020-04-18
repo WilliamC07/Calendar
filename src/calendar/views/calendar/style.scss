@@ -1,0 +1,14 @@
+@import "../../../_variable.scss";
+
+.month-selector-container {
+  display: flex;
+  justify-content: space-between;
+
+  svg {
+    cursor: pointer;
+  }
+
+  h3 {
+    user-select: none;
+  }
+}
