@@ -1,8 +1,11 @@
 @import "../../../_variable.scss";
 
+$month-selector-container-height: 10%;
+
 .month-selector-container {
   display: flex;
   justify-content: space-between;
+  height: $month-selector-container-height;
 
   svg {
     cursor: pointer;
@@ -10,5 +13,52 @@
 
   h3 {
     user-select: none;
+  }
+}
+
+.corner-calendar-container {
+  flex-direction: column;
+  height: 55%;
+  margin: 10px;
+}
+
+.corner-calendar-cell-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  height: 100% - $month-selector-container-height;
+}
+
+.corner-calendar-cell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  // the day displayed
+  span:first-child {
+    flex-grow: 2;
+    &[data-is-today="true"] {
+      color: $current-color;
+    }
+    &[data-is-today="false"] {
+      color: $text-solid-color;
+    }
+  }
+
+  // the number of events on the given moment
+  span:nth-child(2) {
+    margin-bottom: 1em;
+
+    // center text vertically and horizontally
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // make into circle
+    background-color: #8AEA92;
+    border-radius: 50%;
+    height: 1.1em;
+    width: 1.1em;
   }
 }
