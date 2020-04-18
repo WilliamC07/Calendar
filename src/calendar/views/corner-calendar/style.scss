@@ -1,5 +1,14 @@
 @import "../../../_variable.scss";
 
+.corner-calendar-container {
+  flex-direction: column;
+  height: 55%;
+  margin: 10px;
+  box-shadow: 3px 3px 3px #1a1a1a;
+  // prevents border from blocking shadow
+  padding: 1px;
+}
+
 $month-selector-container-height: 10%;
 
 .month-selector-container {
@@ -16,12 +25,6 @@ $month-selector-container-height: 10%;
   }
 }
 
-.corner-calendar-container {
-  flex-direction: column;
-  height: 55%;
-  margin: 10px;
-}
-
 .corner-calendar-cell-container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -34,10 +37,12 @@ $month-selector-container-height: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid #2a2a2a;
 
   // the day displayed
   span:first-child {
     flex-grow: 2;
+    margin-top: 3px;
     &[data-is-today="true"] {
       color: $current-color;
     }
