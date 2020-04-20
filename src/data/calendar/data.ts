@@ -97,8 +97,8 @@ export function getCategories(){
     // convert object to Category object
     const categories: Category[] = [];
     for(let i = 0; i < data.length; i++){
-        const category = new Category("", "", "");
-        Object.assign(category, data[i]);
+        const category = new Category(data[i].name, data[i].color, data[i].description);
+        category.id = data[i].id;
         categories.push(category);
     }
     return categories;

@@ -1,21 +1,24 @@
-import React, {useState, useEffect, ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import * as data from "../../../data/calendar/data";
-import * as actions from "../../../store/calendar/actions";
+import * as calendarActions from "../../../store/calendar/actions";
+import * as notifyActions from "../../../store/notification/actions";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 import {Dispatch} from "redux";
 import Category from "../../category";
 import {ApplicationState} from "../../../store";
+import {Notification, NotificationType} from "../../../notification/notification";
 
 type Props = {
   categories: Category[];
   createCategory: (newCategory: Category) => void;
   updateCategory: (newCategory: Category) => void;
   deleteCategory: (id: number) => void;
+  notify: (notification: Notification) => void;
 }
 
-const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategory, deleteCategory}) => {
+const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategory, deleteCategory, notify}) => {
   const [isCreateMode, setIsCreateMode] = useState<boolean>(categories.length === 0);
   // -1 if user did not select any categories
   const [selectedCategoryID, setSelectedCategoryID] = useState(-1);
@@ -69,11 +72,16 @@ const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategor
   }
 
   function createOrUpdateHandler(e: React.FormEvent<HTMLButtonElement>) {
-    const newCategory = new Category(categoryDetails.name, categoryDetails.color, categoryDetails.description);
-    if (isCreateMode) {
-      createCategory(newCategory);
-    } else {
-      updateCategory(newCategory);
+    try {
+      const newCategory = new Category(categoryDetails.name, categoryDetails.color, categoryDetails.description);
+      if (isCreateMode) {
+        createCategory(newCategory);
+      } else {
+        updateCategory(newCategory);
+      }
+      notify(new Notification(NotificationType.SUCCESS, "Successfully created category!"));
+    }catch(e){
+      notify(new Notification(NotificationType.ERROR, e.message));
     }
   }
 
@@ -149,16 +157,18 @@ function mapDispatchToProps(dispatch: Dispatch) {
   return {
     createCategory: (newCategory: Category) => {
       data.createCategory(newCategory);
-      dispatch(actions.createCategory(newCategory));
+      dispatch(calendarActions.createCategory(newCategory));
     },
     updateCategory: (newCategory: Category) => {
       data.updateCategory(newCategory);
-      dispatch(actions.updateCategory(newCategory));
+      dispatch(calendarActions.updateCategory(newCategory));
     },
     deleteCategory: (id: number) => {
       data.deleteCategory(id);
-      dispatch(actions.deleteCategory(id));
-    }
+      dispatch(calendarActions.deleteCategory(id));
+    },
+    notify: (notification: Notification) => dispatch(notifyActions.notify(notification)),
+
   }
 }
 
