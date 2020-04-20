@@ -19,7 +19,7 @@ type Props = {
   notify: (notification: Notification) => void;
 }
 
-const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategory, deleteCategory, notify}) => {
+const CategoryCreator: React.FC<Props> = ({categories, createCategory, updateCategory, deleteCategory, notify}) => {
   const [isCreateMode, setIsCreateMode] = useState<boolean>(categories.length === 0);
   // -1 if user did not select any categories
   const [selectedCategoryID, setSelectedCategoryID] = useState(-1);
@@ -173,4 +173,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryBox);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryCreator);

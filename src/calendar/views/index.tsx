@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryBox from "./category/category-box";
+import CategoryBox from "./category/category-creator";
 import NewEventViewerBox from "./event-creator/newEventViewerBox";
 import EventContainer from "./event-viewer/event-container";
 import "./style.scss";
