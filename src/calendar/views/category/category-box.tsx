@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 import * as data from "../../../data/calendar/data";
 import * as actions from "../../../store/calendar/actions";
@@ -8,158 +8,158 @@ import {Dispatch} from "redux";
 import Category from "../../category";
 import {ApplicationState} from "../../../store";
 
-interface StateToProps {
-    categories: Category[];
+type Props = {
+  categories: Category[];
+  createCategory: (newCategory: Category) => void;
+  updateCategory: (newCategory: Category) => void;
+  deleteCategory: (id: number) => void;
 }
-
-interface DispatchToProps{
-    createCategory: (categoryDetails: [string, string, string]) => void;
-    updateCategory: (id: number, categoryDetails: [string, string, string]) => void;
-    deleteCategory: (id: number) => void;
-}
-
-type Props = StateToProps & DispatchToProps;
 
 const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategory, deleteCategory}) => {
-    // none: no category selected | create: new event made | view: old event viewing
-    const [mode, setMode] = useState("none");
-    // -1 for "none" or "create" mode | other positive integers for view
-    const [selectedCategoryID, setSelectedCategoryID] = useState(1);
-    const [categoryName, setCategoryName] = useState("");
-    const [categoryColor, setCategoryColor] = useState("");
-    const [categoryDesc, setCategoryDesc] = useState("");
+  const [isCreateMode, setIsCreateMode] = useState<boolean>(categories.length === 0);
+  // -1 if user did not select any categories
+  const [selectedCategoryID, setSelectedCategoryID] = useState(-1);
+  const [categoryDetails, setCategoryDetails] = useState({
+    name: "",
+    color: "",
+    description: ""
+  });
 
-    // update view if categories update
-    useEffect(() => {
-        if(categories.length > 0){
-            const lastCategory = categories[categories.length - 1];
-            setSelectedCategoryID(lastCategory.id);
-            setCategoryAttributeToState(lastCategory);
-            setMode("view");
-        }
-    }, [categories]);
+  // user selected a new category
+  useEffect(() => {
+    if(selectedCategoryID !== -1){
+      // user selected a category
+      const selectedCategory = categories.filter(c => c.id === selectedCategoryID)[0];
+      setCategoryDetails({
+        name: selectedCategory.name,
+        color: selectedCategory.color,
+        description: selectedCategory.description
+      });
+      setIsCreateMode(false);
+    }else{
+      // user did not choose a category
+      setCategoryDetails({
+        name: "",
+        color: "",
+        description: ""
+      });
+      setIsCreateMode(true);
+    }
+  }, [selectedCategoryID]);
 
-    function chooseCategoryHandler(e: React.FormEvent<HTMLSelectElement>){
-        const targetID = parseInt(e.currentTarget.value);
-        setSelectedCategoryID(targetID);
-        setCategoryAttributeToState(categories.filter(c => c.id.toString() === targetID.toString())[0]);
+  // Set default value to isCreateMode, selectedCategoryID, and categoryDetails
+  useEffect(() => {
+    if (categories.length > 0) {
+      // at least 1 category exist
+      const lastCategory = categories[categories.length - 1];
+      setSelectedCategoryID(lastCategory.id);
+    } else {
+      // no categories exist
+      setSelectedCategoryID(-1);
     }
-    function createNewCategoryHandler(){
-        setMode("create");
-        setCategoryName("");
-        setCategoryColor("");
-        setCategoryDesc("");
-    }
-    function createOrUpdateHandler(e: React.FormEvent<HTMLButtonElement>){
-        e.preventDefault();
-        const categoryDetails: [string, string, string] = [categoryName, categoryColor, categoryDesc];
-        if(mode === "create"){
-            // id will be set automatically from the database when added
-            createCategory(categoryDetails);
-        }else{
-            // don't modify category directly (don't modify state directly), create copy instead
-            updateCategory(selectedCategoryID, categoryDetails);
-        }
-    }
-    function cancelCreationHandler(e: React.FormEvent<HTMLButtonElement>){
-        e.preventDefault();
-        if(mode === "create"){
-            if(categories.length === 0){
-                setMode("none");
-            }else{
-                const lastCategory = categories[categories.length - 1];
-                setCategoryAttributeToState(lastCategory);
-                setSelectedCategoryID(lastCategory.id);
-                setMode("view");
-            }
-        }else{
-            setCategoryAttributeToState(categories.filter(c => c.id === selectedCategoryID)[0]);
-        }
-    }
-    function deleteCategoryHandler(e: React.FormEvent<HTMLButtonElement>){
-        e.preventDefault();
-        const toDelete = selectedCategoryID;
-        if(categories.length <= 1){
-            // no other event to choose after we delete
-            setMode("none");
-        }else{
-            // select the first category we find that isn't the one we are going to delete
-            for(const category of categories){
-                if(category.id.toString() !== selectedCategoryID.toString()){
-                    setSelectedCategoryID(category.id);
-                    break;
-                }
-            }
-        }
-        deleteCategory(toDelete);
-    }
+  }, [categories]);
 
-    function setCategoryAttributeToState(category: Category){
-        setCategoryName(category.name);
-        setCategoryColor(category.color);
-        setCategoryDesc(category.description);
-    }
+  function chooseCategoryHandler(e: React.FormEvent<HTMLSelectElement>) {
+    const targetID = parseInt(e.currentTarget.value);
+    setSelectedCategoryID(targetID);
+  }
 
-    return (
-        <div className="categoryBox">
-            <form>
-                <div className="choosingCategory">
-                    <select value={mode === "view" ? selectedCategoryID.toString() : "-1"} onChange={chooseCategoryHandler}>
-                        {mode === "view" && categories.map(category => <option value={category.id}
-                                                                               key={category.name + category.id}>{category.name}</option>)}
-                        {mode === "create" && <option value="-1">New Category</option>}
-                        {mode === "none" && <option value="-1">Nothing Selected</option>}
-                    </select>
-                    <label className={mode==="create" ? "selectedText" : "regularText"}
-                           onClick={createNewCategoryHandler}>
-                        New Category<FontAwesomeIcon icon={faPlus} fixedWidth size="sm"/>
-                    </label>
-                </div>
-                <div className="inputGroup">
-                    <label>Name:</label>
-                    <input type="text" value={categoryName} onChange={(e) => setCategoryName(e.target.value)}/>
-                </div>
-                <div className="inputGroup">
-                    <label>Color:</label>
-                </div>
-                <div className="inputGroup">
-                    <label>Description:</label>
-                    <input type="text" value={categoryDesc} onChange={(e) => setCategoryDesc(e.target.value)}/>
-                </div>
-                {
-                    mode !== "none" &&
-                    <div className="inputGroup">
-                        <button className="create" onClick={createOrUpdateHandler}>{mode === "create" ? "Create" : "Update"}</button>
-                        <button className="cancel" onClick={cancelCreationHandler}>Cancel</button>
-                        {mode === "view" && <button className="cancel" onClick={deleteCategoryHandler}>Delete</button>}
-                    </div>
-                }
-            </form>
-        </div>
-    )
+  function createNewCategoryHandler() {
+    setSelectedCategoryID(-1);
+  }
+
+  function createOrUpdateHandler(e: React.FormEvent<HTMLButtonElement>) {
+    const newCategory = new Category(categoryDetails.name, categoryDetails.color, categoryDetails.description);
+    if (isCreateMode) {
+      createCategory(newCategory);
+    } else {
+      updateCategory(newCategory);
+    }
+  }
+
+  function cancelCreationHandler(e: React.FormEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    if(isCreateMode){
+      if(categories.length === 0){
+        setSelectedCategoryID(-1);
+      }else{
+        setSelectedCategoryID(categories[0].id);
+      }
+    }else{
+      // put the old values back
+      const selectedCategory = categories.filter(c => c.id === selectedCategoryID)[0];
+      setCategoryDetails({
+        name: selectedCategory.name,
+        color: selectedCategory.color,
+        description: selectedCategory.description
+      });
+    }
+  }
+
+  function deleteCategoryHandler(e: React.FormEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    deleteCategory(selectedCategoryID);
+  }
+
+  function changeCategoryDetailsHandler(e: ChangeEvent<HTMLInputElement>){
+    setCategoryDetails({
+      ...categoryDetails,
+      [e.target.id]: e.target.value
+    });
+  }
+
+  return (
+    <div className="categoryBox">
+      <div className="choosingCategory">
+        <select value={isCreateMode ? "-1" : selectedCategoryID.toString()} onChange={chooseCategoryHandler}>
+          {!isCreateMode && categories.map(category => <option value={category.id} key={category.name + category.id}>{category.name}</option>)}
+          {isCreateMode && <option value="-1">New Category</option>}
+        </select>
+        <label className={isCreateMode ? "selectedText" : "regularText"} onClick={createNewCategoryHandler}>
+          New Category<FontAwesomeIcon icon={faPlus} fixedWidth size="sm"/>
+        </label>
+      </div>
+      <div className="inputGroup">
+        <label>Name:</label>
+        <input type="text" value={categoryDetails.name} id="name" onChange={changeCategoryDetailsHandler}/>
+      </div>
+      <div className="inputGroup">
+        <label>Color:</label>
+      </div>
+      <div className="inputGroup">
+        <label>Description:</label>
+        <input type="text" value={categoryDetails.description} id="description" onChange={changeCategoryDetailsHandler}/>
+      </div>
+      <div className="inputGroup">
+        <button className="create" onClick={createOrUpdateHandler}>{isCreateMode ? "Create" : "Update"}</button>
+        <button className="cancel" onClick={cancelCreationHandler}>Cancel</button>
+        {!isCreateMode && <button className="cancel" onClick={deleteCategoryHandler}>Delete</button>}
+      </div>
+    </div>
+  )
 };
 
-function mapStateToProps({calendar}: ApplicationState){
-    return {
-        categories: calendar.categories,
-    }
+function mapStateToProps({calendar}: ApplicationState) {
+  return {
+    categories: calendar.categories,
+  }
 }
 
 function mapDispatchToProps(dispatch: Dispatch) {
-    return {
-        createCategory: (categoryDetails: [string, string, string]) => {
-            const createdCategory = data.createCategory(categoryDetails);
-            dispatch(actions.createCategory(createdCategory));
-        },
-        updateCategory: (id: number, categoryDetails: [string, string, string]) => {
-            const updatedCategory = data.updateCategory(id, categoryDetails);
-            dispatch(actions.updateCategory(updatedCategory));
-        },
-        deleteCategory: (id: number) => {
-            data.deleteCategory(id);
-            dispatch(actions.deleteCategory(id));
-        }
+  return {
+    createCategory: (newCategory: Category) => {
+      data.createCategory(newCategory);
+      dispatch(actions.createCategory(newCategory));
+    },
+    updateCategory: (newCategory: Category) => {
+      data.updateCategory(newCategory);
+      dispatch(actions.updateCategory(newCategory));
+    },
+    deleteCategory: (id: number) => {
+      data.deleteCategory(id);
+      dispatch(actions.deleteCategory(id));
     }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryBox);
