@@ -11,19 +11,25 @@
   padding: 1px;
 }
 
-$month-selector-container-height: 10%;
+$month-selector-container-height: 7%;
 
 .month-selector-container {
   display: flex;
   justify-content: space-between;
   height: $month-selector-container-height;
+  margin-top: 10px;
 
   svg {
     cursor: pointer;
+    height: 70%;
+    &:hover {
+      background-color: $hover-background-color;
+    }
   }
 
   h3 {
     user-select: none;
+    height: 1.1em;
   }
 }
 
@@ -31,7 +37,7 @@ $month-selector-container-height: 10%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  height: 100% - $month-selector-container-height;
+  height: 100% - $month-selector-container-height - 3%;
 }
 
 .corner-calendar-cell {
