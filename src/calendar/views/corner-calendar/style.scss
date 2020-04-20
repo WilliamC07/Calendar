@@ -5,6 +5,8 @@
   height: 55%;
   margin: 10px;
   box-shadow: 3px 3px 3px #1a1a1a;
+  border-top: #1a1a1a 1px solid;
+  border-left: #1a1a1a 1px solid;
   // prevents border from blocking shadow
   padding: 1px;
 }
