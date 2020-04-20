@@ -120,11 +120,11 @@ const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategor
   return (
     <div className="category-container">
       <div className="input-group">
-        <select className="selected" value={isCreateMode ? "-1" : selectedCategoryID.toString()} onChange={chooseCategoryHandler}>
+        <select className="success" value={isCreateMode ? "-1" : selectedCategoryID.toString()} onChange={chooseCategoryHandler}>
           {!isCreateMode && categories.map(category => <option value={category.id} key={category.name + category.id}>{category.name}</option>)}
           {isCreateMode && <option value="-1">New Category</option>}
         </select>
-        <button className={(isCreateMode ? "selected" : "default") + " ml-auto"} onClick={createNewCategoryHandler}>
+        <button className={(isCreateMode ? "success" : "default") + " ml-auto"} onClick={createNewCategoryHandler}>
           <FontAwesomeIcon icon={faPlus} fixedWidth size="sm"/>
         </button>
       </div>
@@ -140,7 +140,7 @@ const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategor
         <input type="text" value={categoryDetails.description} id="description" onChange={changeCategoryDetailsHandler}/>
       </div>
       <div className="input-group">
-        <button className="selected" onClick={createOrUpdateHandler}>{isCreateMode ? "Create" : "Update"}</button>
+        <button className="success" onClick={createOrUpdateHandler}>{isCreateMode ? "Create" : "Update"}</button>
         <button className="danger" onClick={cancelCreationHandler}>Cancel</button>
         {!isCreateMode && <button className="danger" onClick={deleteCategoryHandler}>Delete</button>}
       </div>

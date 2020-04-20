@@ -10,7 +10,7 @@ interface Props {
 
 const Cell: React.FC<Props> = ({currentMoment, numberOfEvents, handleSelect, momentSelected}) => {
   let dateTextClasses = "";
-  if(currentMoment.isSame(momentSelected, "date")) dateTextClasses += "selected";
+  if(currentMoment.isSame(momentSelected, "date")) dateTextClasses += "success";
   else if(moment().isSame(currentMoment, 'date')) dateTextClasses += "highlight";
   else dateTextClasses += "default";
 
