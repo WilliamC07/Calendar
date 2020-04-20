@@ -3,6 +3,7 @@ import Dashboard from './dashboard/dashboard.jsx';
 import Index from './calendar/views';
 import Notification from './notification/views/notification-container';
 import './index.scss';
+import './styles/forms.scss';
 
 class App extends Component{
     constructor(props){

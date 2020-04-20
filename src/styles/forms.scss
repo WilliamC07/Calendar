@@ -1,0 +1,63 @@
+@import "../_variable.scss";
+
+.input-group {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  margin-top: 5px;
+  color: $text-solid-color;
+  height: 2em;
+
+  select {
+    width: 40%;
+    font-family: inherit;
+    background: $foreground-color;
+    border: none;
+    font-size: 1em;
+    height: 1.5em;
+    appearance: none; // removes the arrow point down
+    &:focus {
+      box-shadow: none;
+      outline: 0;
+    }
+  }
+
+  button {
+    @extend %clickable;
+    $paddingSpacing: 5px;
+    padding-top: $paddingSpacing;
+    padding-bottom: $paddingSpacing;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1em;
+  }
+
+  input[type="text"] {
+    background: $foreground-color;
+    border: none;
+    height: 100%;
+    padding-left: 10px;
+    font-size: 1.1em;
+    flex-grow: 2;
+    color: $text-solid-color;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &:focus{
+      box-shadow: none;
+      outline: 0;
+    }
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    background: $foreground-color;
+    height: 100%;
+    padding-left: 5px;
+    user-select: none;
+  }
+}

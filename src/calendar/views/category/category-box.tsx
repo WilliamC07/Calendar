@@ -9,6 +9,7 @@ import {Dispatch} from "redux";
 import Category from "../../category";
 import {ApplicationState} from "../../../store";
 import {Notification, NotificationType} from "../../../notification/notification";
+import "./style.scss";
 
 type Props = {
   categories: Category[];
@@ -117,31 +118,31 @@ const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategor
   }
 
   return (
-    <div className="categoryBox">
-      <div className="choosingCategory">
-        <select value={isCreateMode ? "-1" : selectedCategoryID.toString()} onChange={chooseCategoryHandler}>
+    <div className="category-container">
+      <div className="input-group">
+        <select className="selected" value={isCreateMode ? "-1" : selectedCategoryID.toString()} onChange={chooseCategoryHandler}>
           {!isCreateMode && categories.map(category => <option value={category.id} key={category.name + category.id}>{category.name}</option>)}
           {isCreateMode && <option value="-1">New Category</option>}
         </select>
-        <label className={isCreateMode ? "selectedText" : "regularText"} onClick={createNewCategoryHandler}>
+        <button className={isCreateMode ? "selected" : "default"} onClick={createNewCategoryHandler}>
           New Category<FontAwesomeIcon icon={faPlus} fixedWidth size="sm"/>
-        </label>
+        </button>
       </div>
-      <div className="inputGroup">
+      <div className="input-group">
         <label>Name:</label>
         <input type="text" value={categoryDetails.name} id="name" onChange={changeCategoryDetailsHandler}/>
       </div>
-      <div className="inputGroup">
+      <div className="input-group">
         <label>Color:</label>
       </div>
-      <div className="inputGroup">
+      <div className="input-group">
         <label>Description:</label>
         <input type="text" value={categoryDetails.description} id="description" onChange={changeCategoryDetailsHandler}/>
       </div>
-      <div className="inputGroup">
-        <button className="create" onClick={createOrUpdateHandler}>{isCreateMode ? "Create" : "Update"}</button>
-        <button className="cancel" onClick={cancelCreationHandler}>Cancel</button>
-        {!isCreateMode && <button className="cancel" onClick={deleteCategoryHandler}>Delete</button>}
+      <div className="input-group">
+        <button className="selected" onClick={createOrUpdateHandler}>{isCreateMode ? "Create" : "Update"}</button>
+        <button className="danger" onClick={cancelCreationHandler}>Cancel</button>
+        {!isCreateMode && <button className="danger" onClick={deleteCategoryHandler}>Delete</button>}
       </div>
     </div>
   )
