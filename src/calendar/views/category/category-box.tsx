@@ -124,8 +124,8 @@ const CategoryBox: React.FC<Props> = ({categories, createCategory, updateCategor
           {!isCreateMode && categories.map(category => <option value={category.id} key={category.name + category.id}>{category.name}</option>)}
           {isCreateMode && <option value="-1">New Category</option>}
         </select>
-        <button className={isCreateMode ? "selected" : "default"} onClick={createNewCategoryHandler}>
-          New Category<FontAwesomeIcon icon={faPlus} fixedWidth size="sm"/>
+        <button className={(isCreateMode ? "selected" : "default") + " ml-auto"} onClick={createNewCategoryHandler}>
+          <FontAwesomeIcon icon={faPlus} fixedWidth size="sm"/>
         </button>
       </div>
       <div className="input-group">
