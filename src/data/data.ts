@@ -23,7 +23,7 @@ export const subDirectories = {
  * 1. A directory in {@link programDirectory} for each module of this program
  * 2. "data.sqlite3" file in each directory
  */
-for(let directory in Object.values(subDirectories)){
+for(let directory of Object.values(subDirectories)){
     createDirectory(directory);
     createFile(path.join(directory, "data.sqlite3"))
 }
