@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
-import "../style.scss";
 import moment from "moment";
+import "./momentPickerStyle.scss";
 
 interface Props {
     startingMoment: moment.Moment;
-    setSelectedMoment: (moment: moment.Moment) => void;
+    setSelectedMoment: (moment: moment.Moment, isValid: boolean) => void;
     isAbove: boolean
 }
 
@@ -34,7 +34,7 @@ const MomentPicker: React.FC<Props> = ({startingMoment, setSelectedMoment, isAbo
                      className={styleClass}
                      onClick={(e) => {
                          e.preventDefault(); // don't click what is underneath
-                         setSelectedMoment(currentMoment);
+                         setSelectedMoment(currentMoment, true); // all dates are valid
                          setViewingMoment(currentMoment);
                          setSelecting(false);
                      }}>
