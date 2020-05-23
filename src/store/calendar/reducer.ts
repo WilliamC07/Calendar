@@ -5,17 +5,17 @@ import moment from "moment";
 
 const initialState: CalendarState = {
     categories: getCategories(),
-    daySelected: moment(),
+    momentSelected: moment(),
     events: getEvents(),
     monthYearSelected: moment()
 };
 
 export const calendarReducer: Reducer<CalendarState> = (state: CalendarState = initialState, action) => {
     switch(action.type){
-        case CalendarActionsTypes.SET_DAY_SELECTED:
+        case CalendarActionsTypes.SET_MOMENT_SELECTED:
             return {
                 ...state,
-                daySelected: action.payload,
+                momentSelected: action.payload,
             };
         case CalendarActionsTypes.SET_MONTH_YEAR_SELECTED:
             return {

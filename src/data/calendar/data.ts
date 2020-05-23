@@ -30,14 +30,12 @@ connection.exec(`CREATE TABLE IF NOT EXISTS ${TABLE_EVENTS} (
 
 /**
  * Creates a new category and store to disk.
- * @param categoryDetails [name of category, color of category, description of category]. color should be formatted as "#xxxxxx"
- * @return Newly created category
+ * @param newCategory new category created. ID will be set
  */
-export function createCategory(categoryDetails: [string, string, string]): Category{
-    const info = connection.prepare(`INSERT INTO ${TABLE_CATEGORY} (name, color, description) VALUES(?, ?, ?)`).run(...categoryDetails);
-    const category = new Category(...categoryDetails);
-    category.id = info.lastInsertRowid;
-    return category;
+export function createCategory(newCategory: Category){
+    const info = connection.prepare(`INSERT INTO ${TABLE_CATEGORY} (name, color, description) VALUES(?, ?, ?)`)
+      .run(newCategory.name, newCategory.color, newCategory.description);
+    newCategory.id = info.lastInsertRowid;
 }
 
 /**
@@ -83,15 +81,11 @@ export function updateEvent(event: Event){
 
 /**
  * Update the given category
- * @param id id of the category to update
- * @param categoryDetails [name, color, description]
- * @return New Category instance with updated values
+ * @param newCategory updated category
  */
-export function updateCategory(id: number, categoryDetails: [string, string, string]){
-    connection.prepare(`UPDATE ${TABLE_CATEGORY} SET name = ?, color = ?, description = ? WHERE id = ?`).run(...categoryDetails, id);
-    const updatedCategory = new Category(...categoryDetails);
-    updatedCategory.id = id;
-    return updatedCategory;
+export function updateCategory(newCategory: Category){
+    connection.prepare(`UPDATE ${TABLE_CATEGORY} SET name = ?, color = ?, description = ? WHERE id = ?`)
+      .run(newCategory.name, newCategory.color, newCategory.description, newCategory.id);
 }
 
 /**
@@ -103,8 +97,8 @@ export function getCategories(){
     // convert object to Category object
     const categories: Category[] = [];
     for(let i = 0; i < data.length; i++){
-        const category = new Category("", "", "");
-        Object.assign(category, data[i]);
+        const category = new Category(data[i].name, data[i].color, data[i].description);
+        category.id = data[i].id;
         categories.push(category);
     }
     return categories;

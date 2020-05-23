@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import Dashboard from './dashboard/dashboard.jsx';
-import Calendar from './calendar/views/calendar';
+import Index from './calendar/views';
 import Notification from './notification/views/notification-container';
 import './index.scss';
+import './styles/forms.scss';
 
 class App extends Component{
     constructor(props){
@@ -29,7 +30,7 @@ class App extends Component{
             case 'dashboard':
                 return <Dashboard changeView={this.changeView}/>;
             case 'calendar':
-                return <Calendar changeView={this.changeView}/>;
+                return <Index changeView={this.changeView}/>;
             case 'money':
                 return <div>money</div>;
             default:

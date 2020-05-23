@@ -203,39 +203,3 @@
 .above {
   z-index: 10;
 }
-
-.momentPickerContainer {
-  position: relative;
-  width: 12em;
-  .selectedMoment {
-    cursor: pointer;
-    color: $selected-color;
-  }
-  .pickerWrapper {
-    background-color: $background-color;
-    position: absolute;
-    width: 12em;
-    color: $text-light-color;
-  }
-  .selectedText {
-    color: $selected-color;
-  }
-  .currentText {
-    color: $current-color;
-  }
-  .header{
-    display: flex;
-    justify-content: space-between;
-  }
-  .daysContainer{
-    display: grid;
-    grid-template-rows: repeat(6, 1fr);
-    grid-template-columns: repeat(7, 1fr);
-    div {
-      cursor: pointer;
-      &:hover{
-        background-color: $hover-background-color;
-      }
-    }
-  }
-}

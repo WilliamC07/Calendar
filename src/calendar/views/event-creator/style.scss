@@ -1,0 +1,37 @@
+@import "../../../_variable.scss";
+
+.event-creator-container{
+  // no left margin since this class is in a container with 10px margin already
+  margin: 10px 10px 10px 0;
+  box-shadow: 3px 3px 3px #1a1a1a;
+  border-top: #1a1a1a 1px solid;
+  border-left: #1a1a1a 1px solid;
+  padding: 5px;
+
+  .time-selection-container {
+    $button-width: 1.1em;
+    button {
+      margin-left: 5px;
+      width: $button-width;
+      height: $button-width;
+      border-radius: $button-width / 2;
+      padding: 0;
+    }
+    svg {
+      width: $button-width;
+      height: $button-width;
+    }
+  }
+}
+
+.event-creator-header {
+  display: flex;
+  svg {
+    margin-left: auto;
+    margin-right: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: $hover-background-color;
+    }
+  }
+}

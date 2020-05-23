@@ -16,7 +16,7 @@ interface Props {
 }
 
 const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
-    const [selectedEventID, setSelectedEventID] = useState(-1);
+    const [selectedEventAndDay, setSelectedEventAndDay] = useState("");
 
     function getDayDivider(){
         const output = [];
@@ -25,15 +25,17 @@ const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
         for(let i = 0; i < 3; i++){
             const displayMoment = daySelected.clone().add(i, 'd');
             const eventsForMoment = Event.eventsForMoment(events, daySelected.clone().add(i, "day")).sort(Event.sortEvents);
+            const key = displayMoment.toISOString();
 
             output.push(
-                <div key={displayMoment.toISOString()}>
-                    <p>{displayMoment.format("dddd, MMMM D")}</p>
+                <div key={key}>
+                    <p className="default">{displayMoment.format("dddd, MMMM D")}</p>
                     {eventsForMoment.map(event => {
                         return (
                             <React.Fragment key={"event" + event.id}>
-                                <EventView event={event} setSelected={() => setSelectedEventID(event.id)}/>
-                                { event.id === selectedEventID && <EventViewDetailed event={event} close={() => setSelectedEventID(-1)} categories={categories}/>}
+                                <EventView event={event} setSelected={() => setSelectedEventAndDay(event.id + key)}/>
+                                { event.id + key === selectedEventAndDay &&
+                                <EventViewDetailed event={event} close={() => setSelectedEventAndDay("")}/>}
                             </React.Fragment>
                         )
                     })}
@@ -53,7 +55,7 @@ const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
 
 function mapStateToProps(store: ApplicationState){
     return {
-        daySelected: store.calendar.daySelected,
+        daySelected: store.calendar.momentSelected,
         events: store.calendar.events,
         categories: store.calendar.categories
     }

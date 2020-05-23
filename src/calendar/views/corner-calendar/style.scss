@@ -1,0 +1,81 @@
+@import "../../../_variable.scss";
+
+.corner-calendar-container {
+  flex-direction: column;
+  height: 55%;
+  margin: 10px;
+  box-shadow: 3px 3px 3px #1a1a1a;
+  border-top: #1a1a1a 1px solid;
+  border-left: #1a1a1a 1px solid;
+  // prevents border from blocking shadow
+  padding: 1px;
+}
+
+$month-selector-container-height: 7%;
+
+.month-selector-container {
+  display: flex;
+  justify-content: space-between;
+  height: $month-selector-container-height;
+  margin-top: 10px;
+
+  svg {
+    cursor: pointer;
+    height: 70%;
+    &:hover {
+      background-color: $hover-background-color;
+    }
+  }
+
+  h3 {
+    user-select: none;
+    height: 1.1em;
+  }
+}
+
+.corner-calendar-cell-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  height: 100% - $month-selector-container-height - 3%;
+}
+
+.corner-calendar-cell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #2a2a2a;
+
+  cursor: pointer;
+  // prevents flickering between cursor and pointer
+  > * {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: $hover-background-color;
+  }
+
+  // the day displayed
+  span:first-child {
+    flex-grow: 2;
+    margin-top: 3px;
+  }
+
+  // the number of events on the given moment
+  span:nth-child(2) {
+    margin-bottom: 1em;
+
+    // center text vertically and horizontally
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // make into circle
+    background-color: #8AEA92;
+    border-radius: 50%;
+    height: 1.1em;
+    width: 1.1em;
+  }
+}
