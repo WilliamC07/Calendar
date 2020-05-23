@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import Event from "../../event";
 import {Moment} from "moment";
 import MomentPicker from "../util/moment-picker";
@@ -11,136 +11,164 @@ import {ApplicationState} from "../../../store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {Notification, NotificationType} from "../../../notification/notification";
+import "../../../styles/forms.scss";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-    event: Event;
-    categories: Category[];
-    updateEvent: (event: Event) => void;
-    notify: (notification: Notification) => void;
-    close: () => void;
+  event: Event;
+  categories: Category[];
+  updateEvent: (event: Event) => void;
+  notify: (notification: Notification) => void;
+  close: () => void;
 }
+
 const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, updateEvent, notify}) => {
-    const [eventInfo, setEventInfo] = useState({
-        title: event.title,
-        description: event.description,
-        category: event.category,
-        isAllDay: event.isAllDay,
-        momentStart: event.start.clone(),
-        momentEnd: event.end.clone()
+  const [isEventAllDay, setIsEventAllDay] = useState(event.isAllDay);
+  const [areTimesValid, setAreTimesValid] = useState({
+    start: true,
+    end: true
+  });
+  const [eventDetails, setEventDetails] = useState({
+    title: event.title,
+    description: event.description,
+    category: event.category,
+    momentStart: event.start,
+    momentEnd: event.end,
+  });
+
+  function handleEventDetailsChange(e: ChangeEvent<HTMLInputElement|HTMLSelectElement>){
+    setEventDetails({
+      ...eventDetails,
+      [e.target.id]: e.target.value
     });
+  }
 
-    const handleEventInfo = (e: React.FormEvent<HTMLSelectElement> | React.FormEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        if(e.currentTarget.name === "category"){
-            // html stores everything as a string, but we need an number value for category id
-            setEventInfo({...eventInfo, "category": parseInt(e.currentTarget.value)});
-        }else if(e.currentTarget.name === "toggleAllDay"){
-            e.preventDefault();
-            setEventInfo({...eventInfo, "isAllDay": !eventInfo.isAllDay});
-        }else{
-            setEventInfo({...eventInfo, [e.currentTarget.name]: e.currentTarget.value});
+  function handleResetDetails(){
+    setEventDetails({
+      title: event.title,
+      description: event.description,
+      category: event.category,
+      momentStart: event.start,
+      momentEnd: event.end,
+    })
+  }
+
+  function handleSetStartMoment(newMoment: Moment, isValid: boolean){
+    setAreTimesValid(prevState => {
+      return {
+        ...prevState,
+        start: isValid
+      }
+    });
+    if(isValid){
+      setEventDetails(prevState => {
+        return {
+          ...prevState,
+          momentStart: newMoment
         }
-    };
-    const setStartingMoment = (momentStart: Moment) => {
-        setEventInfo({
-            ...eventInfo,
-            momentStart
-        })
-    };
-    const setEndingMoment = (momentEnd: Moment) => {
-        setEventInfo({
-            ...eventInfo,
-            momentEnd
-        })
-    };
-    const handleCancel = (e: React.MouseEvent) => {
-        e.preventDefault();
-        close();
-    };
-    const handleDelete = () => {
+      });
+    }
+  }
 
-    };
-    const handleUpdate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        try {
-            const newEvent = new Event(eventInfo.title, eventInfo.description, eventInfo.category, eventInfo.isAllDay, eventInfo.momentStart, eventInfo.momentEnd);
-            newEvent.id = event.id;
-            updateEvent(newEvent);
-        }catch(e){
-            // Failed to create event
-            notify(new Notification(NotificationType.ERROR, e.message))
+  function handleSetEndMoment(newMoment: Moment, isValid: boolean){
+    setAreTimesValid(prevState => {
+      return {
+        ...prevState,
+        end: isValid
+      }
+    });
+    if(isValid){
+      setEventDetails(prevState => {
+        return {
+          ...prevState,
+          momentEnd: newMoment
         }
-        e.preventDefault();
-    };
+      });
+    }
+  }
 
-    return (
-        <form className="makerContainer">
-            <div className="formGroup">
-                <label>Title</label>
-                <input onChange={handleEventInfo} value={eventInfo.title} name="title" type="text" placeholder="New Event Title"/>
-            </div>
-            <div className="formGroup">
-                <label>Description</label>
-                <input onChange={handleEventInfo} value={eventInfo.description} name="description" type="text" placeholder="New Event Description"/>
-            </div>
-            <div className="formGroup">
-                <label>Category</label>
-                <select onChange={handleEventInfo} value={eventInfo.category} name="category">
-                    {categories.map(category => <option value={category.id}
-                                                        key={"category" + category.id}>{category.name}</option>)}
-                </select>
-            </div>
-            <div className="formGroup">
-                <button name="toggleAllDay" onClick={handleEventInfo}>{eventInfo.isAllDay ? "All day" : "Timed"}</button>
-            </div>
-            <div className="eventCreatorTimeField">
-                <div className="formGroup">
-                    <label>Start Date</label>
-                    <MomentPicker startingMoment={eventInfo.momentStart} setSelectedMoment={setStartingMoment} isAbove={true}/>
-                </div>
-                {!eventInfo.isAllDay &&
-                <div className="formGroup">
-                    <label>Time start</label>
-                    <TimePicker current={eventInfo.momentStart} update={setStartingMoment}/>
-                </div>
-                }
-            </div>
-            <div>
-                <div className="formGroup">
-                    <label>End Date</label>
-                    <MomentPicker startingMoment={eventInfo.momentEnd} setSelectedMoment={setEndingMoment} isAbove={false}/>
-                </div>
-                {!eventInfo.isAllDay &&
-                <div className="formGroup">
-                    <label>Time end</label>
-                    <TimePicker current={eventInfo.momentEnd} update={setEndingMoment}/>
-                </div>
-                }
-            </div>
-            <button onClick={handleUpdate}>Update</button>
-            <button onClick={handleCancel}>Cancel</button>
-            <button onClick={handleDelete}>Delete</button>
-        </form>
-    )
+  function handleUpdateEvent(){
+    if(!(areTimesValid.start && areTimesValid.end)){
+      // one of the chosen times is invalid (missing/too many digits in hours or minutes field)
+      notify(new Notification(NotificationType.ERROR, "Invalid starting/ending time"));
+      return;
+    }
+    try{
+      const newEvent = new Event(eventDetails.title, eventDetails.description, eventDetails.category, isEventAllDay,
+        eventDetails.momentStart, eventDetails.momentEnd);
+      updateEvent(newEvent);
+      notify(new Notification(NotificationType.SUCCESS, "Successfully updated event!"));
+    }catch(e){
+      notify(new Notification(NotificationType.ERROR, e.message))
+    }
+  }
+
+  function handleDeleteEvent(){
+    throw new Error("Not implemented");
+  }
+
+  return (
+    <div>
+      <div className="input-group">
+        <label>Title:</label>
+        <input type="text" id="title" value={eventDetails.title} onChange={handleEventDetailsChange}/>
+      </div>
+      <div className="input-group">
+        <label>Description:</label>
+        <input type="text" id="description" value={eventDetails.description} onChange={handleEventDetailsChange}/>
+      </div>
+      <div className="input-group">
+        <select className="success" id="category" value={eventDetails.category} onChange={handleEventDetailsChange}>
+          {categories.map(c => <option key={`category${c.id}`} value={c.id}>{c.name}</option>)}
+        </select>
+        <span className="success ml-auto mr-2">{isEventAllDay ? "All Day Event" : "Timed Event"}</span>
+      </div>
+      <div className="input-group time-selection-container">
+        <label>Start:</label>
+        <MomentPicker startingMoment={eventDetails.momentStart} setSelectedMoment={handleSetStartMoment} isAbove={true}/>
+        {!isEventAllDay && <TimePicker current={eventDetails.momentStart} update={handleSetStartMoment}/>}
+        <button className={"" + (isEventAllDay ? "success" : "danger")} onClick={() => setIsEventAllDay(!isEventAllDay)}>
+          <FontAwesomeIcon icon={isEventAllDay ? faPlus : faMinus} fixedWidth/>
+        </button>
+      </div>
+      <div className="input-group time-selection-container">
+        <label>End:</label>
+        <MomentPicker startingMoment={eventDetails.momentEnd} setSelectedMoment={handleSetEndMoment} isAbove={false}/>
+        {!isEventAllDay && <TimePicker current={eventDetails.momentEnd} update={handleSetEndMoment}/>}
+        <button className={"" + (isEventAllDay ? "success" : "danger")} onClick={() => setIsEventAllDay(!isEventAllDay)}>
+          <FontAwesomeIcon icon={isEventAllDay ? faPlus : faMinus} fixedWidth/>
+        </button>
+      </div>
+      <div className="input-group">
+        <button className="success" onClick={handleUpdateEvent}>Update</button>
+        <button className="danger" onClick={handleResetDetails}>Reset</button>
+        <button className="danger" onClick={handleDeleteEvent}>Delete</button>
+        <button className="danger" onClick={close}>Close</button>
+      </div>
+    </div>
+  )
 };
 
-function mapStateToProps(store: ApplicationState){
-    return {
-
-    }
+function mapStateToProps(store: ApplicationState) {
+  return {
+    categories: store.calendar.categories
+  }
 }
 
-function mapDispatchToProps(dispatch: Dispatch){
-    return {
-        /**
-         * @param event Should be a new instance of Event
-         */
-        updateEvent: (event: Event) => {
-            data.updateEvent(event);
-            dispatch(calendar_actions.updateEvent(event));
-        },
-        notify: (notification: Notification) => {
-            dispatch(notification_actions.notify(notification));
-        }
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    /**
+     * @param event Should be a new instance of Event
+     */
+    updateEvent: (event: Event) => {
+      data.updateEvent(event);
+      dispatch(calendar_actions.updateEvent(event));
+    },
+    notify: (notification: Notification) => {
+      dispatch(notification_actions.notify(notification));
     }
+  }
 }
 
 const EventViewDetailed = connect(mapStateToProps, mapDispatchToProps)(EventViewDetailedConnect);

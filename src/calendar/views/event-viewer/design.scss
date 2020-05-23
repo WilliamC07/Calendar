@@ -10,59 +10,15 @@
       color: $text-solid-color;
     }
   }
-
-  .makerContainer{
-    .formGroup{
-      display: flex;
-      height: 2em;
-
-      label{
-        display: flex;
-        align-items: center;
-        background: $foreground-color;
-        height: 100%;
-        padding-left: 5px;
-        user-select: none;
-        color: $text-solid-color;
-      }
-      input{
-        background: $foreground-color;
-        border: none;
-        height: 100%;
-        padding-left: 10px;
-        font-size: 1.1em;
-        flex-grow: 2;
-        color: $text-solid-color;
-        border-bottom-right-radius: 5px;
-        border-top-right-radius: 5px;
-        padding-top: 0;
-        padding-bottom: 0;
-
-        &:focus{
-          box-shadow: none;
-          outline: 0;
-        }
-      }
-      select {
-        font-family: inherit;
-        background: $foreground-color;
-        padding-left: 10px;
-        border-radius: 0 5px 5px 0;
-        border: none;
-        height: 100%;
-        font-size: 1em;
-        color: $selected-color;
-        &:focus {
-          box-shadow: none;
-          outline: 0;
-        }
-        appearance: none; // removes the arrow point down
-      }
-    }
-  }
 }
 
 .eventViewerContainer{
+  // no left margin since this class is in a container with 10px margin already
+  margin: 0 10px 10px 0;
+  box-shadow: 3px 3px 3px #1a1a1a;
+  border-top: #1a1a1a 1px solid;
+  border-left: #1a1a1a 1px solid;
+  padding: 5px;
   flex-grow: 2;
   overflow-y: auto;
 }
