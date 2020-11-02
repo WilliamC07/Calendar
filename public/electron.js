@@ -15,7 +15,10 @@ function createWindow(){
     }
 
     mainWindow = new BrowserWindow({
-        fullscreen: true
+        fullscreen: true,
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
 
     // Connect to react

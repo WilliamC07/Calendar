@@ -33,16 +33,16 @@ There is 909 MB of node_modules, so it will take some time to install.
 
 To develop:
 1. Clone repository and change directory into it
-2. Run `npm install`
+2. Run `yarn install`
 3. Run ```./node_modules/.bin/electron-rebuild  -f -w better-sqlite3 && ./node_modules/.bin/electron-rebuild  -f -w node-sass``` (this is very slow)
-4. Run `npm start` to start React
-5. Run `npm run electron` to start electron. You have to wait until react finish starting up the local server.
+4. Run `yarn start` to start React
+5. Run `yarn run electron` to start electron. You have to wait until react finish starting up the local server.
 
 To run as as an executable (.dmg for mac):
 1. Clone repository and change directory into it
-2. Run `npm install`
+2. Run `yarn install`
 3. Run ```./node_modules/.bin/electron-rebuild  -f -w better-sqlite3 && ./node_modules/.bin/electron-rebuild  -f -w node-sass``` (this is very slow)
-4. Run `npm run electron-pack`
+4. Run `yarn run electron-pack`
 5. Type in `cd dist/mac`
 6. Run the .dmg file
 
