@@ -7,7 +7,7 @@ import Category from "../../category";
 import * as data from "../../../data/calendar/data";
 import * as calendar_actions from "../../../store/calendar/actions";
 import * as notification_actions from "../../../store/notification/actions";
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {Notification, NotificationType} from "../../../notification/notification";
@@ -150,7 +150,7 @@ const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, up
   )
 };
 
-function mapStateToProps(store: ApplicationState) {
+function mapStateToProps(store: RootState) {
   return {
     categories: store.calendar.categories
   }

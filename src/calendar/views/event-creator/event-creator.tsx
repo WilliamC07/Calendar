@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {connect} from 'react-redux';
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import "./style.scss";
 import {faChevronDown, faChevronUp, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -175,7 +175,7 @@ const Component: React.FC<Props> = ({categories, momentSelected, notify, createE
   )
 };
 
-function mapStateToProps(store: ApplicationState){
+function mapStateToProps(store: RootState){
   return {
     categories: store.calendar.categories,
     momentSelected: store.calendar.momentSelected

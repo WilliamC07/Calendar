@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import {Moment} from "moment";
 import "./style.scss";
@@ -47,7 +47,7 @@ const Component: React.FC<Props> = ({momentSelected, monthYearSelected, setMonth
   )
 };
 
-function mapStateToProps(store: ApplicationState) {
+function mapStateToProps(store: RootState) {
   return {
     momentSelected: store.calendar.momentSelected,
     monthYearSelected: store.calendar.monthYearSelected,

@@ -7,7 +7,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 import {Dispatch} from "redux";
 import Category from "../../category";
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Notification, NotificationType} from "../../../notification/notification";
 import "./style.scss";
 
@@ -148,7 +148,7 @@ const CategoryCreator: React.FC<Props> = ({categories, createCategory, updateCat
   )
 };
 
-function mapStateToProps({calendar}: ApplicationState) {
+function mapStateToProps({calendar}: RootState) {
   return {
     categories: calendar.categories,
   }
