@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {RootState} from "../../../store";
 import {Dispatch} from "redux";
-import {Moment} from "moment";
+import moment, {Moment} from "moment";
 import "./style.scss";
 import MonthSelector from "./month-selector";
 import * as actions from "../../../store/calendar/actions";
@@ -49,8 +49,8 @@ const Component: React.FC<Props> = ({momentSelected, monthYearSelected, setMonth
 
 function mapStateToProps(store: RootState) {
   return {
-    momentSelected: store.calendar.momentSelected,
-    monthYearSelected: store.calendar.monthYearSelected,
+    momentSelected: moment(store.calendar.momentSelected),
+    monthYearSelected: moment(store.calendar.monthYearSelected),
     events: store.calendar.events,
   }
 }

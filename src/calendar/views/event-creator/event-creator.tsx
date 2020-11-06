@@ -6,7 +6,7 @@ import "./style.scss";
 import {faChevronDown, faChevronUp, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Category from "../../category";
-import {Moment} from "moment";
+import moment, {Moment} from "moment";
 import * as calendarActions from "../../../store/calendar/actions";
 import * as notificationActions from "../../../store/notification/actions";
 import MomentPicker from "../util/moment-picker";
@@ -179,7 +179,7 @@ const Component: React.FC<Props> = ({categories, momentSelected, notify, createE
 function mapStateToProps(store: RootState){
   return {
     categories: store.calendar.categories,
-    momentSelected: store.calendar.momentSelected
+    momentSelected: moment(store.calendar.momentSelected)
   }
 }
 

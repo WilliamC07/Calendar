@@ -55,7 +55,7 @@ const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
 
 function mapStateToProps(store: RootState){
     return {
-        daySelected: store.calendar.momentSelected,
+        daySelected: moment(store.calendar.momentSelected),
         events: store.calendar.events,
         categories: store.calendar.categories
     }
