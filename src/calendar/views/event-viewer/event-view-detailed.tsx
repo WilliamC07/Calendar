@@ -6,7 +6,6 @@ import TimePicker from "../util/time-picker";
 import Category from "../../category";
 import * as data from "../../../data/calendar/data";
 import * as calendar_actions from "../../../store/calendar/actions";
-import * as notification_actions from "../../../store/notification/actions";
 import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
@@ -98,6 +97,8 @@ const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, up
     try{
       const newEvent = new Event(eventDetails.title, eventDetails.description, eventDetails.category, isEventAllDay,
         eventDetails.momentStart, eventDetails.momentEnd);
+      // manually set since we are modifying
+      newEvent.id = event.id;
       updateEvent(newEvent);
       notify(new Notification(NotificationType.SUCCESS, "Successfully updated event!"));
     }catch(e){
