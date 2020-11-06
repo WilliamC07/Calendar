@@ -15,6 +15,10 @@ export class Notification{
         this.id = Notification.idCounter++;
         this.subMessage = subMessage;
     }
+
+    toString(){
+        return `notification${this.id}`;
+    }
 }
 
 export enum NotificationType {

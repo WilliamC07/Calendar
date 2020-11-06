@@ -14,6 +14,7 @@ import {Notification, NotificationType} from "../../../notification/notification
 import "../../../styles/forms.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { createNotification } from '../../../store/notification/actions';
 
 interface Props {
   event: Event;
@@ -166,7 +167,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       dispatch(calendar_actions.updateEvent(event));
     },
     notify: (notification: Notification) => {
-      dispatch(notification_actions.notify(notification));
+      dispatch(createNotification(notification));
     }
   }
 }

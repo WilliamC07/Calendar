@@ -10,8 +10,12 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(middlewareCloseNotification),
+    middleware: [middlewareCloseNotification]
 });
+
+// for debugging purposes
+// @ts-ignore
+window.store = store;
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type Dispatch = typeof store.dispatch;

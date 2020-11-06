@@ -10,6 +10,7 @@ import Category from "../../category";
 import {RootState} from "../../../store";
 import {Notification, NotificationType} from "../../../notification/notification";
 import "./style.scss";
+import { createNotification } from '../../../store/notification/actions';
 
 type Props = {
   categories: Category[];
@@ -168,7 +169,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       data.deleteCategory(id);
       dispatch(calendarActions.deleteCategory(id));
     },
-    notify: (notification: Notification) => dispatch(notifyActions.notify(notification)),
+    notify: (notification: Notification) => dispatch(createNotification(notification)),
 
   }
 }

@@ -21,7 +21,7 @@ const NotificationContainer: React.FC<PropsFromState> = ({notifications}) => {
 
 function mapStateToProps({notification}: RootState){
     return {
-        notifications: notification.notifications
+        notifications: notification
     }
 }
 

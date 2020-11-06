@@ -14,6 +14,7 @@ import TimePicker from "../util/time-picker";
 import {Notification, NotificationType} from "../../../notification/notification";
 import * as data from "../../../data/calendar/data";
 import Event from "../../event";
+import {createNotification} from "../../../store/notification/actions";
 
 interface Props {
   categories: Category[],
@@ -188,7 +189,9 @@ function mapDispatchToProps(dispatch: Dispatch){
       data.createEvent(newEvent);
       dispatch(calendarActions.createEvent(newEvent));
     },
-    notify: (notification: Notification) => dispatch(notificationActions.notify(notification))
+    notify: (notification: Notification) => {
+      dispatch(createNotification(notification));
+    }
   }
 }
 
