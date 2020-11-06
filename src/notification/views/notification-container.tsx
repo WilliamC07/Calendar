@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import "./style.scss";
 import {Notification} from "../notification";
-import {ApplicationState} from "../../store";
+import {RootState} from "../../store";
 
 interface PropsFromState {
     notifications: Notification[]
@@ -19,9 +19,9 @@ const NotificationContainer: React.FC<PropsFromState> = ({notifications}) => {
     )
 };
 
-function mapStateToProps({notification}: ApplicationState){
+function mapStateToProps({notification}: RootState){
     return {
-        notifications: notification.notifications
+        notifications: notification
     }
 }
 

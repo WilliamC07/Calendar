@@ -6,14 +6,14 @@ import TimePicker from "../util/time-picker";
 import Category from "../../category";
 import * as data from "../../../data/calendar/data";
 import * as calendar_actions from "../../../store/calendar/actions";
-import * as notification_actions from "../../../store/notification/actions";
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
 import {Notification, NotificationType} from "../../../notification/notification";
 import "../../../styles/forms.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { createNotification } from '../../../store/notification/actions';
 
 interface Props {
   event: Event;
@@ -97,6 +97,8 @@ const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, up
     try{
       const newEvent = new Event(eventDetails.title, eventDetails.description, eventDetails.category, isEventAllDay,
         eventDetails.momentStart, eventDetails.momentEnd);
+      // manually set since we are modifying
+      newEvent.id = event.id;
       updateEvent(newEvent);
       notify(new Notification(NotificationType.SUCCESS, "Successfully updated event!"));
     }catch(e){
@@ -150,7 +152,7 @@ const EventViewDetailedConnect: React.FC<Props> = ({event, close, categories, up
   )
 };
 
-function mapStateToProps(store: ApplicationState) {
+function mapStateToProps(store: RootState) {
   return {
     categories: store.calendar.categories
   }
@@ -166,7 +168,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       dispatch(calendar_actions.updateEvent(event));
     },
     notify: (notification: Notification) => {
-      dispatch(notification_actions.notify(notification));
+      dispatch(createNotification(notification));
     }
   }
 }

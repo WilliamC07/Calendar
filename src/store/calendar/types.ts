@@ -15,8 +15,8 @@ export enum CalendarActionsTypes {
 }
 
 export interface CalendarState {
-    readonly monthYearSelected: moment.Moment,
-    readonly momentSelected: moment.Moment,
+    readonly monthYearSelected: number,
+    readonly momentSelected: number,
     readonly categories: Category[],
     readonly events: Event[]
 }

@@ -1,12 +1,12 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {connect} from 'react-redux';
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import "./style.scss";
 import {faChevronDown, faChevronUp, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Category from "../../category";
-import {Moment} from "moment";
+import moment, {Moment} from "moment";
 import * as calendarActions from "../../../store/calendar/actions";
 import * as notificationActions from "../../../store/notification/actions";
 import MomentPicker from "../util/moment-picker";
@@ -14,6 +14,7 @@ import TimePicker from "../util/time-picker";
 import {Notification, NotificationType} from "../../../notification/notification";
 import * as data from "../../../data/calendar/data";
 import Event from "../../event";
+import {createNotification} from "../../../store/notification/actions";
 
 interface Props {
   categories: Category[],
@@ -175,10 +176,10 @@ const Component: React.FC<Props> = ({categories, momentSelected, notify, createE
   )
 };
 
-function mapStateToProps(store: ApplicationState){
+function mapStateToProps(store: RootState){
   return {
     categories: store.calendar.categories,
-    momentSelected: store.calendar.momentSelected
+    momentSelected: moment(store.calendar.momentSelected)
   }
 }
 
@@ -188,7 +189,9 @@ function mapDispatchToProps(dispatch: Dispatch){
       data.createEvent(newEvent);
       dispatch(calendarActions.createEvent(newEvent));
     },
-    notify: (notification: Notification) => dispatch(notificationActions.notify(notification))
+    notify: (notification: Notification) => {
+      dispatch(createNotification(notification));
+    }
   }
 }
 

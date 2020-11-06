@@ -1,21 +1,13 @@
-import {Reducer} from "redux";
-import {NotificationTypes, NotificationState} from "./types";
+import {createReducer} from "@reduxjs/toolkit";
+import {Notification} from "../../notification/notification";
+import {createNotification, removeNotification} from "./actions";
 
-const initialState: NotificationState = {
-    notifications: []
-};
-
-export const notificationReducer: Reducer<NotificationState> = (state: NotificationState = initialState, action) => {
-    switch(action.type){
-        case NotificationTypes.REMOVE_NOTIFICATION:
-            return {
-                notifications: state.notifications.filter(notification => notification.id !== action.payload)
-            };
-        case NotificationTypes.ADD_NOTIFICATION:
-            return {
-                notifications: [action.payload, ...state.notifications]
-            };
-        default:
-            return state;
-    }
-};
+export const notificationReducer = createReducer([] as Notification[], (builder) => {
+    builder
+        .addCase(createNotification, (state, action) => {
+            return [...state, action.payload];
+        })
+        .addCase(removeNotification, (state, action) => {
+            return state.filter(notification => notification.id !== action.payload);
+        });
+});

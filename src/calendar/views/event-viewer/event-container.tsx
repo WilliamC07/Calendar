@@ -3,7 +3,7 @@ import Event from "../../event";
 import {connect} from "react-redux";
 import moment from "moment";
 import "./design.scss";
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Dispatch} from "redux";
 import EventView from "./event-view";
 import EventViewDetailed from "./event-view-detailed";
@@ -53,9 +53,9 @@ const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
     )
 };
 
-function mapStateToProps(store: ApplicationState){
+function mapStateToProps(store: RootState){
     return {
-        daySelected: store.calendar.momentSelected,
+        daySelected: moment(store.calendar.momentSelected),
         events: store.calendar.events,
         categories: store.calendar.categories
     }

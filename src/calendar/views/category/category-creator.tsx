@@ -7,9 +7,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 import {Dispatch} from "redux";
 import Category from "../../category";
-import {ApplicationState} from "../../../store";
+import {RootState} from "../../../store";
 import {Notification, NotificationType} from "../../../notification/notification";
 import "./style.scss";
+import { createNotification } from '../../../store/notification/actions';
 
 type Props = {
   categories: Category[];
@@ -148,7 +149,7 @@ const CategoryCreator: React.FC<Props> = ({categories, createCategory, updateCat
   )
 };
 
-function mapStateToProps({calendar}: ApplicationState) {
+function mapStateToProps({calendar}: RootState) {
   return {
     categories: calendar.categories,
   }
@@ -168,7 +169,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       data.deleteCategory(id);
       dispatch(calendarActions.deleteCategory(id));
     },
-    notify: (notification: Notification) => dispatch(notifyActions.notify(notification)),
+    notify: (notification: Notification) => dispatch(createNotification(notification)),
 
   }
 }

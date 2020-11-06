@@ -1,15 +1,15 @@
 import {Moment} from 'moment';
-import {action} from 'typesafe-actions';
 import {CalendarActionsTypes} from "./types";
 import Category from "../../calendar/category";
 import Event from "../../calendar/event";
+import {createAction} from "@reduxjs/toolkit";
 
-export const setMonthYearSelected = (moment: Moment) => action(CalendarActionsTypes.SET_MONTH_YEAR_SELECTED, moment);
-export const setDaySelected = (moment: Moment) => action(CalendarActionsTypes.SET_MOMENT_SELECTED, moment);
-export const createCategory = (category: Category) => action(CalendarActionsTypes.CREATE_CATEGORY, category);
-export const updateCategory = (category: Category) => action(CalendarActionsTypes.UPDATE_CATEGORY, category);
-export const deleteCategory = (id: number) => action(CalendarActionsTypes.DELETE_CATEGORY, id);
-export const setCategories = (categories: Category[]) => action(CalendarActionsTypes.SET_CATEGORIES, categories);
-export const createEvent = (event: Event) => action(CalendarActionsTypes.CREATE_EVENT, event);
-export const updateEvent = (event: Event) => action(CalendarActionsTypes.UPDATE_EVENT, event);
-export const setEvents = (events: Event[]) => action(CalendarActionsTypes.SET_EVENTS, events);
+export const setMonthYearSelected = createAction<Moment>(CalendarActionsTypes.SET_MONTH_YEAR_SELECTED);
+export const setDaySelected = createAction<Moment>(CalendarActionsTypes.SET_MOMENT_SELECTED);
+export const createCategory = createAction<Category>(CalendarActionsTypes.CREATE_CATEGORY);
+export const updateCategory = createAction<Category>(CalendarActionsTypes.UPDATE_CATEGORY);
+export const deleteCategory = createAction<Number>(CalendarActionsTypes.DELETE_CATEGORY);
+export const setCategories = createAction<Category[]>(CalendarActionsTypes.SET_CATEGORIES);
+export const createEvent = createAction<Event>(CalendarActionsTypes.CREATE_EVENT);
+export const updateEvent = createAction<Event>(CalendarActionsTypes.UPDATE_EVENT);
+export const setEvents = createAction<Event[]>(CalendarActionsTypes.SET_EVENTS);
