@@ -1,4 +1,3 @@
-import {action} from 'typesafe-actions';
 import {NotificationTypes} from "./types";
 import {Notification} from "../../notification/notification";
 import {createAction} from "@reduxjs/toolkit";
