@@ -27,7 +27,6 @@ export const calendarReducer = createReducer(initialState, (builder)=>{
             };
         })
         .addCase(setDaySelected, (state, action) => {
-            console.log(action.payload);
             return {
                 ...state,
                 momentSelected: action.payload.valueOf()
