@@ -1,16 +1,15 @@
 import React from 'react';
 import Event from "../../event";
-import "../../../styles/calendar/_event-view.scss"
 import {Moment} from "moment";
 
 interface Props {
     event: Event;
-    setSelected: () => void;
+    setSelected: (id: number) => void;
 }
 
 const EventView: React.FC<Props> = ({event, setSelected}) => {
     return (
-        <div className="event-view" onClick={setSelected}>
+        <div className="event-view" onClick={() => setSelected(event.id)}>
             <TimeDisplay isAllDay={event.isAllDay} start={event.start} end={event.end}/>
             <div className="event-brief-overview">
                 {event.title}

@@ -16,7 +16,16 @@ interface Props {
 }
 
 const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
-    const [selectedEventAndDay, setSelectedEventAndDay] = useState("");
+    const [selectedEventId, setSelectedEventId] = useState(-1);
+
+    function selectEvent(eventId: number){
+        if(selectedEventId == eventId){
+            // deselecting
+            setSelectedEventId(-1);
+        }else{
+            setSelectedEventId(eventId);
+        }
+    }
 
     function getDayDivider(){
         const output = [];
@@ -33,9 +42,9 @@ const EventContainer: React.FC<Props> = ({daySelected, events, categories}) => {
                     {eventsForMoment.map(event => {
                         return (
                             <React.Fragment key={"event" + event.id}>
-                                <EventView event={event} setSelected={() => setSelectedEventAndDay(event.id + key)}/>
-                                { event.id + key === selectedEventAndDay &&
-                                <EventViewDetailed event={event} close={() => setSelectedEventAndDay("")}/>}
+                                <EventView event={event} setSelected={selectEvent}/>
+                                { event.id === selectedEventId &&
+                                <EventViewDetailed event={event} close={() => setSelectedEventId(0)}/>}
                             </React.Fragment>
                         )
                     })}

@@ -22,3 +22,30 @@
   flex-grow: 2;
   overflow-y: auto;
 }
+
+.event-view {
+  margin-top: .5rem;
+  display: flex;
+  cursor: pointer;
+  &:hover {
+    background-color: $hover-background-color;
+  }
+  padding: 5px;
+  user-select: none;
+}
+
+.event-time {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  color: $text-solid-color;
+  background-color: $foreground-color;
+}
+
+.event-brief-overview {
+  display: inline-block;
+  width: 80%;
+  color: $text-solid-color;
+  height: 100%;
+  background-color: $foreground-color;
+}
